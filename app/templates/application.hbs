@@ -50,44 +50,15 @@
 
   {{#if this.session.isAuthenticated}}
     <AuMainContainer as |main|>
-      {{#if this.isIndex}}
-        <main.sidebar>
-          <div class="au-c-sidebar">
-            <div class="au-c-sidebar__content">
-              <Shared::MainMenu />
-            </div>
-            <div class="au-c-sidebar__footer">
-              <AuLinkExternal
-                href="https://abb-vlaanderen.gitbook.io/handleiding-loket/"
-                @skin="secondary"
-              >
-                <AuIcon @icon="documents" @alignment="left" />
-                Bekijk handleiding
-              </AuLinkExternal>
-            </div>
-          </div>
-        </main.sidebar>
-      {{/if}}
       <main.content>
         <AuBodyContainer>
-          {{#unless this.isIndex}}
-            <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
-              <Group>
-                <ul class="au-c-list-horizontal au-c-list-horizontal--small">
-                  <li class="au-c-list-horizontal__item">
-                    <AuLink @route="index">
-                      <AuIcon @icon="arrow-left" @alignment="left" />
-                      Overzicht modules
-                    </AuLink>
-                  </li>
-                  <li class="au-c-list-horizontal__item">
-                    <Shared::CompactMenu />
-                  </li>
-                  <Shared::BreadCrumb />
-                </ul>
-              </Group>
-            </AuToolbar>
-          {{/unless}}
+          <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
+            <Group>
+              <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+                <Shared::BreadCrumb />
+              </ul>
+            </Group>
+          </AuToolbar>
           <AuBodyContainer id="content">
             {{outlet}}
           </AuBodyContainer>

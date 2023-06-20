@@ -6,7 +6,6 @@ import ConceptSelector from 'frontend-lpdc/components/rdf-form-fields/concept-se
 import RichTextEditor from 'frontend-lpdc/components/rdf-form-fields/rich-text-editor';
 
 export default class PublicServicesRoute extends Route {
-  @service currentSession;
   @service session;
   @service router;
 
@@ -18,9 +17,6 @@ export default class PublicServicesRoute extends Route {
 
   beforeModel(transition) {
     this.session.requireAuthentication(transition, 'login');
-
-    if (!this.currentSession.canAccessPublicServices)
-      this.router.transitionTo('index');
   }
 
   registerCustomFormFields() {

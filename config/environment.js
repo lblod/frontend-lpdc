@@ -37,8 +37,6 @@ module.exports = function (environment) {
     // features: {
     //   'feature-name': '{{FEATURE_ENV_VAR_NAME}}',
     // },
-    worshipDecisionsDatabaseUrl: '{{WORSHIP_DECISIONS_DATABASE_URL}}',
-    worshipOrganisationsDatabaseUrl: '{{WORSHIP_ORGANISATIONS_DATABASE_URL}}',
     'ember-plausible': {
       enabled: false,
     },

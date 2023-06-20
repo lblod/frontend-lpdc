@@ -5,7 +5,7 @@ import { dropTask, task } from 'ember-concurrency';
 import {
   hasConcept,
   isConceptUpdated,
-} from 'frontend-loket/models/public-service';
+} from 'frontend-lpdc/models/public-service';
 import { inject as service } from '@ember/service';
 
 export default class PublicServicesDetailsController extends Controller {

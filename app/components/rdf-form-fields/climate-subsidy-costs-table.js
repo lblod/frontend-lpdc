@@ -11,7 +11,7 @@ import {
   LBLOD_SUBSIDIE,
   MU,
   RDF,
-} from 'frontend-loket/rdf/namespaces';
+} from 'frontend-lpdc/rdf/namespaces';
 
 const climateTableBaseUri = 'http://data.lblod.info/climate-tables';
 const lblodSubsidieBaseUri = 'http://lblod.data.gift/vocabularies/subsidie/';

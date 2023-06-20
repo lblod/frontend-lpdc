@@ -1,4 +1,4 @@
-import config from 'frontend-loket/config/environment';
+import config from 'frontend-lpdc/config/environment';
 
 export default function worshipOrganisationsDatabaseUrl() {
   return config.worshipOrganisationsDatabaseUrl;

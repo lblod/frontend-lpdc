@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { loadPublicServiceDetails } from 'frontend-loket/utils/public-services';
+import { loadPublicServiceDetails } from 'frontend-lpdc/utils/public-services';
 
 export default class PublicServicesDetailsRoute extends Route {
   @service store;

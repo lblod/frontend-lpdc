@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import { ALLOWED_FIELDS } from 'frontend-loket/serializers/public-service';
+import { ALLOWED_FIELDS } from 'frontend-lpdc/serializers/public-service';
 
 module('Unit | Serializer | public service', function (hooks) {
   setupTest(hooks);

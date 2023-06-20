@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { CONTACT_TYPE } from 'frontend-loket/models/contact-punt';
+import { CONTACT_TYPE } from 'frontend-lpdc/models/contact-punt';
 
 export default class EredienstMandatenbeheerNewRoute extends Route {
   @service currentSession;

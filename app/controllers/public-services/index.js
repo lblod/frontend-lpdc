@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { restartableTask, timeout } from 'ember-concurrency';
-import { serviceNeedsReview } from 'frontend-loket/models/public-service';
+import { serviceNeedsReview } from 'frontend-lpdc/models/public-service';
 
 export default class PublicServicesIndexController extends Controller {
   queryParams = [

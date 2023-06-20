@@ -1,7 +1,7 @@
 import { assert } from '@ember/debug';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { ROLES } from 'frontend-loket/models/participation';
+import { ROLES } from 'frontend-lpdc/models/participation';
 import { STATUS } from '../../../models/subsidy-measure-consumption-status';
 
 export default class SubsidyApplicationsNewRoute extends Route {

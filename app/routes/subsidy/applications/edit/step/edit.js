@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import fetch from 'fetch';
 import { ForkingStore } from '@lblod/ember-submission-form-fields';
-import { FORM, RDF } from 'frontend-loket/rdf/namespaces';
+import { FORM, RDF } from 'frontend-lpdc/rdf/namespaces';
 import { NamedNode } from 'rdflib';
 
 const FORM_GRAPH = new NamedNode('http://data.lblod.info/form');
@@ -22,7 +22,7 @@ export default class SubsidyApplicationsEditStepEditRoute extends Route {
     await semanticForm.belongsTo('status').reload();
 
     // TODO: Set up the application form similar to how it was done in the edit route before
-    // https://github.com/lblod/frontend-loket/blob/700febcd5267f2086fb238f9d2c79b704f3be992/app/routes/subsidy/applications/edit.js#L15
+    // https://github.com/lblod/frontend-lpdc/blob/700febcd5267f2086fb238f9d2c79b704f3be992/app/routes/subsidy/applications/edit.js#L15
 
     // NOTE: Prepare data in forking store
     const formStore = new ForkingStore();

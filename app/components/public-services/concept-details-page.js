@@ -4,7 +4,7 @@ import Component from '@glimmer/component';
 import { ForkingStore } from '@lblod/ember-submission-form-fields';
 import { NamedNode } from 'rdflib';
 import { task } from 'ember-concurrency';
-import { FORM, RDF } from 'frontend-loket/rdf/namespaces';
+import { FORM, RDF } from 'frontend-lpdc/rdf/namespaces';
 
 const FORM_GRAPHS = {
   formGraph: new NamedNode('http://data.lblod.info/form'),

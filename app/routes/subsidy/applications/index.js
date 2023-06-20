@@ -2,7 +2,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import DataTableRouteMixin from 'ember-data-table/mixins/route';
-import { ROLES } from 'frontend-loket/models/participation';
+import { ROLES } from 'frontend-lpdc/models/participation';
 
 export default class SubsidyApplicationsIndexRoute extends Route.extend(
   DataTableRouteMixin

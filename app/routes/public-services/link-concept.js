@@ -1,7 +1,7 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { hasConcept } from 'frontend-loket/models/public-service';
-import { loadPublicServiceDetails } from 'frontend-loket/utils/public-services';
+import { hasConcept } from 'frontend-lpdc/models/public-service';
+import { loadPublicServiceDetails } from 'frontend-lpdc/utils/public-services';
 
 export default class PublicServicesLinkConceptRoute extends Route {
   @service router;

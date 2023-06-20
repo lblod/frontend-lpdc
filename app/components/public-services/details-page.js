@@ -9,12 +9,12 @@ import {
 } from '@lblod/ember-submission-form-fields';
 import { NamedNode } from 'rdflib';
 import { dropTask, task, dropTaskGroup } from 'ember-concurrency';
-import ConfirmDeletionModal from 'frontend-loket/components/public-services/confirm-deletion-modal';
-import ConfirmReopeningModal from 'frontend-loket/components/public-services/confirm-reopening-modal';
-import ConfirmSubmitModal from 'frontend-loket/components/public-services/confirm-submit-modal';
-import UnsavedChangesModal from 'frontend-loket/components/public-services/details/unsaved-changes-modal';
-import { FORM, RDF } from 'frontend-loket/rdf/namespaces';
-import { loadPublicServiceDetails } from 'frontend-loket/utils/public-services';
+import ConfirmDeletionModal from 'frontend-lpdc/components/public-services/confirm-deletion-modal';
+import ConfirmReopeningModal from 'frontend-lpdc/components/public-services/confirm-reopening-modal';
+import ConfirmSubmitModal from 'frontend-lpdc/components/public-services/confirm-submit-modal';
+import UnsavedChangesModal from 'frontend-lpdc/components/public-services/details/unsaved-changes-modal';
+import { FORM, RDF } from 'frontend-lpdc/rdf/namespaces';
+import { loadPublicServiceDetails } from 'frontend-lpdc/utils/public-services';
 
 const FORM_MAPPING = {
   'cd0b5eba-33c1-45d9-aed9-75194c3728d3': 'inhoud',

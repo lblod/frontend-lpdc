@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { click, render, settled } from '@ember/test-helpers';
 import { hbs } from 'ember-cli-htmlbars';
-import ConfirmDeletionModal from 'frontend-loket/components/public-services/confirm-deletion-modal';
+import ConfirmDeletionModal from 'frontend-lpdc/components/public-services/confirm-deletion-modal';
 import { timeout } from 'ember-concurrency';
 
 const MODAL = {

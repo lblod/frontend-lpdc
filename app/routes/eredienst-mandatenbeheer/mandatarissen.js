@@ -2,7 +2,7 @@ import Route from '@ember/routing/route';
 // eslint-disable-next-line ember/no-mixins
 import DataTableRouteMixin from 'ember-data-table/mixins/route';
 import { inject as service } from '@ember/service';
-import { getUniqueBestuursorganen } from 'frontend-loket/models/mandataris';
+import { getUniqueBestuursorganen } from 'frontend-lpdc/models/mandataris';
 import { hash } from 'rsvp';
 
 export default class EredienstMandatenbeheerMandatarissenRoute extends Route.extend(

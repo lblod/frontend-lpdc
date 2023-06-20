@@ -3,17 +3,17 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
-import { combineFullAddress, isValidAdres } from 'frontend-loket/models/adres';
+import { combineFullAddress, isValidAdres } from 'frontend-lpdc/models/adres';
 import {
   createPrimaryContactPoint,
   createSecondaryContactPoint,
   isValidPrimaryContact,
-} from 'frontend-loket/models/contact-punt';
-import { validateMandaat } from 'frontend-loket/models/worship-mandatee';
+} from 'frontend-lpdc/models/contact-punt';
+import { validateMandaat } from 'frontend-lpdc/models/worship-mandatee';
 import {
   setMandate,
   warnOnMandateExceededTimePeriode,
-} from 'frontend-loket/utils/eredienst-mandatenbeheer';
+} from 'frontend-lpdc/utils/eredienst-mandatenbeheer';
 
 const MANDATARIS_STATUS_EFFECTIEF = '21063a5b-912c-4241-841c-cc7fb3c73e75';
 

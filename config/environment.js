@@ -2,7 +2,7 @@
 
 module.exports = function (environment) {
   let ENV = {
-    modulePrefix: 'frontend-loket',
+    modulePrefix: 'frontend-lpdc',
     environment,
     rootURL: '/',
     locationType: 'auto',

@@ -8,9 +8,9 @@ import {
   createSecondaryContactPoint,
   findPrimaryContactPoint,
   isValidPrimaryContact,
-} from 'frontend-loket/models/contact-punt';
-import { validateFunctie } from 'frontend-loket/models/minister';
-import { combineFullAddress, isValidAdres } from 'frontend-loket/models/adres';
+} from 'frontend-lpdc/models/contact-punt';
+import { validateFunctie } from 'frontend-lpdc/models/minister';
+import { combineFullAddress, isValidAdres } from 'frontend-lpdc/models/adres';
 
 export default class WorshipMinistersManagementMinisterEditController extends Controller {
   @service store;

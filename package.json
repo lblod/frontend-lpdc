@@ -1,11 +1,11 @@
 {
-  "name": "frontend-loket",
+  "name": "frontend-lpdc",
   "version": "0.83.1",
   "private": true,
-  "description": "Frontend of loket",
+  "description": "Frontend LPDC",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lblod/frontend-loket.git"
+    "url": "git+https://github.com/lblod/frontend-lpdc.git"
   },
   "license": "MIT",
   "author": "redpencil.io",

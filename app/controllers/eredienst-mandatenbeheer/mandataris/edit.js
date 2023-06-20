@@ -8,13 +8,13 @@ import {
   createSecondaryContactPoint,
   findPrimaryContactPoint,
   isValidPrimaryContact,
-} from 'frontend-loket/models/contact-punt';
+} from 'frontend-lpdc/models/contact-punt';
 import {
   setMandate,
   warnOnMandateExceededTimePeriode,
-} from 'frontend-loket/utils/eredienst-mandatenbeheer';
-import { validateMandaat } from 'frontend-loket/models/worship-mandatee';
-import { combineFullAddress, isValidAdres } from 'frontend-loket/models/adres';
+} from 'frontend-lpdc/utils/eredienst-mandatenbeheer';
+import { validateMandaat } from 'frontend-lpdc/models/worship-mandatee';
+import { combineFullAddress, isValidAdres } from 'frontend-lpdc/models/adres';
 export default class EredienstMandatenbeheerMandatarisEditController extends Controller {
   @service currentSession;
   @service store;

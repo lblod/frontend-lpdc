@@ -101,9 +101,9 @@
           <:title>Status document</:title>
           <:content>
             {{#if @model.publicService.status.label}}
-              <PublicServices::Status @uri={{@model.publicService.status.uri}}>
+              <Status @uri={{@model.publicService.status.uri}}>
                 {{@model.publicService.status.label}}
-              </PublicServices::Status>
+              </Status>
             {{else}}
               –
             {{/if}}

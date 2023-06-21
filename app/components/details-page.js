@@ -9,10 +9,10 @@ import {
 } from '@lblod/ember-submission-form-fields';
 import { NamedNode } from 'rdflib';
 import { dropTask, task, dropTaskGroup } from 'ember-concurrency';
-import ConfirmDeletionModal from 'frontend-lpdc/components/public-services/confirm-deletion-modal';
-import ConfirmReopeningModal from 'frontend-lpdc/components/public-services/confirm-reopening-modal';
-import ConfirmSubmitModal from 'frontend-lpdc/components/public-services/confirm-submit-modal';
-import UnsavedChangesModal from 'frontend-lpdc/components/public-services/details/unsaved-changes-modal';
+import ConfirmDeletionModal from 'frontend-lpdc/components/confirm-deletion-modal';
+import ConfirmReopeningModal from 'frontend-lpdc/components/confirm-reopening-modal';
+import ConfirmSubmitModal from 'frontend-lpdc/components/confirm-submit-modal';
+import UnsavedChangesModal from 'frontend-lpdc/components/unsaved-changes-modal';
 import { FORM, RDF } from 'frontend-lpdc/rdf/namespaces';
 import { loadPublicServiceDetails } from 'frontend-lpdc/utils/public-services';
 
@@ -33,7 +33,7 @@ const SERVICE_STATUS = {
     'http://lblod.data.gift/concepts/79a52da4-f491-4e2f-9374-89a13cde8ecd',
 };
 
-export default class PublicServicesDetailsPageComponent extends Component {
+export default class DetailsPageComponent extends Component {
   @service modals;
   @service router;
   @service store;

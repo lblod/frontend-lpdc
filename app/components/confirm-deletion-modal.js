@@ -2,16 +2,16 @@ import { action } from '@ember/object';
 import Component from '@glimmer/component';
 import { dropTask } from 'ember-concurrency';
 
-export default class PublicServicesConfirmSubmitModalComponent extends Component {
+export default class ConfirmDeletionModalComponent extends Component {
   @dropTask
-  *submit() {
-    yield this.args.data.submitHandler();
+  *delete() {
+    yield this.args.data.deleteHandler();
     this.args.close();
   }
 
   @action
   close() {
-    if (this.submit.isIdle) {
+    if (this.delete.isIdle) {
       this.args.close();
     }
   }

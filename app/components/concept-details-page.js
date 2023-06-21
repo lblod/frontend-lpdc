@@ -12,7 +12,7 @@ const FORM_GRAPHS = {
   sourceGraph: new NamedNode(`http://data.lblod.info/sourcegraph`),
 };
 
-export default class PublicServicesDetailsPageComponent extends Component {
+export default class DetailsPageComponent extends Component {
   @service router;
   @service store;
 

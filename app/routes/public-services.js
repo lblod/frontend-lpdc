@@ -2,9 +2,9 @@ import { warn } from '@ember/debug';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { registerFormFields } from '@lblod/ember-submission-form-fields';
-import TagSelector from 'frontend-lpdc/components/public-services/rdf-form-fields/tag-selector';
 import ConceptSelector from 'frontend-lpdc/components/rdf-form-fields/concept-selector';
 import RichTextEditor from 'frontend-lpdc/components/rdf-form-fields/rich-text-editor';
+import TagSelector from 'frontend-lpdc/components/rdf-form-fields/tag-selector';
 
 export default class PublicServicesRoute extends Route {
   @service currentSession;

@@ -141,17 +141,17 @@
           {{moment-format publicService.modified "DD-MM-YYYY - HH:mm"}}
         </td>
         {{!-- <td>
-             <PublicServices::TranslationStatus
+             <TranslationStatus
              @id={{publicService.translationStatus.id}}
              >
              {{publicService.translationStatus.label}}
-             </PublicServices::TranslationStatus>
+             </TranslationStatus>
              </td> --}}
         <td>
           {{#if publicService.status.uri}}
-            <PublicServices::Status @uri={{publicService.status.uri}}>
+            <Status @uri={{publicService.status.uri}}>
               {{publicService.status.label}}
-            </PublicServices::Status>
+            </Status>
           {{else}}
             –
           {{/if}}

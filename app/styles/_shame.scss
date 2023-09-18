@@ -23,3 +23,7 @@
 .u-flex-grow {
   flex-grow: 1;
 }
+
+div.au-u-margin-bottom-small:has(.address-form) {
+  width: 100% !important;
+}

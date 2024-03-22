@@ -1,227 +1,45 @@
 {{page-title @model.publicService.name}}
 
-<AuToolbar @size="large" as |Group|>
-  <Group>
-    <AuHeading @skin="2">
-      {{! template-lint-disable no-triple-curlies}}
-      {{{@model.publicService.nameNl}}}
-    </AuHeading>
-  </Group>
-</AuToolbar>
-
-<AuToolbar
-  @border="bottom"
-  @size="medium"
-  class="au-u-flex au-u-flex--vertical-start"
-  as |Group|
->
-  <Group class="au-u-margin-bottom-small">
-    <div>
-      <DataList as |Data|>
-        <Data>
-          <:title>IPDC Concept ID</:title>
-          <:content>
-            {{#if @model.publicService.concept.id}}
-              <AuLink
-                @route="public-services.concept-details"
-                @model={{@model.publicService.concept.id}}
-                target="blank"
-              >
-                {{@model.publicService.concept.productId}}
-              </AuLink>
-            {{else if this.canLinkConcept}}
-              <AuLink
-                @icon="link"
-                @route="public-services.link-concept"
-                @model={{@model.publicService.id}}
-              >
-                Koppelen
-              </AuLink>
-            {{else}}
-              <ValueWithPlaceholder @value={{false}} />
-            {{/if}}
-            {{#if this.canUnlinkConcept}}
-              <AuButton
-                @alert={{true}}
-                @icon="link-broken"
-                @skin="link"
-                {{on "click" this.showUnlinkWarning}}
-              >
-                Loskoppelen
-              </AuButton>
-            {{/if}}
-          </:content>
-        </Data>
-        <Data>
-          <:title>Product type</:title>
-          <:content>
-            <ValueWithPlaceholder @value={{@model.publicService.type.label}} />
-          </:content>
-        </Data>
-        <Data>
-          <:title>Aangemaakt op</:title>
-          <:content>
-            <ValueWithPlaceholder @value={{@model.publicService.dateCreated}}>
-              <:value as |value|>
-                {{moment-format value "DD-MM-YYYY - HH:mm"}}
-              </:value>
-            </ValueWithPlaceholder>
-          </:content>
-        </Data>
-        <Data>
-          <:title>Bewerkt op</:title>
-          <:content>
-            <ValueWithPlaceholder @value={{@model.publicService.dateModified}}>
-              <:value as |value|>
-                {{moment-format value "DD-MM-YYYY - HH:mm"}}
-              </:value>
-            </ValueWithPlaceholder>
-          </:content>
-        </Data>
-        <Data>
-          <:title>Geldig vanaf</:title>
-          <:content>
-            <ValueWithPlaceholder @value={{@model.publicService.startDate}}>
-              <:value as |value|>
-                {{moment-format value "DD-MM-YYYY"}}
-              </:value>
-            </ValueWithPlaceholder>
-          </:content>
-        </Data>
-        <Data>
-          <:title>Geldig tot</:title>
-          <:content>
-            <ValueWithPlaceholder @value={{@model.publicService.endDate}}>
-              <:value as |value|>
-                {{moment-format value "DD-MM-YYYY"}}
-              </:value>
-            </ValueWithPlaceholder>
-          </:content>
-        </Data>
-        <Data>
-          <:title>Status document</:title>
-          <:content>
-            {{#if @model.publicService.status.label}}
-              <Status @uri={{@model.publicService.status.uri}}>
-                {{@model.publicService.status.label}}
-              </Status>
-            {{else}}
-              –
-            {{/if}}
-          </:content>
-        </Data>
-        {{#if (and this.publicServiceHasConcept this.isNewlyCreatedPublicService)}}
-          <Data>
-            <:title>Versie</:title>
-            <:content>
-              {{this.conceptFormalInformalVersion}}
-            </:content>
-          </Data>
-        {{/if}}
-      </DataList>
-      {{#if this.shouldShowUnlinkWarning}}
-        <AuAlert
-          @title="Instantie loskoppelen van het concept"
-          @icon="circle-info"
-          @skin="error"
-          @size="small"
-          @closable={{this.unlinkConcept.isIdle}}
-          @onClose={{this.hideUnlinkWarning}}
-          class="au-u-margin-top au-u-max-width-small"
-        >
-          <p class="au-u-margin-top-tiny">
-            De link met het concept waarop dit product is gebaseerd, wordt
-            opgeheven. Hierdoor kan je mogelijke wijzigingen aan het concept
-            niet langer opvolgen. Je kan een instantie op elk moment opnieuw
-            koppelen aan een concept.
-          </p>
-          <AuButtonGroup class="au-u-margin-top-small">
-            <AuButton
-              @icon="link-broken"
-              @alert={{true}}
-              @loading={{this.unlinkConcept.isRunning}}
-              @loadingMessage="Aan het loskoppelen"
-              {{on "click" (perform this.unlinkConcept)}}
-            >Loskoppelen
-            </AuButton>
-            <AuButton
-              @skin="secondary"
-              @disabled={{this.unlinkConcept.isRunning}}
-              {{on "click" this.hideUnlinkWarning}}
-            >Annuleren
-            </AuButton>
-          </AuButtonGroup>
-        </AuAlert>
-      {{/if}}
-    </div>
-  </Group>
-
-  {{#if this.shouldShowContentGeneratedWarning}}
-    <Group>
-      <GeneratedContentWarning
-        @languageVersion={{@model.languageVersionOfConcept}}
-        @conceptName={{@model.publicService.concept.nameNl}}
-        @conceptProductId={{@model.publicService.concept.productId}}/>
-    </Group>
-  {{/if}}
-
-  {{#if @model.publicService.reviewStatus}}
-    <Group class="w-100">
-      <AuAlert
-        @title={{if this.isConceptUpdatedStatus "Herziening nodig" "Concept gearchiveerd"}}
-        @skin={{if this.isConceptUpdatedStatus "warning" "error"}}
-        @icon="alert-triangle"
-        @size="small"
-        class="au-u-margin-bottom-none"
-      >
-        <p>
-          {{#if this.isConceptUpdatedStatus}}
-            Het concept waarop dit product is gebaseerd, werd aangepast. Gelieve
-            na te kijken of je deze versie ook wil aanpassen.
-          {{else}}
-            Het concept waarop dit product is gebaseerd, werd gearchiveerd.
-            Gelieve na te kijken of je deze versie wil behouden, aanpassen of
-            verwijderen.
-          {{/if}}
-        </p>
-        <div class="au-u-margin-top-small">
-          <AuButtonGroup>
-            {{#if @model.publicService.concept}}
-              <AuLinkExternal
-                href={{this.ipdcConceptCompareLink}}
-                @skin="button"
-                @icon="eye"
-                target="blank"
-              >
-                Concept bekijken
-              </AuLinkExternal>
-            {{/if}}
-            <AuButton
-              @skin="secondary"
-              @icon="check"
-              @disabled={{this.markAsReviewed.isRunning}}
-              @loading={{this.markAsReviewed.isRunning}}
-              @loadingMessage="Aan het verwerken"
-              {{on "click" (perform this.markAsReviewed)}}
-            >
-              Geen aanpassingen nodig
-            </AuButton>
-          </AuButtonGroup>
-        </div>
-      </AuAlert>
-    </Group>
-  {{/if}}
-</AuToolbar>
+<DetailsHeader
+  @publicService={{@model.publicService}}
+  @languageVersionOfConcept={{@model.languageVersionOfConcept}}
+  @onUnlinkConcept={{perform this.unlinkConcept}}
+  @onMarkAsReviewed={{perform this.markAsReviewed}}
+/>
 
 <AuTabs as |Tab|>
   <Tab>
-    <AuLink @route="public-services.details.content">Inhoud</AuLink>
+    <AuLink class={{if this.isInhoudTabActive "active"}} {{on "click" (fn this.changeTab "inhoud")}} >Inhoud</AuLink>
   </Tab>
   <Tab>
-    <AuLink @route="public-services.details.properties">Eigenschappen</AuLink>
+    <AuLink class={{if this.isEigenschappenTabActive "active"}} {{on "click" (fn this.changeTab "eigenschappen")}}>
+      Eigenschappen
+    </AuLink>
   </Tab>
 </AuTabs>
 
-<AuBodyContainer>
-  {{outlet}}
-</AuBodyContainer>
+{{#if this.isInhoudTabActive}}
+  <DetailsPage
+    @publicService={{@model.publicService}}
+    {{! We use `this.model` here since the value is used in the willDestroy method, and the `@model` version is undefined at that point.
+        More information: https://github.com/emberjs/ember.js/issues/18987
+    }}
+    @readOnly={{this.model.readOnly}}
+    @formId="inhoud"
+    @form={{this.form.form}}
+    @formStore={{this.form.formStore}}
+    @tabName="au-c-rdf-form--content"
+  />
+{{else}}
+  <DetailsPage
+    @publicService={{@model.publicService}}
+    {{! We use `this.model` here since the value is used in the willDestroy method, and the `@model` version is undefined at that point.
+        More information: https://github.com/emberjs/ember.js/issues/18987
+    }}
+    @readOnly={{this.model.readOnly}}
+    @formId="eigenschappen"
+    @form={{this.form.form}}
+    @formStore={{this.form.formStore}}
+    @tabName="au-c-rdf-form--properties"
+  />
+{{/if}}

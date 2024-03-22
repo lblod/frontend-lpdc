@@ -1,92 +1,46 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { dropTask } from 'ember-concurrency';
-import {
-  hasConcept,
-  isConceptUpdated,
-} from 'frontend-lpdc/models/public-service';
+import { dropTask, task } from 'ember-concurrency';
 import { inject as service } from '@ember/service';
-import ENV from 'frontend-lpdc/config/environment';
+import { ForkingStore } from '@lblod/ember-submission-form-fields';
+import { FORM, RDF } from 'frontend-lpdc/rdf/namespaces';
+import { NamedNode } from 'rdflib';
+
+const FORM_GRAPHS = {
+  formGraph: new NamedNode('http://data.lblod.info/form'),
+  metaGraph: new NamedNode('http://data.lblod.info/metagraph'),
+  sourceGraph: new NamedNode(`http://data.lblod.info/sourcegraph`),
+};
 
 export default class PublicServicesDetailsController extends Controller {
   @service store;
   @service('public-service') publicServiceService;
 
-  @tracked shouldShowUnlinkWarning = false;
+  @tracked formId = 'inhoud';
+  // @tracked form = this.model.initialForm;
 
-  get isConceptUpdatedStatus() {
-    return isConceptUpdated(this.model.publicService.reviewStatus);
+  get form() {
+    console.log(this.loadForm.state);
+    if (this.loadForm.isFinished) {
+      return this.model.loadPublicServices.value;
+    }
+
+    return this.model.loadedPublicServices || [];
   }
 
-  get canLinkConcept() {
-    const { publicService } = this.model;
-
-    return !hasConcept(publicService) && !publicService.isSent;
+  get isInhoudTabActive() {
+    return this.formId === 'inhoud';
   }
 
-  get canUnlinkConcept() {
-    const { publicService } = this.model;
-    return (
-      hasConcept(publicService) &&
-      !publicService.isSent &&
-      !this.shouldShowUnlinkWarning
-    );
-  }
-
-  get conceptFormalInformalVersion() {
-    return this.model.languageVersionOfConcept.includes('informal')
-      ? 'je-versie'
-      : 'u-versie';
-  }
-
-  get shouldShowContentGeneratedWarning() {
-    return (
-      this.isNewlyCreatedPublicService &&
-      this.publicServiceHasConcept &&
-      this.isConceptLanguageVersionGenerated
-    );
-  }
-
-  get publicServiceHasConcept() {
-    return !!this.model.publicService.concept.id;
-  }
-
-  get isConceptLanguageVersionGenerated() {
-    return this.model.languageVersionOfConcept.includes('generated');
-  }
-
-  get isNewlyCreatedPublicService() {
-    const dateCreated = this.model.publicService.dateCreated.toString();
-    const dateModified = this.model.publicService.dateModified.toString();
-    return dateCreated === dateModified;
-  }
-
-  get ipdcConceptCompareLink() {
-    const productId = this.model.publicService.concept.get('productId');
-    const languageVersion = this.model.publicServiceLanguageVersion.includes(
-      'informal'
-    )
-      ? 'nl/informeel'
-      : 'nl';
-
-    const latestSnapshot = this.getUuidFromUri(
-      this.model.publicService.concept.get('hasLatestFunctionalChange')
-    );
-    const publicServiceSnapshot = this.getUuidFromUri(
-      this.model.publicService.versionedSource
-    );
-    return `${ENV.ipdcUrl}/${languageVersion}/concept/${productId}/revisie/vergelijk?revisie1=${publicServiceSnapshot}&revisie2=${latestSnapshot}`;
+  get isEigenschappenTabActive() {
+    return this.formId === 'eigenschappen';
   }
 
   @action
-  showUnlinkWarning() {
-    this.shouldShowUnlinkWarning = true;
-  }
-
-  @action
-  hideUnlinkWarning() {
-    this.shouldShowUnlinkWarning = false;
+  changeTab(formId) {
+    this.formId = formId;
+    this.loadForm.perform();
   }
 
   @dropTask
@@ -100,11 +54,37 @@ export default class PublicServicesDetailsController extends Controller {
   *unlinkConcept() {
     const { publicService } = this.model;
     yield this.publicServiceService.unlinkConcept(publicService);
-    this.hideUnlinkWarning();
   }
 
-  getUuidFromUri(uri) {
-    const segmentedUri = uri.split('/');
-    return segmentedUri[segmentedUri.length - 1];
+  @task
+  *loadForm() {
+    const {
+      form: formTtl,
+      meta: metaTtl,
+      source: sourceTtl,
+    } = yield this.publicServiceService.getPublicServiceForm(
+      this.model.publicService.uri,
+      this.formId
+    );
+
+    let formStore = new ForkingStore();
+    formStore.parse(formTtl, FORM_GRAPHS.formGraph, 'text/turtle');
+    formStore.parse(metaTtl, FORM_GRAPHS.metaGraph, 'text/turtle');
+    formStore.parse(sourceTtl, FORM_GRAPHS.sourceGraph, 'text/turtle');
+
+    let form = formStore.any(
+      undefined,
+      RDF('type'),
+      FORM('Form'),
+      FORM_GRAPHS.formGraph
+    );
+
+    // if (!this.model.readOnly) {
+    //   formStore.registerObserver(this.updateFormDirtyState, this.id);
+    // }
+    this.form = {
+      form,
+      formStore,
+    };
   }
 }

@@ -119,7 +119,6 @@ export default class PublicServicesAddController extends Controller {
 
   @dropTask
   *createPublicService(conceptUuid) {
-    console.log(conceptUuid);
     const conceptId = conceptUuid
       ? (yield this.conceptService.loadConceptDetails(conceptUuid)).uri
       : undefined;

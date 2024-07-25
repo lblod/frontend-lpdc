@@ -31,10 +31,16 @@
     "test:ember": "ember test"
   },
   "overrides": {
-    "@embroider/macros": "^1.10.0",
+    "@embroider/addon-shim": "~1.9.0",
+    "@embroider/macros": "~1.16.0",
     "@embroider/util": "^1.0.0",
+    "babel-plugin-ember-template-compilation": "2.2.1",
     "ember-cli-babel": "$ember-cli-babel",
     "moment": "^2.29.1"
+  },
+  "overridesNotes": {
+    "addon-shim and macros": "there is an issue with the latest release that requires us to pin to the previous version: https://github.com/embroider-build/embroider/issues/2440.",
+    "babel-plugin-ember-template-compilation": "this fixes an issue with ember-template-imports v3, we can remove the override when we update to Appuniversum v3: https://github.com/appuniversum/ember-appuniversum/pull/492"
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^2.6.0",
@@ -47,7 +53,7 @@
     "@glimmer/tracking": "^1.1.2",
     "@lblod/ember-acmidm-login": "2.0.0-beta.1",
     "@lblod/ember-mock-login": "^0.7.0",
-    "@lblod/ember-rdfa-editor": "^3.5.0",
+    "@lblod/ember-rdfa-editor": "^9.14.1",
     "@lblod/ember-submission-form-fields": "^2.14.1",
     "@lblod/submission-form-helpers": "^2.2.0",
     "@sentry/ember": "^7.54.0",

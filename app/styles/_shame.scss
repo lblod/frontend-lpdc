@@ -58,3 +58,130 @@ div.au-u-margin-bottom-small:has(.address-form) {
     top: 0;
   }
 }
+
+/* stylelint-disable no-descending-specificity */
+// Temporary au-c-content styles until we are an Appuniversum 3.5+ which should include these as well
+.au-c-content {
+  ol:not(.au-c-list-horizontal) {
+    list-style: decimal;
+    margin-left: $au-unit;
+  }
+
+  ol.au-c-list {
+    list-style: none;
+    margin-left: 0;
+  }
+
+  // @TODO: list-horizontal needs to be refactored to the list component.
+  ol:not(.au-c-list-horizontal) li + li {
+    margin-top: $au-unit-tiny;
+  }
+
+  ol.au-c-list li + li {
+    margin-top: 0;
+  }
+
+  // Table styles are based on the <AuTable> component styles
+  table:not(.au-c-table) {
+    @include au-font-size(var(--au-h6));
+
+    display: table;
+    position: relative;
+    width: 100%;
+    border-collapse: collapse;
+    outline: 0.1rem solid var(--au-gray-300); // border doesn't have the intended effect
+
+    thead {
+      position: relative;
+      width: 100%;
+      z-index: var(--au-z-index-alpha);
+      border: 0;
+
+      @include au-font-size(var(--au-base), 1.2);
+    }
+
+    th,
+    td {
+      max-width: 55ch;
+      position: relative;
+      text-align: start;
+    }
+
+    th + th,
+    th + td,
+    td + th,
+    td + td {
+      &::after {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 0.1rem;
+        left: -0.1rem;
+        top: 0;
+        height: 100%;
+        border-left: 0.1rem dotted var(--au-gray-300);
+      }
+    }
+  }
+
+  thead:not(.au-c-table__header) {
+    background-color: var(--au-white);
+
+    th {
+      font-weight: var(--au-medium);
+      text-align: left;
+      white-space: nowrap;
+      padding: $au-unit-small;
+      border-radius: 0;
+      border: 0;
+      outline: 0;
+      background-color: var(--au-white);
+      box-shadow: inset 0 -0.2rem 0 0 var(--au-gray-300);
+    }
+  }
+
+  tbody:not(.au-c-table__body) {
+    tr {
+      border-bottom: 0.1rem solid var(--au-gray-300);
+      background-color: var(--au-white);
+    }
+
+    td,
+    th {
+      padding: $au-unit-small;
+    }
+  }
+
+  tfoot:not(.au-c-table__footer) {
+    tr + tr {
+      border-top: 0.1rem solid var(--au-gray-300);
+    }
+
+    tr:first-child {
+      border-top: 0.2rem solid var(--au-gray-300);
+    }
+
+    tr {
+      background-color: var(--au-white);
+    }
+
+    td,
+    th {
+      @include au-font-size(var(--au-base));
+
+      padding: $au-unit-tiny $au-unit-small;
+    }
+  }
+
+  caption:not(.au-c-table__caption) {
+    @include au-font-size(var(--au-h5));
+
+    font-weight: var(--au-medium);
+    text-align: left;
+    padding: $au-unit-tiny $au-unit-small;
+    background-color: var(--au-gray-100);
+    border-bottom: 0.1rem solid var(--au-gray-300);
+  }
+}
+
+/* stylelint-enable no-descending-specificity */

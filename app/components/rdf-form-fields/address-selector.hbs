@@ -1,56 +1,36 @@
 <div class="au-o-grid au-o-grid--tiny address-form">
   <div class="au-o-grid__item au-u-margin-bottom-tiny">
     <AuLabel for={{concat "municipality" this.id}}>Gemeente</AuLabel>
-    {{#if this.isMunicipalityMerger}}
-      <AuInput
-        id={{concat "municipality" this.id}}
-        @width="block"
-        @value={{this.municipality}}
-        @disabled={{@show}}
-        {{on "input" this.updateMunicipality}}
-      />
-    {{else}}
-      <PowerSelect
-        @noMatchesMessage="Geen resultaten"
-        @selected={{this.municipality}}
-        @onChange={{this.updateMunicipality}}
-        @searchEnabled={{true}}
-        @search={{perform this.searchMunicipalities}}
-        @allowClear={{true}}
-        @disabled={{@show}}
-        @triggerId={{concat "municipality" this.id}}
-        as |municipality|
-      >
-        {{municipality}}
-      </PowerSelect>
-    {{/if}}
+    <PowerSelect
+      @noMatchesMessage="Geen resultaten"
+      @selected={{this.municipality}}
+      @onChange={{this.updateMunicipality}}
+      @searchEnabled={{true}}
+      @search={{perform this.searchMunicipalities}}
+      @allowClear={{true}}
+      @disabled={{@show}}
+      @triggerId={{concat "municipality" this.id}}
+      as |municipality|
+    >
+      {{municipality}}
+    </PowerSelect>
   </div>
 
   <div class="au-o-grid__item au-u-margin-bottom-tiny playwright-select-trick">
     <AuLabel for={{concat "street" this.id}}>Straat</AuLabel>
-    {{#if this.isMunicipalityMerger}}
-      <AuInput
-        id={{concat "street" this.id}}
-        @width="block"
-        @disabled={{not this.canUpdateStreet}}
-        @value={{this.street}}
-        {{on "input" this.updateStreet}}
-      />
-    {{else}}
-      <PowerSelect
-        @noMatchesMessage="Geen resultaten"
-        @selected={{this.street}}
-        @onChange={{this.updateStreet}}
-        @searchEnabled={{true}}
-        @search={{perform this.searchStreets}}
-        @allowClear={{true}}
-        @disabled={{not this.canUpdateStreet}}
-        @triggerId={{concat "street" this.id}}
-        as |street|
-      >
-        {{street}}
-      </PowerSelect>
-    {{/if}}
+    <PowerSelect
+      @noMatchesMessage="Geen resultaten"
+      @selected={{this.street}}
+      @onChange={{this.updateStreet}}
+      @searchEnabled={{true}}
+      @search={{perform this.searchStreets}}
+      @allowClear={{true}}
+      @disabled={{not this.canUpdateStreet}}
+      @triggerId={{concat "street" this.id}}
+      as |street|
+    >
+      {{street}}
+    </PowerSelect>
   </div>
 
   <div class="au-o-grid__item au-u-1-2 au-u-margin-bottom-tiny">
@@ -74,31 +54,24 @@
   </div>
   {{#unless @show}}
     <div class="au-o-grid__item">
-      {{#if this.isMunicipalityMerger}}
-        <AuAlert @skin="info" @icon="pencil">
-          <p>Bij instanties bestemd voor de fusiegemeente staat de
-            adresvalidatie uit. Zo kan je de nieuwe adresgegevens al invullen.</p>
-        </AuAlert>
+      {{#if (and this.canValidateAddress this.validateAddress.isRunning)}}
+        <LoadingAlert @title="Valideren van adres" @skin="info" />
+      {{else if (and this.canValidateAddress this.adresMatchFound)}}
+        <AuAlert @title="Adres gevonden" @skin="success" @icon="check" />
+      {{else if this.canValidateAddress}}
+        <AuAlert
+          @title="Adres niet gevonden"
+          @skin="warning"
+          @icon="alert-triangle"
+        />
       {{else}}
-        {{#if (and this.canValidateAddress this.validateAddress.isRunning)}}
-          <LoadingAlert @title="Valideren van adres" @skin="info" />
-        {{else if (and this.canValidateAddress this.adresMatchFound)}}
-          <AuAlert @title="Adres gevonden" @skin="success" @icon="check" />
-        {{else if this.canValidateAddress}}
-          <AuAlert
-            @title="Adres niet gevonden"
-            @skin="warning"
-            @icon="alert-triangle"
-          />
-        {{else}}
-          <AuAlert
-            @title="Niet genoeg info om adres te valideren"
-            @skin="info"
-            @icon="pencil"
-          >
-            <p>Gelieve gemeente, straat en huisnummer in te vullen</p>
-          </AuAlert>
-        {{/if}}
+        <AuAlert
+          @title="Niet genoeg info om adres te valideren"
+          @skin="info"
+          @icon="pencil"
+        >
+          <p>Gelieve gemeente, straat en huisnummer in te vullen</p>
+        </AuAlert>
       {{/if}}
     </div>
   {{/unless}}

@@ -1,3 +1,7 @@
+## v0.19.0 (2024-11-28)
+#### :rocket: Enhancement
+* [#16](https://github.com/lblod/frontend-lpdc/pull/16) [LPDC-1318] Enable address validation for product instances labelled for merger ([@mirdono](https://github.com/mirdono))
+
 ## v0.18.4 (2024-08-08)
 #### :bug: Bug Fix
 * [#15](https://github.com/lblod/frontend-lpdc/pull/15) [LPDC-1276] Fix a "three-way-compare" link styling issue ([@Windvis](https://github.com/Windvis))

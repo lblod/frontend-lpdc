@@ -1,16 +1,6 @@
 <div class="au-o-grid au-o-grid--tiny address-form">
   <div class="au-o-grid__item au-u-margin-bottom-tiny">
     <AuLabel for={{concat "municipality" this.id}}>Gemeente</AuLabel>
-  {{#if this.isMunicipalityMerger}}
-    <AuInput
-      id={{concat "municipality" this.id}}
-      @width="block"
-      @value={{this.municipality}}
-      @disabled={{@show}}
-      {{on "input" this.updateMunicipality}}
-    >
-    </AuInput>
-  {{else}}
     <PowerSelect
       @noMatchesMessage="Geen resultaten"
       @selected={{this.municipality}}
@@ -24,21 +14,10 @@
     >
       {{municipality}}
     </PowerSelect>
-  {{/if}}
   </div>
 
   <div class="au-o-grid__item au-u-margin-bottom-tiny playwright-select-trick">
     <AuLabel for={{concat "street" this.id}}>Straat</AuLabel>
-  {{#if this.isMunicipalityMerger}}
-    <AuInput
-      id={{concat "street" this.id}}
-      @width="block"
-      @disabled={{not this.canUpdateStreet}}
-      @value={{this.street}}
-      {{on "input" this.updateStreet}}
-    >
-    </AuInput>
-  {{else}}
     <PowerSelect
       @noMatchesMessage="Geen resultaten"
       @selected={{this.street}}
@@ -52,7 +31,6 @@
     >
       {{street}}
     </PowerSelect>
-  {{/if}}
   </div>
 
   <div class="au-o-grid__item au-u-1-2 au-u-margin-bottom-tiny">
@@ -74,24 +52,12 @@
       {{on "input" this.updateBusNumber}}
     />
   </div>
-  {{#unless @show }}
+  {{#unless @show}}
     <div class="au-o-grid__item">
-  {{#if this.isMunicipalityMerger}}
-    <AuAlert
-      @skin="info"
-      @icon="pencil"
-    >
-      <p>Bij instanties bestemd voor de fusiegemeente staat de adresvalidatie uit. Zo kan je de nieuwe adresgegevens al invullen.</p>
-    </AuAlert>
-  {{else}}
       {{#if (and this.canValidateAddress this.validateAddress.isRunning)}}
         <LoadingAlert @title="Valideren van adres" @skin="info" />
       {{else if (and this.canValidateAddress this.adresMatchFound)}}
-        <AuAlert
-          @title="Adres gevonden"
-          @skin="success"
-          @icon="check"
-        />
+        <AuAlert @title="Adres gevonden" @skin="success" @icon="check" />
       {{else if this.canValidateAddress}}
         <AuAlert
           @title="Adres niet gevonden"
@@ -107,8 +73,6 @@
           <p>Gelieve gemeente, straat en huisnummer in te vullen</p>
         </AuAlert>
       {{/if}}
-  {{/if}}
     </div>
-
   {{/unless}}
 </div>

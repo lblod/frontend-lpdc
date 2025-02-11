@@ -8,7 +8,7 @@ import {
 } from '@lblod/submission-form-helpers';
 import InputFieldComponent from '@lblod/ember-submission-form-fields/components/rdf-input-fields/input-field';
 import { restartableTask, timeout } from 'ember-concurrency';
-import { NamedNode, namedNode } from 'rdflib';
+import { NamedNode } from 'rdflib';
 
 function byLabel(a, b) {
   const textA = a.label.toUpperCase();
@@ -36,7 +36,7 @@ export default class LpdcRdfInputFieldsConceptSchemeMultiSelectorComponent exten
   loadOptions() {
     const metaGraph = this.args.graphs.metaGraph;
     const fieldOptions = this.args.field.options;
-    const conceptScheme = new namedNode(fieldOptions.conceptScheme);
+    const conceptScheme = new NamedNode(fieldOptions.conceptScheme);
 
     /**
      * NOTE: Most forms are now implemented to have a default "true" behavior

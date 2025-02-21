@@ -29,7 +29,7 @@
           @onChange={{this.handleYourEuropeFilterChange}}>
           Your Europe
         </AuCheckbox>
-        {{#if this.municipalityHasForMunicipalityMergerInstances}}
+        {{#if (and (is-feature-enabled "fusies") this.municipalityHasForMunicipalityMergerInstances)}}
           <AuCheckbox
             @checked={{this.forMunicipalityMerger}}
             @onChange={{this.handleForMunicipalityMergerFilterChange}}>
@@ -181,7 +181,7 @@
               >
                 {{publicService.nameNlOrGeenTitel}}
               </AuLink>
-              {{#if publicService.forMunicipalityMerger}}
+              {{#if (and (is-feature-enabled "fusies") publicService.forMunicipalityMerger)}}
                 <AuPill @skin="success" @size="small" @icon="users-four-of-four">
                   fusie
                 </AuPill>

@@ -33,7 +33,7 @@ module.exports = function (environment) {
     },
     features: {
       // 'feature-name': '{{FEATURE_ENV_VAR_NAME}}',
-      fusies: false,
+      fusies: '{{FUSIES}}',
     },
     'ember-plausible': {
       enabled: false,

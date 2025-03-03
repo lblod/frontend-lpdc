@@ -15,7 +15,7 @@
           this.close}}>
           {{instance.nameNl}}
         </AuLink>
-        gewijzigd op ({{moment-format instance.dateModified "DD-MM-YYYY - HH:mm"}})
+        gewijzigd op {{moment-format instance.dateModified "DD-MM-YYYY - HH:mm"}}
       </p>
       {{/each}}
       <AuButton class="au-u-margin-top au-u-padding-none" @skin="link" @disabled={{this.createNewInstance.isRunning}}

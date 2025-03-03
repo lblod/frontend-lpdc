@@ -58,7 +58,11 @@ export default class PublicServicesAddController extends AbstractConceptOverview
         },
       });
     } else {
-      this.createPublicService.perform(conceptId);
+      this.router.transitionTo('public-services.concept-details', conceptId, {
+        queryParams: {
+          preview: true,
+        },
+      });
     }
   }
 }

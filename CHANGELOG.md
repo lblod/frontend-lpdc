@@ -1,3 +1,9 @@
+## v0.19.1 (2025-03-03)
+
+#### :rocket: Enhancement
+* [#18](https://github.com/lblod/frontend-lpdc/pull/18) feature: introduce fusies feature flag to show/hide fusies ([@wolfderechter](https://github.com/wolfderechter))
+* [#17](https://github.com/lblod/frontend-lpdc/pull/17) Refactor: use correct NamedNode constructor ([@mirdono](https://github.com/mirdono))
+
 ## v0.19.0 (2024-11-28)
 #### :rocket: Enhancement
 * [#16](https://github.com/lblod/frontend-lpdc/pull/16) [LPDC-1318] Enable address validation for product instances labelled for merger ([@mirdono](https://github.com/mirdono))

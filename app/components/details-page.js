@@ -21,6 +21,7 @@ import ENV from 'frontend-lpdc/config/environment';
 import { isConceptUpdated } from 'frontend-lpdc/models/public-service';
 import FullyTakeConceptSnapshotOverModalComponent from 'frontend-lpdc/components/fully-take-concept-snapshot-over';
 import ConfirmConvertToInformalModalComponent from 'frontend-lpdc/components/confirm-convert-to-informal-modal';
+import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
 
 const FORM_GRAPHS = {
   formGraph: new NamedNode('http://data.lblod.info/form'),
@@ -310,26 +311,41 @@ export default class DetailsPageComponent extends Component {
 
   @action
   async copyPublicService() {
-    await this.withinUnsavedChangesModal(() => {
-      this.modals.open(ConfirmCopyModal, {
-        copyHandler: async (forMunicipalityMerger) => {
-          const copiedPublicServiceUuid =
-            await this.publicServiceService.copyPublicService(
-              this.args.publicService,
-              forMunicipalityMerger
+    if (isFeatureEnabled('fusies')) {
+      await this.withinUnsavedChangesModal(() => {
+        this.modals.open(ConfirmCopyModal, {
+          copyHandler: async (forMunicipalityMerger) => {
+            const copiedPublicServiceUuid =
+              await this.publicServiceService.copyPublicService(
+                this.args.publicService,
+                forMunicipalityMerger
+              );
+            this.toaster.success(
+              'kopiëren gelukt',
+              'Je kan nu de kopie bewerken.',
+              { timeOut: 10000 }
             );
-          this.toaster.success(
-            'kopiëren gelukt',
-            'Je kan nu de kopie bewerken.',
-            { timeOut: 10000 }
-          );
-          this.router.transitionTo(
-            'public-services.details',
-            copiedPublicServiceUuid
-          );
-        },
+            this.router.transitionTo(
+              'public-services.details',
+              copiedPublicServiceUuid
+            );
+          },
+        });
       });
-    });
+    } else {
+      const copiedPublicServiceUuid =
+        await this.publicServiceService.copyPublicService(
+          this.args.publicService,
+          false
+        );
+      this.toaster.success('kopiëren gelukt', 'Je kan nu de kopie bewerken.', {
+        timeOut: 10000,
+      });
+      this.router.transitionTo(
+        'public-services.details',
+        copiedPublicServiceUuid
+      );
+    }
   }
 
   @action

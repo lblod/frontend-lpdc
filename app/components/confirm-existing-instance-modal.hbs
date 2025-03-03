@@ -11,8 +11,8 @@
       <span class="au-u-h4 au-u-medium">Bestaande instanties</span>
       {{#each @data.existingInstances as |instance|}}
       <p>
-        <AuLink class="au-u-margin-right" @route="public-services.details" @model={{instance.id}} @query={{hash
-          preview=true}} {{on "click" this.close}}>
+        <AuLink class="au-u-margin-right" @route="public-services.details" @model={{instance.id}} {{on "click"
+          this.close}}>
           {{instance.nameNl}}
         </AuLink>
         gewijzigd op ({{moment-format instance.dateModified "DD-MM-YYYY - HH:mm"}})

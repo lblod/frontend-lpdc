@@ -26,9 +26,7 @@
     </div>
   </:body>
   <:footer>
-    <AuToolbar as |Group|>
-      <Group>
-      </Group>
+    <AuToolbar @reverse={{true}} as |Group|>
       <Group>
         <AuButton @skin="naked" @disabled={{this.createNewInstance.isRunning}} {{on "click" this.close}}>
           Annuleer

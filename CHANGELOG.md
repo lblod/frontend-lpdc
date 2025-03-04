@@ -1,4 +1,4 @@
-## v0.19.1 (2025-03-03)
+## v0.20.0 (2025-03-04)
 
 #### :rocket: Enhancement
 * [#18](https://github.com/lblod/frontend-lpdc/pull/18) feature: introduce fusies feature flag to show/hide fusies ([@wolfderechter](https://github.com/wolfderechter))

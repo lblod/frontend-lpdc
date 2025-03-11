@@ -197,6 +197,19 @@ export default class PublicServiceService extends Service {
     );
   }
 
+  // Used to validate BEFORE saving/updating
+  async validatePublicServiceBeforeUpdate(publicService, formData) {
+    return await this.httpRequest.put(
+      `/lpdc-management/public-services/${encodeURIComponent(
+        publicService.uri
+      )}/validate-for-update`,
+      formData,
+      {
+        'instance-version': moment(publicService.dateModified).toISOString(),
+      }
+    );
+  }
+
   async publishInstance(publicService) {
     await this.httpRequest.put(
       `/lpdc-management/public-services/${encodeURIComponent(

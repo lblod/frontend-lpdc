@@ -234,10 +234,16 @@ export default class DetailsPageComponent extends Component {
       'application/n-triples'
     );
 
-    yield this.publicServiceService.updatePublicService(
-      publicService,
-      serializedData
-    );
+    // Validate and inform user if any warnings arise
+    const errors =
+      yield this.publicServiceService.validatePublicServiceBeforeUpdate(
+        publicService,
+        serializedData
+      );
+    console.log('errors:', errors);
+    return;
+    // TODO: handle errors by showing them in a popup
+
     yield this.publicServiceService.loadPublicServiceDetails(publicService.id);
     yield this.loadForm.perform();
   }

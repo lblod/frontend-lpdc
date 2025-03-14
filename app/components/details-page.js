@@ -13,6 +13,7 @@ import ConfirmCopyModal from 'frontend-lpdc/components/confirm-copy-modal';
 import ConfirmDeletionModal from 'frontend-lpdc/components/confirm-deletion-modal';
 import ConfirmReopeningModal from 'frontend-lpdc/components/confirm-reopening-modal';
 import ConfirmSubmitModal from 'frontend-lpdc/components/confirm-submit-modal';
+import ConfirmSaveWithValidationWarningModal from 'frontend-lpdc/components/confirm-save-with-validation-warning-modal';
 import UnsavedChangesModal from 'frontend-lpdc/components/unsaved-changes-modal';
 import { FORM, RDF } from 'frontend-lpdc/rdf/namespaces';
 import ConfirmUpToDateTillModal from 'frontend-lpdc/components/confirm-up-to-date-till-modal';
@@ -241,11 +242,46 @@ export default class DetailsPageComponent extends Component {
         serializedData
       );
     console.log('errors:', errors);
-    return;
-    // TODO: handle errors by showing them in a popup
+    const blockingErrors = errors.filter((error) => error.isBlocking);
+    const nonBlockingErrors = errors.filter((error) => !error.isBlocking);
 
-    yield this.publicServiceService.loadPublicServiceDetails(publicService.id);
-    yield this.loadForm.perform();
+    if (errors.length > 0) {
+      // Handle the blocking errors
+      if (blockingErrors.length > 0) {
+        for (const blockingError of blockingErrors) {
+          this.toaster.error(blockingError.message, 'Fout', { timeOut: 30000 });
+        }
+
+        // Don't show nonblocking errors popup, when there are blocking errors left
+        return;
+      }
+
+      // Handle non-blocking errors
+      if (nonBlockingErrors.length > 0) {
+        yield this.modals.open(ConfirmSaveWithValidationWarningModal, {
+          errors: errors,
+          submitHandler: async () => {
+            await this.publicServiceService.updatePublicService(
+              publicService,
+              serializedData
+            );
+            await this.publicServiceService.loadPublicServiceDetails(
+              publicService.id
+            );
+            await this.loadForm.perform();
+          },
+        });
+      }
+    } else {
+      yield this.publicServiceService.updatePublicService(
+        publicService,
+        serializedData
+      );
+      yield this.publicServiceService.loadPublicServiceDetails(
+        publicService.id
+      );
+      yield this.loadForm.perform();
+    }
   }
 
   @dropTask

@@ -37,6 +37,7 @@ export default class DetailsPageComponent extends Component {
   @service('public-service') publicServiceService;
   @service contextService;
 
+  @tracked hasValidationErrors = false;
   @tracked hasUnsavedChanges = false;
   @tracked forceShowErrors = false;
   @tracked form;
@@ -243,6 +244,7 @@ export default class DetailsPageComponent extends Component {
     console.log('errors:', errors);
 
     if (errors.length > 0) {
+      this.hasValidationErrors = true;
       for (const blockingError of errors) {
         this.toaster.error(blockingError.message, 'Fout', { timeOut: 30000 });
       }
@@ -250,6 +252,7 @@ export default class DetailsPageComponent extends Component {
       // Don't show nonblocking errors popup, when there are blocking errors left
       return;
     } else {
+      this.hasValidationErrors = false;
       yield this.publicServiceService.updatePublicService(
         publicService,
         serializedData
@@ -270,8 +273,14 @@ export default class DetailsPageComponent extends Component {
     });
     this.forceShowErrors = !isValidForm;
 
+    // Save this form first
     if (this.hasUnsavedChanges) {
       yield this.saveSemanticForm.unlinked().perform();
+    }
+
+    // If the form has validation errors, don't show the submit popup
+    if (this.hasValidationErrors) {
+      return;
     }
 
     if (isValidForm) {

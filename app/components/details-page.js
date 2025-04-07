@@ -241,16 +241,12 @@ export default class DetailsPageComponent extends Component {
         publicService,
         serializedData
       );
-    console.log('errors:', errors);
 
     if (errors.length > 0) {
       this.hasValidationErrors = true;
-      for (const blockingError of errors) {
-        this.toaster.error(blockingError.message, 'Fout', { timeOut: 30000 });
+      for (const error of errors) {
+        this.toaster.error(error.message, 'Fout', { timeOut: 30000 });
       }
-
-      // Don't show nonblocking errors popup, when there are blocking errors left
-      return;
     } else {
       this.hasValidationErrors = false;
       yield this.publicServiceService.updatePublicService(

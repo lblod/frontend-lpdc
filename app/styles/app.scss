@@ -29,6 +29,9 @@
 @import "@appuniversum/ember-appuniversum/styles/a-plugins";
 @import "project/p-ember-promise-modals";
 
+// This file depends on variables defined in the power-select plugin styles so we load if after the plugin styles
+@import "project/c-infinite-select";
+
 // ember-rdfa-editor styles
 // TODO: `@import "ember-rdfa-editor";` imports annotation styles which are _huge_ when compiled
 // so we only import the base component styles for now.

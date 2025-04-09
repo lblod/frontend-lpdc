@@ -64,7 +64,7 @@ export default class ConceptSelector extends InputFieldComponent {
   }
 
   async loadConcepts(query = {}) {
-    let { conceptScheme, preloadAmount = 20 } = this.args.field.options;
+    let { conceptScheme, preloadAmount = 30 } = this.args.field.options;
 
     return await this.store.query('concept', {
       'filter[concept-schemes][:uri:]': conceptScheme,

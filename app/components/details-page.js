@@ -37,6 +37,7 @@ export default class DetailsPageComponent extends Component {
   @service('public-service') publicServiceService;
   @service contextService;
 
+  @tracked hasValidationErrors = false;
   @tracked hasUnsavedChanges = false;
   @tracked forceShowErrors = false;
   @tracked form;
@@ -234,12 +235,29 @@ export default class DetailsPageComponent extends Component {
       'application/n-triples'
     );
 
-    yield this.publicServiceService.updatePublicService(
-      publicService,
-      serializedData
-    );
-    yield this.publicServiceService.loadPublicServiceDetails(publicService.id);
-    yield this.loadForm.perform();
+    // Validate and inform user if any warnings arise
+    const errors =
+      yield this.publicServiceService.validatePublicServiceBeforeUpdate(
+        publicService,
+        serializedData
+      );
+
+    if (errors.length > 0) {
+      this.hasValidationErrors = true;
+      for (const error of errors) {
+        this.toaster.error(error.message, 'Fout', { timeOut: 30000 });
+      }
+    } else {
+      this.hasValidationErrors = false;
+      yield this.publicServiceService.updatePublicService(
+        publicService,
+        serializedData
+      );
+      yield this.publicServiceService.loadPublicServiceDetails(
+        publicService.id
+      );
+      yield this.loadForm.perform();
+    }
   }
 
   @dropTask
@@ -251,8 +269,14 @@ export default class DetailsPageComponent extends Component {
     });
     this.forceShowErrors = !isValidForm;
 
+    // Save this form first
     if (this.hasUnsavedChanges) {
       yield this.saveSemanticForm.unlinked().perform();
+    }
+
+    // If the form has validation errors, don't show the submit popup
+    if (this.hasValidationErrors) {
+      return;
     }
 
     if (isValidForm) {

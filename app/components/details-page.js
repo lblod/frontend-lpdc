@@ -56,6 +56,10 @@ export default class DetailsPageComponent extends Component {
     }
   }
 
+  #showToasterErrorMessage(message) {
+    this.toaster.error(message, 'Fout', { timeOut: 30000 });
+  }
+
   get isStatusVerzondenAndPublished() {
     return this.args.isPublished && this.args.publicService.isSent;
   }
@@ -238,7 +242,7 @@ export default class DetailsPageComponent extends Component {
     if (errors.length > 0) {
       this.hasValidationErrors = true;
       for (const error of errors) {
-        this.toaster.error(error.message, 'Fout', { timeOut: 30000 });
+        this.#showToasterErrorMessage(error.message);
       }
     } else {
       this.hasValidationErrors = false;
@@ -298,14 +302,12 @@ export default class DetailsPageComponent extends Component {
           },
         });
       } else {
-        publishErrors.forEach(
-          (error) => this.toaster.error(error.message),
-          'Fout',
-          { timeOut: 3000 },
+        publishErrors.forEach((error) =>
+          this.#showToasterErrorMessage(error.message),
         );
       }
     } else {
-      this.toaster.error('Formulier is ongeldig', 'Fout', { timeOut: 30000 });
+      this.#showToasterErrorMessage('Formulier is ongeldig');
     }
   }
 

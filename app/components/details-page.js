@@ -111,10 +111,10 @@ export default class DetailsPageComponent extends Component {
         : 'nl';
 
     const latestSnapshot = getUUIDFromUri(
-      this.args.publicService.concept.get('hasLatestFunctionalChange')
+      this.args.publicService.concept.get('hasLatestFunctionalChange'),
     );
     const publicServiceSnapshot = getUUIDFromUri(
-      this.args.publicService.versionedSource
+      this.args.publicService.versionedSource,
     );
     return `${ENV.ipdcUrl}/${languageVersion}/concept/${productId}/revisie/vergelijk?revisie1=${publicServiceSnapshot}&revisie2=${latestSnapshot}`;
   }
@@ -154,7 +154,7 @@ export default class DetailsPageComponent extends Component {
       source: sourceTtl,
     } = yield this.publicServiceService.getPublicServiceForm(
       this.args.publicService,
-      this.args.formId
+      this.args.formId,
     );
 
     let formStore = new ForkingStore();
@@ -166,7 +166,7 @@ export default class DetailsPageComponent extends Component {
       undefined,
       RDF('type'),
       FORM('Form'),
-      FORM_GRAPHS.formGraph
+      FORM_GRAPHS.formGraph,
     );
 
     if (!this.args.readOnly) {
@@ -196,9 +196,8 @@ export default class DetailsPageComponent extends Component {
   @task({ group: 'publicServiceAction' })
   *publishPublicService() {
     const { publicService } = this.args;
-    const validationErrors = yield this.publicServiceService.validateInstance(
-      publicService
-    );
+    const validationErrors =
+      yield this.publicServiceService.validateInstance(publicService);
 
     if (validationErrors.length > 0) {
       for (const validationError of validationErrors) {
@@ -220,7 +219,7 @@ export default class DetailsPageComponent extends Component {
       yield this.modals.open(ConfirmUpToDateTillModal, {
         confirmUpToDateTillHandler: async () => {
           await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
-            this.args.publicService
+            this.args.publicService,
           );
         },
       });
@@ -232,14 +231,14 @@ export default class DetailsPageComponent extends Component {
     let { publicService } = this.args;
     let serializedData = this.formStore.serializeDataWithAddAndDelGraph(
       this.graphs.sourceGraph,
-      'application/n-triples'
+      'application/n-triples',
     );
 
     // Validate and inform user if any warnings arise
     const errors =
       yield this.publicServiceService.validatePublicServiceBeforeUpdate(
         publicService,
-        serializedData
+        serializedData,
       );
 
     if (errors.length > 0) {
@@ -251,10 +250,10 @@ export default class DetailsPageComponent extends Component {
       this.hasValidationErrors = false;
       yield this.publicServiceService.updatePublicService(
         publicService,
-        serializedData
+        serializedData,
       );
       yield this.publicServiceService.loadPublicServiceDetails(
-        publicService.id
+        publicService.id,
       );
       yield this.loadForm.perform();
     }
@@ -284,7 +283,7 @@ export default class DetailsPageComponent extends Component {
         yield this.modals.open(ConfirmUpToDateTillModal, {
           confirmUpToDateTillHandler: async () => {
             await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
-              this.args.publicService
+              this.args.publicService,
             );
           },
         });
@@ -304,7 +303,7 @@ export default class DetailsPageComponent extends Component {
   *confirmInstanceAlreadyInformal() {
     const { publicService } = this.args;
     yield this.publicServiceService.confirmInstanceAlreadyInformal(
-      publicService
+      publicService,
     );
   }
 
@@ -325,7 +324,7 @@ export default class DetailsPageComponent extends Component {
     this.modals.open(ConfirmDeletionModal, {
       deleteHandler: async () => {
         await this.publicServiceService.deletePublicService(
-          this.args.publicService.uri
+          this.args.publicService.uri,
         );
         this.updateHasUnsavedChanges(false);
         this.router.replaceWith('public-services');
@@ -342,16 +341,16 @@ export default class DetailsPageComponent extends Component {
             const copiedPublicServiceUuid =
               await this.publicServiceService.copyPublicService(
                 this.args.publicService,
-                forMunicipalityMerger
+                forMunicipalityMerger,
               );
             this.toaster.success(
               'kopiëren gelukt',
               'Je kan nu de kopie bewerken.',
-              { timeOut: 10000 }
+              { timeOut: 10000 },
             );
             this.router.transitionTo(
               'public-services.details',
-              copiedPublicServiceUuid
+              copiedPublicServiceUuid,
             );
           },
         });
@@ -360,14 +359,14 @@ export default class DetailsPageComponent extends Component {
       const copiedPublicServiceUuid =
         await this.publicServiceService.copyPublicService(
           this.args.publicService,
-          false
+          false,
         );
       this.toaster.success('kopiëren gelukt', 'Je kan nu de kopie bewerken.', {
         timeOut: 10000,
       });
       this.router.transitionTo(
         'public-services.details',
-        copiedPublicServiceUuid
+        copiedPublicServiceUuid,
       );
     }
   }
@@ -379,7 +378,7 @@ export default class DetailsPageComponent extends Component {
         fullyTakeConceptSnapshotOverHandler: async () => {
           let { publicService } = this.args;
           await this.publicServiceService.fullyTakeConceptSnapshotOver(
-            publicService
+            publicService,
           );
           this.router.refresh('public-services.details');
         },
@@ -400,7 +399,7 @@ export default class DetailsPageComponent extends Component {
       convertToInformalHandler: async () => {
         let { publicService } = this.args;
         await this.publicServiceService.convertInstanceToInformal(
-          publicService
+          publicService,
         );
         this.router.refresh('public-services.details');
       },
@@ -411,7 +410,7 @@ export default class DetailsPageComponent extends Component {
   *markAsReviewed() {
     let { publicService } = this.args;
     yield this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
-      publicService
+      publicService,
     );
   }
 
@@ -429,14 +428,14 @@ export default class DetailsPageComponent extends Component {
           saveHandler: async () => {
             await this.saveSemanticForm.perform();
           },
-        }
+        },
       );
 
       if (this.args.publicService.reviewStatus && saved) {
         await this.modals.open(ConfirmUpToDateTillModal, {
           confirmUpToDateTillHandler: async () => {
             await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
-              this.args.publicService
+              this.args.publicService,
             );
           },
         });
@@ -457,14 +456,14 @@ export default class DetailsPageComponent extends Component {
           saveHandler: async () => {
             await this.saveSemanticForm.perform();
           },
-        }
+        },
       );
 
       if (shouldTransition) {
         if (!saved) {
           let { publicService } = this.args;
           await this.publicServiceService.loadPublicServiceDetails(
-            publicService.id
+            publicService.id,
           );
           await this.loadForm.perform();
         }

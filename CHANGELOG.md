@@ -1,3 +1,8 @@
+## v0.21.0 (2025-04-10)
+
+#### :rocket: Enhancement
+* [#20](https://github.com/lblod/frontend-lpdc/pull/20) feature: Add validation before saving ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.20.0 (2025-03-04)
 
 #### :rocket: Enhancement

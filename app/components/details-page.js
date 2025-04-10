@@ -279,21 +279,37 @@ export default class DetailsPageComponent extends Component {
     }
 
     if (isValidForm) {
-      if (this.args.publicService.reviewStatus) {
-        yield this.modals.open(ConfirmUpToDateTillModal, {
-          confirmUpToDateTillHandler: async () => {
-            await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
-              this.args.publicService,
-            );
+      // NOTE (10/04/2025): These checks should be done after the form is
+      // validated. Otherwise, the user gets duplicate error messages when the
+      // currently open form contains an error. One message from the `else`
+      // block below and one from `validateInstance`.
+      const publishErrors = yield this.publicServiceService.validateInstance(
+        this.args.publicService,
+      );
+
+      if (publishErrors.length === 0) {
+        if (this.args.publicService.reviewStatus) {
+          yield this.modals.open(ConfirmUpToDateTillModal, {
+            confirmUpToDateTillHandler: async () => {
+              await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
+                this.args.publicService,
+              );
+            },
+          });
+        }
+
+        yield this.modals.open(ConfirmSubmitModal, {
+          submitHandler: async () => {
+            await this.publishPublicService.perform();
           },
         });
+      } else {
+        publishErrors.forEach(
+          (error) => this.toaster.error(error.message),
+          'Fout',
+          { timeOut: 3000 },
+        );
       }
-
-      yield this.modals.open(ConfirmSubmitModal, {
-        submitHandler: async () => {
-          await this.publishPublicService.perform();
-        },
-      });
     } else {
       this.toaster.error('Formulier is ongeldig', 'Fout', { timeOut: 30000 });
     }

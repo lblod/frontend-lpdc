@@ -195,19 +195,13 @@ export default class DetailsPageComponent extends Component {
 
   @task({ group: 'publicServiceAction' })
   *publishPublicService() {
+    // NOTE (10/04/2025): Before calling this the `publicService` should have
+    // been validated using `this.publicServiceService.validateInstance`,
+    // otherwise incorrect product instances can be published.
     const { publicService } = this.args;
-    const validationErrors =
-      yield this.publicServiceService.validateInstance(publicService);
+    yield this.publicServiceService.publishInstance(publicService);
 
-    if (validationErrors.length > 0) {
-      for (const validationError of validationErrors) {
-        this.toaster.error(validationError.message, 'Fout', { timeOut: 30000 });
-      }
-    } else {
-      yield this.publicServiceService.publishInstance(publicService);
-
-      this.router.transitionTo('public-services');
-    }
+    this.router.transitionTo('public-services');
   }
 
   @task({ group: 'publicServiceAction' })

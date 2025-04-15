@@ -56,6 +56,10 @@ export default class DetailsPageComponent extends Component {
     }
   }
 
+  #showToasterErrorMessage(message) {
+    this.toaster.error(message, 'Fout', { timeOut: 30000 });
+  }
+
   get isStatusVerzondenAndPublished() {
     return this.args.isPublished && this.args.publicService.isSent;
   }
@@ -195,20 +199,13 @@ export default class DetailsPageComponent extends Component {
 
   @task({ group: 'publicServiceAction' })
   *publishPublicService() {
+    // NOTE (10/04/2025): Before calling this the `publicService` should have
+    // been validated using `this.publicServiceService.validateInstance`,
+    // otherwise incorrect product instances can be published.
     const { publicService } = this.args;
-    const validationErrors = yield this.publicServiceService.validateInstance(
-      publicService
-    );
+    yield this.publicServiceService.publishInstance(publicService);
 
-    if (validationErrors.length > 0) {
-      for (const validationError of validationErrors) {
-        this.toaster.error(validationError.message, 'Fout', { timeOut: 30000 });
-      }
-    } else {
-      yield this.publicServiceService.publishInstance(publicService);
-
-      this.router.transitionTo('public-services');
-    }
+    this.router.transitionTo('public-services');
   }
 
   @task({ group: 'publicServiceAction' })
@@ -245,7 +242,7 @@ export default class DetailsPageComponent extends Component {
     if (errors.length > 0) {
       this.hasValidationErrors = true;
       for (const error of errors) {
-        this.toaster.error(error.message, 'Fout', { timeOut: 30000 });
+        this.#showToasterErrorMessage(error.message);
       }
     } else {
       this.hasValidationErrors = false;
@@ -280,23 +277,37 @@ export default class DetailsPageComponent extends Component {
     }
 
     if (isValidForm) {
-      if (this.args.publicService.reviewStatus) {
-        yield this.modals.open(ConfirmUpToDateTillModal, {
-          confirmUpToDateTillHandler: async () => {
-            await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
-              this.args.publicService
-            );
+      // NOTE (10/04/2025): These checks should be done after the form is
+      // validated. Otherwise, the user gets duplicate error messages when the
+      // currently open form contains an error. One message from the `else`
+      // block below and one from `validateInstance`.
+      const publishErrors = yield this.publicServiceService.validateInstance(
+        this.args.publicService
+      );
+
+      if (publishErrors.length === 0) {
+        if (this.args.publicService.reviewStatus) {
+          yield this.modals.open(ConfirmUpToDateTillModal, {
+            confirmUpToDateTillHandler: async () => {
+              await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
+                this.args.publicService
+              );
+            },
+          });
+        }
+
+        yield this.modals.open(ConfirmSubmitModal, {
+          submitHandler: async () => {
+            await this.publishPublicService.perform();
           },
         });
+      } else {
+        publishErrors.forEach((error) =>
+          this.#showToasterErrorMessage(error.message)
+        );
       }
-
-      yield this.modals.open(ConfirmSubmitModal, {
-        submitHandler: async () => {
-          await this.publishPublicService.perform();
-        },
-      });
     } else {
-      this.toaster.error('Formulier is ongeldig', 'Fout', { timeOut: 30000 });
+      this.#showToasterErrorMessage('Formulier is ongeldig');
     }
   }
 

@@ -1,3 +1,7 @@
+## v0.21.1 (2025-04-15)
+#### :bug: Bug Fix
+* [#23](https://github.com/lblod/frontend-lpdc/pull/23) fix: show error messages before asking for confirmation to publish product instance ([@mirdono](https://github.com/mirdono))
+
 ## v0.21.0 (2025-04-10)
 
 #### :rocket: Enhancement

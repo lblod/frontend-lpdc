@@ -13,16 +13,17 @@ import { NamedNode } from 'rdflib';
 import PowerSelect from 'ember-power-select/components/power-select';
 import PowerSelectMultiple from 'ember-power-select/components/power-select-multiple';
 
-export default class RdfFormFieldsConceptSchemeSelectorComponent extends InputFieldComponent {
+export default class ConceptSelector extends InputFieldComponent {
   @service store;
 
   @tracked selected = null;
-  options = [];
+  @tracked options = [];
+  searchTerm;
   inputId = 'concept-selector-' + guidFor(this);
 
   constructor() {
     super(...arguments);
-    this.loadSelectOptions();
+    this.loadDefaultSelectOptions();
     this.loadPersistedValues();
   }
 
@@ -50,18 +51,25 @@ export default class RdfFormFieldsConceptSchemeSelectorComponent extends InputFi
     return this.isMultiSelect ? PowerSelectMultiple : PowerSelect;
   }
 
-  loadSelectOptions() {
+  get canLoadMoreConcepts() {
+    return Boolean(this.options?.meta?.pagination?.next);
+  }
+
+  async loadDefaultSelectOptions() {
     if (this.shouldPreloadData) {
-      this.options = this.loadConcepts();
+      this.options = await this.loadConcepts();
+    } else {
+      this.options = [];
     }
   }
 
   async loadConcepts(query = {}) {
-    let { conceptScheme, preloadAmount = 20 } = this.args.field.options;
+    let { conceptScheme, preloadAmount = 30 } = this.args.field.options;
 
     return await this.store.query('concept', {
       'filter[concept-schemes][:uri:]': conceptScheme,
       sort: 'label',
+      'page[number]': 0,
       'page[size]': preloadAmount,
       ...query,
     });
@@ -92,6 +100,16 @@ export default class RdfFormFieldsConceptSchemeSelectorComponent extends InputFi
     });
 
     return response[0];
+  }
+
+  @action
+  registerAPI(api) {
+    // PowerSelect doesn't have an action to let us know when the search data is reset, so we use the registerAPI as a workaround.
+    // It gets called every time any internal state has changed, so we can use it to detect when the searchText has cleared.
+    if (!api.searchText && this.searchTerm) {
+      this.searchTerm = null;
+      this.loadDefaultSelectOptions();
+    }
   }
 
   @action
@@ -137,12 +155,29 @@ export default class RdfFormFieldsConceptSchemeSelectorComponent extends InputFi
     super.updateValidations();
   }
 
+  loadMoreConcepts = restartableTask(async () => {
+    if (this.canLoadMoreConcepts) {
+      const query = {
+        'page[number]': this.options.meta.pagination.next.number,
+      };
+
+      if (this.searchTerm) {
+        query.filter = this.searchTerm;
+      }
+
+      const newConcepts = await this.loadConcepts(query);
+      this.options = [...this.options, ...newConcepts];
+      this.options.meta = newConcepts.meta;
+    }
+  });
+
   @restartableTask
-  *search(value) {
+  *search(searchTerm) {
     yield timeout(300);
 
-    return yield this.loadConcepts({
-      filter: value,
+    this.searchTerm = searchTerm;
+    this.options = yield this.loadConcepts({
+      filter: searchTerm,
     });
   }
 }

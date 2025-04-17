@@ -1,0 +1,25 @@
+<div class="infinite-select-options">
+  <PowerSelect::Options
+    @loadingMessage={{@loadingMessage}}
+    @select={{@select}}
+    @options={{@options}}
+    @groupIndex=""
+    @optionsComponent={{@optionsComponent}}
+    @extra={{@extra}}
+    @highlightOnHover={{@highlightOnHover}}
+    @groupComponent={{@groupComponent}}
+    ...attributes
+    as |option select|
+  >
+    {{yield option select}}
+  </PowerSelect::Options>
+
+  {{#if @canLoadMore}}
+    <div
+      class="au-o-box au-o-box--tiny au-u-padding-left"
+      {{is-visible @loadMore}}
+    >
+      <AuLoader @padding="small" />
+    </div>
+  {{/if}}
+</div>

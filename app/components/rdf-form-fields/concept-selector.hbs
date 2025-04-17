@@ -28,6 +28,13 @@
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten gevonden"
     @disabled={{@show}}
+    @optionsComponent={{component
+      "infinite-select-options"
+      canLoadMore=this.canLoadMoreConcepts
+      loadMore=this.loadMoreConcepts.perform
+      isLoadingMore=this.loadMoreConcepts.isRunning
+    }}
+    @registerAPI={{this.registerAPI}}
     data-test-field-uri={{@field.uri.value}}
     as |concept|
   >

@@ -3,23 +3,19 @@ steps:
     image: danlynn/ember-cli:5.8.0-node_20.12
     commands:
       - npm ci
-  build:
-    image: danlynn/ember-cli:5.8.0-node_20.12
-    commands:
-      - npm run build
-  lint:js:
+  lint-js:
     image: danlynn/ember-cli:5.8.0-node_20.12
     commands:
       - npm run lint:js
-  lint:hbs:
+  lint-hbs:
     image: danlynn/ember-cli:5.8.0-node_20.12
     commands:
       - npm run lint:hbs
-  lint:css:
+  lint-css:
     image: danlynn/ember-cli:5.8.0-node_20.12
     commands:
       - npm run lint:css
-  lint:dependencies:
+  dependency-lint:
     image: danlynn/ember-cli:5.8.0-node_20.12
     commands:
       - ember dependency-lint
@@ -27,3 +23,5 @@ steps:
     image: danlynn/ember-cli:5.8.0-node_20.12
     commands:
       - npm run test:ember
+when:
+  - event: pull_request

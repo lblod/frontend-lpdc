@@ -18,6 +18,3 @@ steps:
 when:
   - event: push
     branch: [development]
-
-depends_on:
-  - test

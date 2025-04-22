@@ -8,7 +8,10 @@
     "url": "git+https://github.com/lblod/frontend-lpdc.git"
   },
   "license": "MIT",
-  "author": "Kunlabora",
+  "author": {
+    "name": "Agentschap Binnenlands Bestuur",
+    "url": "https://www.vlaanderen.be/agentschap-binnenlands-bestuur"
+  },
   "directories": {
     "doc": "doc",
     "test": "tests"

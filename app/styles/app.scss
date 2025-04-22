@@ -33,19 +33,9 @@
 @import "project/c-infinite-select";
 
 // ember-rdfa-editor styles
-// TODO: `@import "ember-rdfa-editor";` imports annotation styles which are _huge_ when compiled
-// so we only import the base component styles for now.
-@import "ember-rdfa-editor/c-container";
-@import "ember-rdfa-editor/c-dropdown";
-@import "ember-rdfa-editor/c-content";
-@import "ember-rdfa-editor/c-editor";
-@import "ember-rdfa-editor/c-editor-hints";
-@import "ember-rdfa-editor/c-icon";
-@import "ember-rdfa-editor/c-toast";
-@import "ember-rdfa-editor/c-toolbar";
-@import "ember-rdfa-editor/c-table";
-@import "ember-rdfa-editor/c-ember-node";
-@import "ember-rdfa-editor/shame";
+// `@import "ember-rdfa-editor";` imports annotation styles which are _huge_ when compiled
+// Ideally we would have an option to opt-out of these styles, but importing individual sass files introduces an extra maintenance burden and is error prone.
+@import "ember-rdfa-editor";
 
 // UTILITIES
 @import "@appuniversum/ember-appuniversum/styles/a-utilities";

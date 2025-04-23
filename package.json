@@ -37,11 +37,13 @@
     "@embroider/addon-shim": "~1.9.0",
     "@embroider/macros": "~1.16.0",
     "@embroider/util": "^1.0.0",
-    "ember-modifier": "^3.2.7"
+    "ember-modifier": "^3.2.7",
+    "ember-template-imports": "^4.3.0"
   },
   "overridesNotes": {
     "addon-shim and macros": "there is an issue with the latest release that requires us to pin to the previous version: https://github.com/embroider-build/embroider/issues/2440.",
-    "ember-modifier": "Not all our dependencies support v4 yet. We can remove it (and update our app's version) once they do."
+    "ember-modifier": "Not all our dependencies support v4 yet. We can remove it (and update our app's version) once they do.",
+    "ember-template-imports": "Version is pinned until we upgrade ember-rdfa-editor to v10"
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^3.8.0",

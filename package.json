@@ -37,12 +37,10 @@
     "@embroider/addon-shim": "~1.9.0",
     "@embroider/macros": "~1.16.0",
     "@embroider/util": "^1.0.0",
-    "babel-plugin-ember-template-compilation": "2.2.1",
     "ember-modifier": "^3.2.7"
   },
   "overridesNotes": {
     "addon-shim and macros": "there is an issue with the latest release that requires us to pin to the previous version: https://github.com/embroider-build/embroider/issues/2440.",
-    "babel-plugin-ember-template-compilation": "this fixes an issue with ember-template-imports v3, we can remove the override when we update to Appuniversum v3: https://github.com/appuniversum/ember-appuniversum/pull/492",
     "ember-modifier": "Not all our dependencies support v4 yet. We can remove it (and update our app's version) once they do."
   },
   "devDependencies": {

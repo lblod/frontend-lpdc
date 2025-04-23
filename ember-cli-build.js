@@ -17,10 +17,6 @@ module.exports = function (defaults) {
     'ember-simple-auth': {
       useSessionSetupMethod: true,
     },
-    '@appuniversum/ember-appuniversum': {
-      dutchDatePickerLocalization: true,
-      disableWormholeElement: true,
-    },
   };
 
   let app = new EmberApp(defaults, customBuildConfig);

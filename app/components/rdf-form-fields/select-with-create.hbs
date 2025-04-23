@@ -7,7 +7,7 @@
 </AuLabel>
 
 {{#if @show}}
-  <AuInput @disabled="true" @value={{this.value}}/>
+  <AuInput @disabled="true" value={{this.value}}/>
 {{else}}
   <div class={{if this.hasErrors "ember-power-select--error"}}>
     <PowerSelectWithCreate

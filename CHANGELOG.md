@@ -1,3 +1,8 @@
+## Unreleased
+#### :rocket: Enhancement
+* [#25](https://github.com/lblod/frontend-lpdc/pull/25) [LPDC-1411] upgrade to appuniversum v3 ([@wolfderechter](https://github.com/wolfderechter))
+* [#12](https://github.com/lblod/frontend-lpdc/pull/12) [LPDC-1412] Rich text editor update ([@Windvis](https://github.com/Windvis))
+
 ## v0.21.1 (2025-04-15)
 #### :bug: Bug Fix
 * [#23](https://github.com/lblod/frontend-lpdc/pull/23) fix: show error messages before asking for confirmation to publish product instance ([@mirdono](https://github.com/mirdono))

@@ -37,14 +37,12 @@
     "@embroider/addon-shim": "~1.9.0",
     "@embroider/macros": "~1.16.0",
     "@embroider/util": "^1.0.0",
-    "ember-modifier": "^3.2.7",
     "@lblod/ember-mock-login": {
       "ember-concurrency": "$ember-concurrency"
     }
   },
   "overridesNotes": {
-    "addon-shim and macros": "there is an issue with the latest release that requires us to pin to the previous version: https://github.com/embroider-build/embroider/issues/2440.",
-    "ember-modifier": "Not all our dependencies support v4 yet. We can remove it (and update our app's version) once they do."
+    "addon-shim and macros": "there is an issue with the latest release that requires us to pin to the previous version: https://github.com/embroider-build/embroider/issues/2440."
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^3.8.0",
@@ -81,7 +79,7 @@
     "ember-intl": "^6.4.0",
     "ember-load-initializers": "^2.1.2",
     "ember-lodash": "^4.19.5",
-    "ember-modifier": "^3.2.7",
+    "ember-modifier": "^4.1.0",
     "ember-moment": "^9.0.0",
     "ember-mu-transform-helpers": "^2.1.2",
     "ember-page-title": "^7.0.0",

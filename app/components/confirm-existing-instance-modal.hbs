@@ -1,0 +1,37 @@
+<AuModal @modalOpen={{true}} @closeModal={{this.close}}>
+  <:title>Dit concept werd al gebruikt</:title>
+  <:body>
+    <div>
+      Er bestaat al (minstens) een instantie op basis van dit concept. Vermijd meerdere versies van éénzelfde product of
+      dienst. Zo
+      voorkom je uiteenlopende of verouderde informatie en extra werklast. Is de bestaande instantie niet meer relevant?
+      Verwijder deze dan.
+    </div>
+    <div class="au-u-margin-top">
+      <span class="au-u-h4 au-u-medium">Bestaande instanties</span>
+      {{#each @data.existingInstances as |instance|}}
+      <p>
+        <AuLink class="au-u-margin-right" @route="public-services.details" @model={{instance.id}} {{on "click"
+          this.close}}>
+          {{instance.nameNl}}
+        </AuLink>
+        gewijzigd op {{moment-format instance.dateModified "DD-MM-YYYY - HH:mm"}}
+      </p>
+      {{/each}}
+      <AuButton class="au-u-margin-top au-u-padding-none" @skin="link" @disabled={{this.createNewInstance.isRunning}}
+        @loading={{this.createNewInstance.isRunning}} @loadingMessage="Nieuwe instantie aan het aanmaken" {{on "click"
+        (perform this.createNewInstance)}}>
+        Nieuwe instantie maken
+      </AuButton>
+    </div>
+  </:body>
+  <:footer>
+    <AuToolbar @reverse={{true}} as |Group|>
+      <Group>
+        <AuButton @skin="naked" @disabled={{this.createNewInstance.isRunning}} {{on "click" this.close}}>
+          Annuleer
+        </AuButton>
+      </Group>
+    </AuToolbar>
+  </:footer>
+</AuModal>

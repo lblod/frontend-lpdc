@@ -1,5 +1,9 @@
 <div class="au-u-flex au-u-flex--vertical-center">
-  <AuPill @icon={{this.UserIcon}}>{{this.adminLabel}}</AuPill>
+  <AuPill
+    @icon={{this.UserIcon}}
+    @skin={{if this.isImpersonating "error" "default"}}>
+    {{this.adminLabel}}
+  </AuPill>
 
   <AuDropdown
     @title="Simulatie menu"

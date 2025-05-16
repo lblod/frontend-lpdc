@@ -56,6 +56,18 @@ export default class PublicServiceModel extends Model {
   })
   reviewStatus;
 
+  @belongsTo('gebruiker', {
+    async: false,
+    inverse: null,
+  })
+  creator;
+
+  @belongsTo('gebruiker', {
+    async: false,
+    inverse: null,
+  })
+  lastModifier;
+
   get isSent() {
     return (
       this.status?.uri ===

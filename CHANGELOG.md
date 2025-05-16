@@ -1,4 +1,4 @@
-## Unreleased
+## v0.22.0 (2025-05-16)
 #### :rocket: Enhancement
 * [#26](https://github.com/lblod/frontend-lpdc/pull/26) [LPDC-1359] add creator and lastmodifier user ([@wolfderechter](https://github.com/wolfderechter))
 * [#25](https://github.com/lblod/frontend-lpdc/pull/25) [LPDC-1411] upgrade to appuniversum v3 ([@wolfderechter](https://github.com/wolfderechter))

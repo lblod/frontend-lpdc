@@ -1,0 +1,31 @@
+<div class="au-u-flex au-u-flex--vertical-center">
+  <AuPill @icon={{this.UserIcon}}>{{this.adminLabel}}</AuPill>
+
+  <AuDropdown
+    @title="Simulatie menu"
+    @hideText={{true}}
+    @alignment="right"
+    @icon={{this.icon}}
+    class="au-u-margin-left-tiny"
+    role="menu"
+  >
+    {{#if this.isImpersonating}}
+      <AuLink @route="impersonate" @icon={{this.SwitchIcon}} role="menuitem">
+        Simuleer een andere bestuurseenheid
+      </AuLink>
+
+      <AuButton
+        @skin="link"
+        @icon={{this.LogoutIcon}}
+        role="menuitem"
+        {{on "click" this.stopImpersonation}}
+      >
+        Simulatie stopzetten
+      </AuButton>
+    {{else}}
+      <AuLink @route="impersonate" @icon={{this.LoginIcon}} role="menuitem">
+        Simuleer een bestuurseenheid
+      </AuLink>
+    {{/if}}
+  </AuDropdown>
+</div>

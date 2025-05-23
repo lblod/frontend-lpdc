@@ -31,7 +31,7 @@ module.exports = function (environment) {
       authRedirectUrl: '{{ACMIDM_AUTH_REDIRECT_URL}}',
       switchRedirectUrl: '{{ACMIDM_SWITCH_REDIRECT_URL}}',
     },
-    adminRole: '{{ADMIN_ROLE}}',
+    adminRole: 'LoketAdmin',
     features: {
       // 'feature-name': '{{FEATURE_ENV_VAR_NAME}}',
       fusies: '{{FUSIES}}',

@@ -1,3 +1,7 @@
+## v0.22.1 (2025-05-28)
+#### :bug: Bug Fix
+* [#28](https://github.com/lblod/frontend-lpdc/pull/28) upgrade to 2.10.3 submission-form-helpers ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.22.0 (2025-05-16)
 #### :rocket: Enhancement
 * [#26](https://github.com/lblod/frontend-lpdc/pull/26) [LPDC-1359] add creator and lastmodifier user ([@wolfderechter](https://github.com/wolfderechter))

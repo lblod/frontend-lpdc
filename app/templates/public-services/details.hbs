@@ -102,6 +102,18 @@
                   </:content>
                 </Data>
                 <Data class="w-100">
+                  <:title>Aangemaakt door</:title>
+                  <:content>
+                    <span class="au-u-muted">
+                      {{#if @model.publicService.creator}}
+                        {{@model.publicService.creator.fullName}}
+                      {{else}}
+                        –
+                      {{/if}}
+                    </span>
+                  </:content>
+                </Data>
+                <Data class="w-100">
                   <:title>Bewerkt op</:title>
                   <:content>
                     <span class="au-u-muted">
@@ -110,6 +122,18 @@
                           {{moment-format value "DD-MM-YYYY - HH:mm"}}
                         </:value>
                       </ValueWithPlaceholder>
+                    </span>
+                  </:content>
+                </Data>
+                <Data class="w-100">
+                  <:title>Bewerkt door</:title>
+                  <:content>
+                    <span class="au-u-muted">
+                      {{#if @model.publicService.lastModifier}}
+                        {{@model.publicService.lastModifier.fullName}}
+                      {{else}}
+                        –
+                      {{/if}}
                     </span>
                   </:content>
                 </Data>

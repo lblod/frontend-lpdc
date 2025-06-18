@@ -46,17 +46,12 @@ div.au-u-margin-bottom-small:has(.address-form) {
   height: fit-content;
 }
 
-.au-c-dropdown__floater {
-  position: absolute !important;
-  right: 0 !important;
-  top: auto !important;
-  left: auto !important;
-  transform: none !important;
-
-  .au-c-dropdown__arrow {
-    right: min(15%, 12px);
-    top: 0;
-  }
+// impersonate route styles
+.mock-account-button {
+  display: block; // AuButtons are inline-flex by default
+  line-height: normal;
+  height: auto; // override the fixed height of the button height
+  border: 0.1rem #c6cdd3 solid;
 }
 
 /* stylelint-disable no-descending-specificity */

@@ -2,10 +2,12 @@ import Service, { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { setContext, setUser } from '@sentry/ember';
 import { SHOULD_ENABLE_SENTRY } from 'frontend-lpdc/utils/sentry';
+import ENV from 'frontend-lpdc/config/environment';
 
 export default class CurrentSessionService extends Service {
   @service session;
   @service store;
+  @service impersonation;
 
   @tracked account;
   @tracked user;
@@ -16,6 +18,7 @@ export default class CurrentSessionService extends Service {
 
   async load() {
     if (this.session.isAuthenticated && !this.isLoaded) {
+      await this.impersonation.load();
       let accountId =
         this.session.data.authenticated.relationships.account.data.id;
       this.account = await this.store.findRecord('account', accountId, {
@@ -47,5 +50,13 @@ export default class CurrentSessionService extends Service {
         roles: this.roles,
       });
     }
+  }
+
+  get isAdmin() {
+    let roles = this.roles;
+    if (this.impersonation.isImpersonating) {
+      roles = this.impersonation.originalRoles || [];
+    }
+    return roles.includes(ENV.adminRole);
   }
 }

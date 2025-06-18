@@ -53,7 +53,7 @@
     "@ember/test-helpers": "^2.9.3",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
-    "@lblod/ember-acmidm-login": "2.0.0-beta.1",
+    "@lblod/ember-acmidm-login": "^2.3.0",
     "@lblod/ember-mock-login": "^0.7.0",
     "@lblod/ember-rdfa-editor": "^10.11.3",
     "@lblod/ember-submission-form-fields": "^2.14.1",

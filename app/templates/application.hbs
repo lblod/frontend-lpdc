@@ -53,32 +53,41 @@
     </li>
   </AuMainHeader>
 
-  {{#if this.session.isAuthenticated}}
-    <AuMainContainer as |main|>
-      <main.content>
-        <AuBodyContainer>
-          <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
-            <Group>
-              <ul class="au-c-list-horizontal au-c-list-horizontal--small">
-                {{#if this.loketUrl}}
-                  <li class="au-c-list-horizontal__item">
-                    <AuLinkExternal @icon="arrow-left" href={{this.loketUrl}}>
-                      Loket voor Lokale Besturen
-                    </AuLinkExternal>
-                  </li>
-                {{/if}}
-                <BreadCrumb />
-              </ul>
-            </Group>
-          </AuToolbar>
-          <AuBodyContainer id="content">
-            {{outlet}}
-          </AuBodyContainer>
-        </AuBodyContainer>
-      </main.content>
-    </AuMainContainer>
+  {{#if this.currentSession.isAdmin}}
+    <div class="au-o-layout">
+      <AuHeading @skin="2">Je bent aangemeld als administrator.</AuHeading>
+      <p>
+        Met deze rol kan je voorlopig enkel andere bestuurseenheden simuleren.
+      </p>
+    </div>
   {{else}}
-    {{outlet}}
+    {{#if this.session.isAuthenticated}}
+      <AuMainContainer as |main|>
+        <main.content>
+          <AuBodyContainer>
+            <AuToolbar @size="medium" @skin="tint" @border="bottom" as |Group|>
+              <Group>
+                <ul class="au-c-list-horizontal au-c-list-horizontal--small">
+                  {{#if this.loketUrl}}
+                    <li class="au-c-list-horizontal__item">
+                      <AuLinkExternal @icon="arrow-left" href={{this.loketUrl}}>
+                        Loket voor Lokale Besturen
+                      </AuLinkExternal>
+                    </li>
+                  {{/if}}
+                  <BreadCrumb />
+                </ul>
+              </Group>
+            </AuToolbar>
+            <AuBodyContainer id="content">
+              {{outlet}}
+            </AuBodyContainer>
+          </AuBodyContainer>
+        </main.content>
+      </AuMainContainer>
+    {{else}}
+      {{outlet}}
+    {{/if}}
   {{/if}}
 </AuApp>
 

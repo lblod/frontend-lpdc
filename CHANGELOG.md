@@ -1,3 +1,11 @@
+## v0.24.0 (2025-06-20)
+### :roket: Enhancement
+* Re-release of the changes in v0.22.2 and v0.23.0 due to conflicting releases.
+
+## v0.23.0 (2025-06-18)
+### :rocket: Enhancement
+* [#27](https://github.com/lblod/frontend-lpdc/pull/27) Implement impersonation in ACM/IDM [LPDC-1029] ([@benjay10](https://github.com/benjay10))
+
 ## v0.22.2 (2025-06-20)
 #### :bug: Bug Fix
 * [#30](https://github.com/lblod/frontend-lpdc/pull/30) refactor: validate authority levels on publish instead of on save [LPDC-1431] ([@wolfderechter](https://github.com/wolfderechter))

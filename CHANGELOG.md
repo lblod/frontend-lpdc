@@ -1,3 +1,7 @@
+## v0.22.2 (2025-06-20)
+#### :bug: Bug Fix
+* [#30](https://github.com/lblod/frontend-lpdc/pull/30) refactor: validate authority levels on publish instead of on save [LPDC-1431] ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.22.1 (2025-05-28)
 #### :bug: Bug Fix
 * [#28](https://github.com/lblod/frontend-lpdc/pull/28) upgrade to 2.10.3 submission-form-helpers ([@wolfderechter](https://github.com/wolfderechter))

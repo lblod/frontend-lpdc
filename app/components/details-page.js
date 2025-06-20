@@ -232,29 +232,12 @@ export default class DetailsPageComponent extends Component {
       'application/n-triples'
     );
 
-    // Validate and inform user if any warnings arise
-    const errors =
-      yield this.publicServiceService.validatePublicServiceBeforeUpdate(
-        publicService,
-        serializedData
-      );
-
-    if (errors.length > 0) {
-      this.hasValidationErrors = true;
-      for (const error of errors) {
-        this.#showToasterErrorMessage(error.message);
-      }
-    } else {
-      this.hasValidationErrors = false;
-      yield this.publicServiceService.updatePublicService(
-        publicService,
-        serializedData
-      );
-      yield this.publicServiceService.loadPublicServiceDetails(
-        publicService.id
-      );
-      yield this.loadForm.perform();
-    }
+    yield this.publicServiceService.updatePublicService(
+      publicService,
+      serializedData
+    );
+    yield this.publicServiceService.loadPublicServiceDetails(publicService.id);
+    yield this.loadForm.perform();
   }
 
   @dropTask
@@ -269,11 +252,6 @@ export default class DetailsPageComponent extends Component {
     // Save this form first
     if (this.hasUnsavedChanges) {
       yield this.saveSemanticForm.unlinked().perform();
-    }
-
-    // If the form has validation errors, don't show the submit popup
-    if (this.hasValidationErrors) {
-      return;
     }
 
     if (isValidForm) {

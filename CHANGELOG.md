@@ -1,4 +1,4 @@
-## Unreleased
+## v0.22.2 (2025-06-20)
 #### :bug: Bug Fix
 * [#30](https://github.com/lblod/frontend-lpdc/pull/30) refactor: validate authority levels on publish instead of on save [LPDC-1431] ([@wolfderechter](https://github.com/wolfderechter))
 

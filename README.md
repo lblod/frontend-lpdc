@@ -1,19 +1,12 @@
 # LPDC (Lokale Producten- en Dienstencatalogus) - Frontend
 
-_Note_: Documentation is structured using [The software guidebook by Simon Brown](https://leanpub.com/documenting-software-architecture).
+LPDC Frontend is part of [LPDC - Digitaal loket](https://github.com/lblod/app-lpdc-digitaal-loket/tree/development). This contains general documentation. Specific documentation to be found in this project.
 
-LPDC Frontend is part of [LPDC - Digitaal loket](https://github.com/lblod/app-lpdc-digitaal-loket/tree/development). This contains general documentation. Specific documentation to be found in this project.  
-
-## 1. Context
-
-LPDC frontend is the frontend component.
-It is written in ember-js.
-
-### Environment variables
+## Environment variables
 
 The [ember-proxy-service](https://github.com/mu-semtech/ember-proxy-service#configure-environment-variables-in-the-frontends-container) docker image (which we use to host the frontend) supports configuring environment variables. The following options are available for the loket image.
 
-#### General
+### General
 
 | Name              | Description                   |
 | ----------------- | ----------------------------- |
@@ -21,7 +14,7 @@ The [ember-proxy-service](https://github.com/mu-semtech/ember-proxy-service#conf
 | `EMBER_IPDC_URL`  | Link to the IPDC application  |
 | `EMBER_LOKET_URL` | Link to the Loket application |
 
-#### ACM/IDM
+### ACM/IDM
 
 | Name                               | Description                                                                                                                                              |
 | ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -35,32 +28,10 @@ The [ember-proxy-service](https://github.com/mu-semtech/ember-proxy-service#conf
 > When ACM/IDM is not configured, the frontend will default to the "mock login" setup instead.
 >
 
-## 2. Functional Overview
-
-## 3. Quality Attributes
-
-## 4. Constraints
-
-## 5. Principles
-
-## 6. Software Architecture
-
-## 7. Code
-
-## 8. Data
-
-## 9. Infrastructure Architecture
-
-## 10. Deployment
+## Releases
 
 We use [release-it](https://github.com/release-it/release-it/tree/main) to make a new release.
 
 ```shell
   npm run release
 ```
-
-## 11. Operation and Support
-
-## 12. Development Environment
-
-## 13. Decision Log

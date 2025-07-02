@@ -66,13 +66,13 @@ export default class ConceptSelector extends InputFieldComponent {
   async loadConcepts(query = {}) {
     let {
       conceptScheme,
-      orderBy,
+      sortByOrder,
       preloadAmount = 30,
     } = this.args.field.options;
 
     return await this.store.query('concept', {
       'filter[concept-schemes][:uri:]': conceptScheme,
-      sort: orderBy ? 'order' : 'label',
+      sort: sortByOrder ? 'order' : 'label',
       'page[number]': 0,
       'page[size]': preloadAmount,
       ...query,

@@ -83,6 +83,17 @@
           as |thema|>
           {{thema.label}}
         </PowerSelectMultiple>
+        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+          Aangemaakt door
+        </label>
+        <PowerSelectMultiple
+          @options={{this.creatorOptions}}
+          @selected={{this.creators}}
+          @onChange={{this.handleCreatorsFilterChange}}
+          @searchField="label"
+          as |creator|>
+          {{creator.firstName}} {{creator.familyName}}
+        </PowerSelectMultiple>
       </div>
       {{#if this.hasActiveFilters}}
         <div class="au-u-text-left@medium">

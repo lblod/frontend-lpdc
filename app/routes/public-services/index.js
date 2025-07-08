@@ -45,6 +45,9 @@ export default class PublicServicesIndexRoute extends Route {
     themaIds: {
       refreshModel: true,
     },
+    creatorIds: {
+      refreshModel: true,
+    },
   };
 
   async beforeModel() {
@@ -84,6 +87,7 @@ export default class PublicServicesIndexRoute extends Route {
     doelgroepenIds,
     producttypesIds,
     themaIds,
+    creatorIds,
     statusIds,
   }) {
     const query = {
@@ -92,7 +96,7 @@ export default class PublicServicesIndexRoute extends Route {
       'fields[public-services]':
         'name,product-id,type,target-audiences,thematic-areas,publication-media,date-created,date-modified,status,needs-conversion-from-formal-to-informal,review-status,for-municipality-merger',
       include:
-        'type,target-audiences,thematic-areas,publication-media,status,review-status',
+        'type,target-audiences,thematic-areas,publication-media,status,review-status,creator,last-modifier',
     };
 
     if (search) {
@@ -134,6 +138,10 @@ export default class PublicServicesIndexRoute extends Route {
 
     if (themaIds?.length > 0) {
       query['filter[thematic-areas][:id:]'] = themaIds.join(',');
+    }
+
+    if (creatorIds?.length > 0) {
+      query['filter[creator][:id:]'] = creatorIds.join(',');
     }
 
     return yield this.store.query('public-service', query);

@@ -16,6 +16,7 @@ export default class PublicServicesIndexController extends Controller {
   @tracked producttypesIds = [];
   @tracked doelgroepenIds = [];
   @tracked themaIds = [];
+  @tracked creatorIds = [];
   serviceNeedsReview = serviceNeedsReview;
 
   get statuses() {
@@ -42,6 +43,12 @@ export default class PublicServicesIndexController extends Controller {
     );
   }
 
+  get creators() {
+    return this.creatorIds.map((creatorId) =>
+      this.creatorOptions.find((option) => option.id === creatorId)
+    );
+  }
+
   get publicServices() {
     return this.model['loadPublicServices'].isFinished
       ? this.model['loadPublicServices'].value
@@ -62,6 +69,10 @@ export default class PublicServicesIndexController extends Controller {
 
   get themasOptions() {
     return this.model.themasOptions;
+  }
+
+  get creatorOptions() {
+    return this.model.creatorOptions;
   }
 
   get isChosenFormInformal() {
@@ -102,7 +113,8 @@ export default class PublicServicesIndexController extends Controller {
       this.statuses.length > 0 ||
       this.producttypes.length > 0 ||
       this.doelgroepen.length > 0 ||
-      this.themas.length > 0
+      this.themas.length > 0 ||
+      this.creators.length > 0
     );
   }
 
@@ -118,6 +130,7 @@ export default class PublicServicesIndexController extends Controller {
     this.producttypesIds = [];
     this.doelgroepenIds = [];
     this.themaIds = [];
+    this.creatorIds = [];
   }
 
   @restartableTask
@@ -174,6 +187,18 @@ export default class PublicServicesIndexController extends Controller {
   @action
   handleThemasFilterChange(values) {
     this.themaIds = sortByLabel(values).map((pt) => pt.id);
+    this.resetPagination();
+  }
+
+  @action
+  handleCreatorsFilterChange(values) {
+    this.creatorIds = values
+      .sort((a, b) => {
+        return `${a.firstName} ${a.familyName}`.localeCompare(
+          `${b.firstName} ${b.familyName}`
+        );
+      })
+      .map((creator) => creator.id);
     this.resetPagination();
   }
 

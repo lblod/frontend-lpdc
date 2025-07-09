@@ -90,7 +90,8 @@
           @options={{this.creatorOptions}}
           @selected={{this.creators}}
           @onChange={{this.handleCreatorsFilterChange}}
-          @searchField="label"
+          @searchEnabled={{true}}
+          @searchField="fullName"
           as |creator|>
           {{creator.fullName}}
         </PowerSelectMultiple>

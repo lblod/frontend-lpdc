@@ -92,7 +92,8 @@
           @onChange={{this.handleCreatorsFilterChange}}
           @searchField="label"
           as |creator|>
-          {{creator.firstName}} {{creator.familyName}}
+          {{creator.fullName}}
+        </PowerSelectMultiple>
         </PowerSelectMultiple>
       </div>
       {{#if this.hasActiveFilters}}

@@ -194,9 +194,7 @@ export default class PublicServicesIndexController extends Controller {
   handleCreatorsFilterChange(values) {
     this.creatorIds = values
       .sort((a, b) => {
-        return `${a.firstName} ${a.familyName}`.localeCompare(
-          `${b.firstName} ${b.familyName}`
-        );
+        return a.fullName.localeCompare(b.fullName);
       })
       .map((creator) => creator.id);
     this.resetPagination();

@@ -95,6 +95,17 @@
           as |creator|>
           {{creator.fullName}}
         </PowerSelectMultiple>
+        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+          Laatst bewerkt door
+        </label>
+        <PowerSelectMultiple
+          @options={{this.lastModifierOptions}}
+          @selected={{this.lastModifiers}}
+          @onChange={{this.handleLastModifiersFilterChange}}
+          @searchEnabled={{true}}
+          @searchField="fullName"
+          as |lastModifier|>
+          {{lastModifier.fullName}}
         </PowerSelectMultiple>
       </div>
       {{#if this.hasActiveFilters}}

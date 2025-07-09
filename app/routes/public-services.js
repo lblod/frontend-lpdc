@@ -41,6 +41,7 @@ export default class PublicServicesRoute extends Route {
       doelgroepenOptions: await this.loadDoelgroepenConcepts(),
       themasOptions: await this.themasConcepts(),
       creatorOptions: await this.creatorConcepts(),
+      lastModifierOptions: await this.lastModifierConcepts(),
       municipalityHasForMunicipalityMergerInstances:
         await this.municipalityHasForMunicipalityMergerInstances(),
     };
@@ -131,6 +132,12 @@ export default class PublicServicesRoute extends Route {
 
   async creatorConcepts() {
     return await this.httpRequest.get(`/lpdc-management/creator-options/`);
+  }
+
+  async lastModifierConcepts() {
+    return await this.httpRequest.get(
+      `/lpdc-management/last-modifier-options/`
+    );
   }
 
   async municipalityHasForMunicipalityMergerInstances() {

@@ -48,6 +48,9 @@ export default class PublicServicesIndexRoute extends Route {
     creatorIds: {
       refreshModel: true,
     },
+    lastModifierIds: {
+      refreshModel: true,
+    },
   };
 
   async beforeModel() {
@@ -88,6 +91,7 @@ export default class PublicServicesIndexRoute extends Route {
     producttypesIds,
     themaIds,
     creatorIds,
+    lastModifierIds,
     statusIds,
   }) {
     const query = {
@@ -142,6 +146,10 @@ export default class PublicServicesIndexRoute extends Route {
 
     if (creatorIds?.length > 0) {
       query['filter[creator][:id:]'] = creatorIds.join(',');
+    }
+
+    if (lastModifierIds?.length > 0) {
+      query['filter[last-modifier][:id:]'] = lastModifierIds.join(',');
     }
 
     return yield this.store.query('public-service', query);

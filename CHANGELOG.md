@@ -1,3 +1,7 @@
+## v0.24.1 (2025-07-10)
+### :roket: Enhancement
+* [#32](https://github.com/lblod/frontend-lpdc/pull/32) add yourEurope codelist ordering [LPDC-1423] ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.24.0 (2025-06-20)
 ### :roket: Enhancement
 * Re-release of the changes in v0.22.2 and v0.23.0 due to conflicting releases.

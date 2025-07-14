@@ -11,12 +11,16 @@ import LpdcInputComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-in
 import LpdcDateTimeComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-date-time';
 import LpdcRdfInputFieldsConceptSchemeMultiSelectorComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-concept-scheme-multi-selector';
 import LpdcRdfHeadingComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-heading';
+import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
 
 export default class PublicServicesRoute extends Route {
   @service currentSession;
   @service session;
   @service router;
   @service store;
+  @service toaster;
+
+  httpRequest = new HttpRequest(this.toaster);
 
   constructor() {
     super(...arguments);
@@ -36,6 +40,8 @@ export default class PublicServicesRoute extends Route {
       producttypesOptions: await this.producttypesConcepts(),
       doelgroepenOptions: await this.loadDoelgroepenConcepts(),
       themasOptions: await this.themasConcepts(),
+      creatorOptions: await this.creatorConcepts(),
+      lastModifierOptions: await this.lastModifierConcepts(),
       municipalityHasForMunicipalityMergerInstances:
         await this.municipalityHasForMunicipalityMergerInstances(),
     };
@@ -122,6 +128,16 @@ export default class PublicServicesRoute extends Route {
         'https://productencatalogus.data.vlaanderen.be/id/conceptscheme/Thema',
       sort: 'label',
     });
+  }
+
+  async creatorConcepts() {
+    return await this.httpRequest.get(`/lpdc-management/creator-options/`);
+  }
+
+  async lastModifierConcepts() {
+    return await this.httpRequest.get(
+      `/lpdc-management/last-modifier-options/`
+    );
   }
 
   async municipalityHasForMunicipalityMergerInstances() {

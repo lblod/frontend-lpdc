@@ -1,3 +1,7 @@
+## v0.24.2 (2025-07-10)
+### :rocket: Enhancement
+* [#33](https://github.com/lblod/frontend-lpdc/pull/33) creator and last modifier filtering [LPDC-1421] ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.24.1 (2025-07-10)
 ### :rocket: Enhancement
 * [#32](https://github.com/lblod/frontend-lpdc/pull/32) add yourEurope codelist ordering [LPDC-1423] ([@wolfderechter](https://github.com/wolfderechter))

@@ -1,4 +1,4 @@
-## v0.24.2 (2025-07-10)
+## v0.24.2 (2025-07-14)
 ### :rocket: Enhancement
 * [#33](https://github.com/lblod/frontend-lpdc/pull/33) creator and last modifier filtering [LPDC-1421] ([@wolfderechter](https://github.com/wolfderechter))
 

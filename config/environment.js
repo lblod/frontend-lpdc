@@ -31,9 +31,11 @@ module.exports = function (environment) {
       authRedirectUrl: '{{ACMIDM_AUTH_REDIRECT_URL}}',
       switchRedirectUrl: '{{ACMIDM_SWITCH_REDIRECT_URL}}',
     },
-    // features: {
-    //   'feature-name': '{{FEATURE_ENV_VAR_NAME}}',
-    // },
+    adminRole: '{{ADMIN_ROLE}}',
+    features: {
+      // 'feature-name': '{{FEATURE_ENV_VAR_NAME}}',
+      fusies: '{{FUSIES}}',
+    },
     'ember-plausible': {
       enabled: false,
     },

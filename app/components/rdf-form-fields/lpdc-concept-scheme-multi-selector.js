@@ -10,21 +10,29 @@ import InputFieldComponent from '@lblod/ember-submission-form-fields/components/
 import { restartableTask, timeout } from 'ember-concurrency';
 import { NamedNode } from 'rdflib';
 
+const PAGE_SIZE = 50;
+
 function byLabel(a, b) {
   const textA = a.label.toUpperCase();
   const textB = b.label.toUpperCase();
   return textA < textB ? -1 : textA > textB ? 1 : 0;
 }
 
-export default class LpdcRdfInputFieldsConceptSchemeMultiSelectorComponent extends InputFieldComponent {
+export default class LpdcConceptSchemeMultiSelector extends InputFieldComponent {
   inputId = 'select-' + guidFor(this);
 
   @tracked selected = null;
   @tracked options = [];
   @tracked searchEnabled = true;
+  @tracked conceptLimit = PAGE_SIZE;
+  @tracked isSearching = false;
+
+  get canShowMoreConcepts() {
+    return !this.isSearching && this.conceptLimit < this.options.length;
+  }
 
   get subset() {
-    return this.options.slice(0, 50);
+    return this.options.slice(0, this.conceptLimit);
   }
 
   constructor() {
@@ -104,10 +112,30 @@ export default class LpdcRdfInputFieldsConceptSchemeMultiSelectorComponent exten
     this.loadProvidedValue();
   }
 
+  @action
+  registerAPI(api) {
+    // PowerSelect doesn't have an action to let us know when the search data is reset, so we use the registerAPI as a workaround.
+    // It gets called every time any internal state has changed, so we can use it to detect when the searchText has cleared.
+    if (!api.searchText && this.isSearching) {
+      this.isSearching = false;
+    }
+  }
+
   search = restartableTask(async (term) => {
     await timeout(600);
+    this.isSearching = true;
+
     return this.options.filter((value) =>
       value.label.toLowerCase().includes(term.toLowerCase())
     );
+  });
+
+  showMoreConcepts = restartableTask(async () => {
+    if (this.canShowMoreConcepts) {
+      // We add an artificial delay so users see the loading animation and know something is happening
+      await timeout(300);
+
+      this.conceptLimit += PAGE_SIZE;
+    }
   });
 }

@@ -28,6 +28,13 @@
     @loadingMessage="Aan het laden..."
     @noMatchesMessage="Geen resultaten gevonden"
     @disabled={{@show}}
+    @optionsComponent={{component
+      "infinite-select-options"
+      canLoadMore=this.canShowMoreConcepts
+      loadMore=this.showMoreConcepts.perform
+      isLoadingMore=this.showMoreConcepts.isRunning
+    }}
+    @registerAPI={{this.registerAPI}}
     as |concept|
   >
     {{concept.label}}

@@ -1,0 +1,19 @@
+.infinite-select-options {
+  // Copied from ember-appuniversum: https://github.com/appuniversum/ember-appuniversum/blob/09fbccfa34190ab9552f42572d783d35e6925ad6/app/styles/ember-appuniversum/_p-ember-power-select.scss#L421-L424
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+
+  @if unitless($ember-power-select-line-height) {
+    /* stylelint-disable-next-line scss/operator-no-newline-after -- There is a conflict with Prettier which will be fixed when we update the linting setup */
+    max-height: #{$ember-power-select-number-of-visible-options *
+      $ember-power-select-line-height}em;
+  } @else {
+    /* stylelint-disable-next-line scss/operator-no-newline-after -- There is a conflict with Prettier which will be fixed when we update the linting setup */
+    max-height: $ember-power-select-number-of-visible-options *
+      $ember-power-select-line-height;
+  }
+
+  .ember-power-select-options {
+    max-height: none;
+  }
+}

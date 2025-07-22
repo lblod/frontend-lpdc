@@ -37,8 +37,8 @@
     <AuLabel for={{concat "house-number" this.id}}>Huisnummer</AuLabel>
     <AuInput
       id={{concat "house-number" this.id}}
-      @value={{this.houseNumber}}
       @disabled={{not this.canUpdateHouseNumber}}
+      value={{this.houseNumber}}
       {{on "input" this.updateHouseNumber}}
     />
   </div>
@@ -47,8 +47,8 @@
     <AuLabel for={{concat "bus" this.id}}>Bus</AuLabel>
     <AuInput
       id={{concat "bus" this.id}}
-      @value={{this.busNumber}}
       @disabled={{not this.canUpdateBusNumber}}
+      value={{this.busNumber}}
       {{on "input" this.updateBusNumber}}
     />
   </div>

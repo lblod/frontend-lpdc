@@ -4,11 +4,13 @@ import ENV from 'frontend-lpdc/config/environment';
 import 'moment';
 import 'moment-timezone';
 import { action } from '@ember/object';
+import { warn } from '@ember/debug';
 
 export default class ApplicationRoute extends Route {
   @service intl;
   @service moment;
   @service session;
+  @service currentSession;
   @service plausible;
   @service toaster;
 
@@ -24,6 +26,8 @@ export default class ApplicationRoute extends Route {
     moment.set('defaultFormat', 'DD MMM YYYY, HH:mm');
 
     this.startAnalytics();
+
+    return this._loadCurrentSession();
   }
 
   startAnalytics() {
@@ -48,5 +52,14 @@ export default class ApplicationRoute extends Route {
       'Fout',
       { timeOut: 30000 }
     );
+  }
+
+  async _loadCurrentSession() {
+    try {
+      await this.currentSession.load();
+    } catch (error) {
+      warn(error, { id: 'current-session-load-failure' });
+      this.router.transitionTo('auth.logout');
+    }
   }
 }

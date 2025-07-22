@@ -29,7 +29,7 @@
           @onChange={{this.handleYourEuropeFilterChange}}>
           Your Europe
         </AuCheckbox>
-        {{#if this.municipalityHasForMunicipalityMergerInstances}}
+        {{#if (and (is-feature-enabled "fusies") this.municipalityHasForMunicipalityMergerInstances)}}
           <AuCheckbox
             @checked={{this.forMunicipalityMerger}}
             @onChange={{this.handleForMunicipalityMergerFilterChange}}>
@@ -82,6 +82,30 @@
           @searchField="label"
           as |thema|>
           {{thema.label}}
+        </PowerSelectMultiple>
+        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+          Aangemaakt door
+        </label>
+        <PowerSelectMultiple
+          @options={{this.creatorOptions}}
+          @selected={{this.creators}}
+          @onChange={{this.handleCreatorsFilterChange}}
+          @searchEnabled={{true}}
+          @searchField="fullName"
+          as |creator|>
+          {{creator.fullName}}
+        </PowerSelectMultiple>
+        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+          Laatst bewerkt door
+        </label>
+        <PowerSelectMultiple
+          @options={{this.lastModifierOptions}}
+          @selected={{this.lastModifiers}}
+          @onChange={{this.handleLastModifiersFilterChange}}
+          @searchEnabled={{true}}
+          @searchField="fullName"
+          as |lastModifier|>
+          {{lastModifier.fullName}}
         </PowerSelectMultiple>
       </div>
       {{#if this.hasActiveFilters}}
@@ -154,7 +178,7 @@
           <tbody>
           <tr>
             <td colspan="100%" class="au-c-data-table__message">
-              <AuLoader @size="small" />
+              <AuLoader @padding="small" />
             </td>
           </tr>
           </tbody>
@@ -181,7 +205,7 @@
               >
                 {{publicService.nameNlOrGeenTitel}}
               </AuLink>
-              {{#if publicService.forMunicipalityMerger}}
+              {{#if (and (is-feature-enabled "fusies") publicService.forMunicipalityMerger)}}
                 <AuPill @skin="success" @size="small" @icon="users-four-of-four">
                   fusie
                 </AuPill>

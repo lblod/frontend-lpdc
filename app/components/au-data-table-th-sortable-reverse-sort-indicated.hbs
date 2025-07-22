@@ -1,4 +1,4 @@
-{{! copied from 2.6.0 version of ember-appuniversum, and switched the nav-down, and nav-up icons }}
+{{! copied from 3.8.0 version of ember-appuniversum, and switched the nav-down, and nav-up icons }}
 
 <span
   class="au-c-data-table__header-title au-c-data-table__header-title--sortable
@@ -6,29 +6,28 @@
 >
   {{this.label}}
   {{#if (eq this.order "desc")}}
-    {{! template-lint-disable no-action no-redundant-role require-button-type require-presentational-children }}
     <button
-      role="button"
-      {{action "inverseSorting"}}
       class="au-c-data-table__sort"
+      type="button"
+      {{on "click" this.inverseSorting}}
     >
       <span class="au-u-hidden-visually">Oplopend sorteren</span>
       <AuIcon @icon="nav-down" />
     </button>
   {{else if (eq this.order "asc")}}
     <button
-      role="button"
-      {{action "inverseSorting"}}
       class="au-c-data-table__sort"
+      type="button"
+      {{on "click" this.inverseSorting}}
     >
       <span class="au-u-hidden-visually">Aflopend sorteren</span>
       <AuIcon @icon="nav-up" />
     </button>
   {{else}}
     <button
-      role="button"
-      {{action "inverseSorting"}}
       class="au-c-data-table__sort"
+      type="button"
+      {{on "click" this.inverseSorting}}
     >
       <span class="au-u-hidden-visually">Sorteren</span>
       <AuIcon @icon="nav-up-down" />

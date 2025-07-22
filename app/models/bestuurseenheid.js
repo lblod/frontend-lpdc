@@ -6,7 +6,7 @@ export default class Bestuurseenheid extends Model {
   @attr alternatieveNaam;
 
   @belongsTo('bestuurseenheid-classificatie-code', {
-    async: true,
+    async: false,
     inverse: null,
   })
   classificatie;

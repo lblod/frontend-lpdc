@@ -21,6 +21,7 @@ import ENV from 'frontend-lpdc/config/environment';
 import { isConceptUpdated } from 'frontend-lpdc/models/public-service';
 import FullyTakeConceptSnapshotOverModalComponent from 'frontend-lpdc/components/fully-take-concept-snapshot-over';
 import ConfirmConvertToInformalModalComponent from 'frontend-lpdc/components/confirm-convert-to-informal-modal';
+import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
 
 const FORM_GRAPHS = {
   formGraph: new NamedNode('http://data.lblod.info/form'),
@@ -36,6 +37,7 @@ export default class DetailsPageComponent extends Component {
   @service('public-service') publicServiceService;
   @service contextService;
 
+  @tracked hasValidationErrors = false;
   @tracked hasUnsavedChanges = false;
   @tracked forceShowErrors = false;
   @tracked form;
@@ -52,6 +54,10 @@ export default class DetailsPageComponent extends Component {
     if (!this.args.readOnly) {
       this.router.on('routeWillChange', this, this.showUnsavedChangesModal);
     }
+  }
+
+  #showToasterErrorMessage(message) {
+    this.toaster.error(message, 'Fout', { timeOut: 30000 });
   }
 
   get isStatusVerzondenAndPublished() {
@@ -193,20 +199,13 @@ export default class DetailsPageComponent extends Component {
 
   @task({ group: 'publicServiceAction' })
   *publishPublicService() {
+    // NOTE (10/04/2025): Before calling this the `publicService` should have
+    // been validated using `this.publicServiceService.validateInstance`,
+    // otherwise incorrect product instances can be published.
     const { publicService } = this.args;
-    const validationErrors = yield this.publicServiceService.validateInstance(
-      publicService
-    );
+    yield this.publicServiceService.publishInstance(publicService);
 
-    if (validationErrors.length > 0) {
-      for (const validationError of validationErrors) {
-        this.toaster.error(validationError.message, 'Fout', { timeOut: 30000 });
-      }
-    } else {
-      yield this.publicServiceService.publishInstance(publicService);
-
-      this.router.transitionTo('public-services');
-    }
+    this.router.transitionTo('public-services');
   }
 
   @task({ group: 'publicServiceAction' })
@@ -250,28 +249,43 @@ export default class DetailsPageComponent extends Component {
     });
     this.forceShowErrors = !isValidForm;
 
+    // Save this form first
     if (this.hasUnsavedChanges) {
       yield this.saveSemanticForm.unlinked().perform();
     }
 
     if (isValidForm) {
-      if (this.args.publicService.reviewStatus) {
-        yield this.modals.open(ConfirmUpToDateTillModal, {
-          confirmUpToDateTillHandler: async () => {
-            await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
-              this.args.publicService
-            );
+      // NOTE (10/04/2025): These checks should be done after the form is
+      // validated. Otherwise, the user gets duplicate error messages when the
+      // currently open form contains an error. One message from the `else`
+      // block below and one from `validateInstance`.
+      const publishErrors = yield this.publicServiceService.validateInstance(
+        this.args.publicService
+      );
+
+      if (publishErrors.length === 0) {
+        if (this.args.publicService.reviewStatus) {
+          yield this.modals.open(ConfirmUpToDateTillModal, {
+            confirmUpToDateTillHandler: async () => {
+              await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
+                this.args.publicService
+              );
+            },
+          });
+        }
+
+        yield this.modals.open(ConfirmSubmitModal, {
+          submitHandler: async () => {
+            await this.publishPublicService.perform();
           },
         });
+      } else {
+        publishErrors.forEach((error) =>
+          this.#showToasterErrorMessage(error.message)
+        );
       }
-
-      yield this.modals.open(ConfirmSubmitModal, {
-        submitHandler: async () => {
-          await this.publishPublicService.perform();
-        },
-      });
     } else {
-      this.toaster.error('Formulier is ongeldig', 'Fout', { timeOut: 30000 });
+      this.#showToasterErrorMessage('Formulier is ongeldig');
     }
   }
 
@@ -310,26 +324,41 @@ export default class DetailsPageComponent extends Component {
 
   @action
   async copyPublicService() {
-    await this.withinUnsavedChangesModal(() => {
-      this.modals.open(ConfirmCopyModal, {
-        copyHandler: async (forMunicipalityMerger) => {
-          const copiedPublicServiceUuid =
-            await this.publicServiceService.copyPublicService(
-              this.args.publicService,
-              forMunicipalityMerger
+    if (isFeatureEnabled('fusies')) {
+      await this.withinUnsavedChangesModal(() => {
+        this.modals.open(ConfirmCopyModal, {
+          copyHandler: async (forMunicipalityMerger) => {
+            const copiedPublicServiceUuid =
+              await this.publicServiceService.copyPublicService(
+                this.args.publicService,
+                forMunicipalityMerger
+              );
+            this.toaster.success(
+              'kopiëren gelukt',
+              'Je kan nu de kopie bewerken.',
+              { timeOut: 10000 }
             );
-          this.toaster.success(
-            'kopiëren gelukt',
-            'Je kan nu de kopie bewerken.',
-            { timeOut: 10000 }
-          );
-          this.router.transitionTo(
-            'public-services.details',
-            copiedPublicServiceUuid
-          );
-        },
+            this.router.transitionTo(
+              'public-services.details',
+              copiedPublicServiceUuid
+            );
+          },
+        });
       });
-    });
+    } else {
+      const copiedPublicServiceUuid =
+        await this.publicServiceService.copyPublicService(
+          this.args.publicService,
+          false
+        );
+      this.toaster.success('kopiëren gelukt', 'Je kan nu de kopie bewerken.', {
+        timeOut: 10000,
+      });
+      this.router.transitionTo(
+        'public-services.details',
+        copiedPublicServiceUuid
+      );
+    }
   }
 
   @action

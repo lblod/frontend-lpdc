@@ -16,6 +16,8 @@ export default class PublicServicesIndexController extends Controller {
   @tracked producttypesIds = [];
   @tracked doelgroepenIds = [];
   @tracked themaIds = [];
+  @tracked creatorIds = [];
+  @tracked lastModifierIds = [];
   serviceNeedsReview = serviceNeedsReview;
 
   get statuses() {
@@ -42,6 +44,18 @@ export default class PublicServicesIndexController extends Controller {
     );
   }
 
+  get creators() {
+    return this.creatorIds.map((creatorId) =>
+      this.creatorOptions.find((option) => option.id === creatorId)
+    );
+  }
+
+  get lastModifiers() {
+    return this.lastModifierIds.map((lastModifierId) =>
+      this.lastModifierOptions.find((option) => option.id === lastModifierId)
+    );
+  }
+
   get publicServices() {
     return this.model['loadPublicServices'].isFinished
       ? this.model['loadPublicServices'].value
@@ -62,6 +76,14 @@ export default class PublicServicesIndexController extends Controller {
 
   get themasOptions() {
     return this.model.themasOptions;
+  }
+
+  get creatorOptions() {
+    return this.model.creatorOptions;
+  }
+
+  get lastModifierOptions() {
+    return this.model.lastModifierOptions;
   }
 
   get isChosenFormInformal() {
@@ -102,7 +124,9 @@ export default class PublicServicesIndexController extends Controller {
       this.statuses.length > 0 ||
       this.producttypes.length > 0 ||
       this.doelgroepen.length > 0 ||
-      this.themas.length > 0
+      this.themas.length > 0 ||
+      this.creators.length > 0 ||
+      this.lastModifiers.length > 0
     );
   }
 
@@ -118,6 +142,8 @@ export default class PublicServicesIndexController extends Controller {
     this.producttypesIds = [];
     this.doelgroepenIds = [];
     this.themaIds = [];
+    this.creatorIds = [];
+    this.lastModifierIds = [];
   }
 
   @restartableTask
@@ -174,6 +200,26 @@ export default class PublicServicesIndexController extends Controller {
   @action
   handleThemasFilterChange(values) {
     this.themaIds = sortByLabel(values).map((pt) => pt.id);
+    this.resetPagination();
+  }
+
+  @action
+  handleCreatorsFilterChange(values) {
+    this.creatorIds = values
+      .sort((a, b) => {
+        return a.fullName.localeCompare(b.fullName);
+      })
+      .map((creator) => creator.id);
+    this.resetPagination();
+  }
+
+  @action
+  handleLastModifiersFilterChange(values) {
+    this.lastModifierIds = values
+      .sort((a, b) => {
+        return a.fullName.localeCompare(b.fullName);
+      })
+      .map((lastModifier) => lastModifier.id);
     this.resetPagination();
   }
 

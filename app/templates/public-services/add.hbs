@@ -152,12 +152,13 @@
         {{else if this.hasResults}}
           <Content.body as |concept|>
             <td>
-              <AuButton
-                @skin="link"
-                {{on "click" (fn this.checkExistingInstance concept.id)}}
+              <AuLink
+                @route="public-services.concept-details"
+                @model={{concept.id}}
+                @query={{hash preview=true}}
               >
                 {{concept.nameNl}}
-              </AuButton>
+              </AuLink>
               {{#if concept.displayConfiguration.isNewConcept}}
                 <AuPill @skin="success">Nieuw</AuPill>
               {{/if}}

@@ -9,13 +9,29 @@
     </Group>
 
     <Group>
-      <AuLink
-        @skin="button"
-        @icon="add"
-        {{on 'click' (perform this.createPublicService @model.concept.id)}}
-      >
-        Voeg toe
-      </AuLink>
+      {{#if this.model.hasExistingInstances}}
+        <AuTooltip @placement="left" as |tooltip|>
+          <AuLink
+            {{tooltip.target}}
+            @route="public-services.existing-instances"
+            @model={{@model.concept.id}}
+            @skin="button"
+          >
+            Bekijk bestaande instanties
+          </AuLink>
+          <tooltip.Content>
+            Er bestaan al instanties voor dit concept.
+          </tooltip.Content>
+        </AuTooltip>
+      {{else}}
+        <AuLink
+          @skin="button"
+          @icon="add"
+          {{on "click" (perform this.createPublicService @model.concept.id)}}
+        >
+          Voeg toe
+        </AuLink>
+      {{/if}}
     </Group>
   </AuToolbar>
 {{else if this.isLinkFlowPreview}}
@@ -34,7 +50,7 @@
       <AuLink
         @skin="button-secondary"
         @icon="link"
-        {{on 'click' (perform this.linkConcept)}}
+        {{on "click" (perform this.linkConcept)}}
       >
         Koppelen
       </AuLink>
@@ -43,19 +59,21 @@
 {{/if}}
 
 <AuToolbar @size="medium" as |Group|>
-  <Group>
+  <Group class="au-u-flex--vertical-center">
     <AuHeading @skin="2">
       {{! template-lint-disable no-triple-curlies}}
       Concept:
       {{{@model.concept.nameNl}}}
     </AuHeading>
+    <AuPill @skin="warning">Toegevoegd</AuPill>
   </Group>
   {{#if this.isConceptLanguageVersionGenerated}}
     <Group>
       <GeneratedContentWarning
         @languageVersion={{@model.languageVersionOfConcept}}
         @conceptName={{@model.concept.nameNl}}
-        @conceptProductId={{@model.concept.productId}}/>
+        @conceptProductId={{@model.concept.productId}}
+      />
     </Group>
   {{/if}}
 </AuToolbar>

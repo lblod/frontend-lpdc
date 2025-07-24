@@ -24,7 +24,6 @@ export default class PublicServicesExistingInstancesController extends Controlle
 
   @action
   removePublicService(uri) {
-    console.log('Removing public service with URI:', uri);
     this.modals.open(ConfirmDeletionModal, {
       deleteHandler: async () => {
         await this.publicServiceService.deletePublicService(uri);

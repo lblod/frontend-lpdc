@@ -84,7 +84,8 @@
     <Content.body as |instance|>
       <td>
         <AuLink @route="public-services.details" @model={{instance.id}}>
-          {{instance.nameNl}}
+          {{!-- template-lint-disable no-triple-curlies --}}
+          {{{instance.nameNl}}}
         </AuLink>
       </td>
       <td>{{moment-format instance.dateCreated "DD-MM-YYYY - HH:mm"}}</td>

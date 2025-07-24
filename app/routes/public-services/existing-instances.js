@@ -24,7 +24,6 @@ export default class PublicServicesExistingInstancesRoute extends Route {
     };
 
     if (sort) {
-      console.log('Sorting by:', sort);
       query.sort = sort;
     }
 

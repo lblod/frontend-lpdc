@@ -157,7 +157,8 @@
                 @model={{concept.id}}
                 @query={{hash preview=true}}
               >
-                {{concept.nameNl}}
+                {{! template-lint-disable no-triple-curlies~}}
+                {{{concept.nameNl}}}
               </AuLink>
               {{#if concept.displayConfiguration.isNewConcept}}
                 <AuPill @skin="success">Nieuw</AuPill>

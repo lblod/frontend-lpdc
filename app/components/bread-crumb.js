@@ -76,6 +76,17 @@ export default class BreadCrumbComponent extends Component {
       ],
     },
     {
+      route: 'public-services.existing-instances',
+      crumbs: [
+        {
+          label: 'Lokale Producten- en Dienstencatalogus',
+          link: 'public-services',
+        },
+        // TODO: this should be the name of the service, but the breadcrumbs system doesn't support that
+        { label: 'Bestaande instanties' },
+      ],
+    },
+    {
       route: 'public-services.concept-details.content',
       crumbs: [
         {

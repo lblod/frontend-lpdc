@@ -92,13 +92,13 @@
         </AuHeading>
       </Group>
       <Group class="au-u-flex au-u-flex--vertical-center">
-        <AuLink
+        <AuButton
           @icon="add"
-          @skin="button"
+          @skin="primary"
           {{on 'click' (perform this.createPublicService undefined)}}
         >
           Volledig nieuw product toevoegen
-        </AuLink>
+        </AuButton>
       </Group>
     </AuToolbar>
 
@@ -152,17 +152,19 @@
         {{else if this.hasResults}}
           <Content.body as |concept|>
             <td>
-              <AuButton
-                @skin="link"
-                {{on "click" (fn this.checkExistingInstance concept.id)}}
+              <AuLink
+                @route="public-services.concept-details"
+                @model={{concept.id}}
+                @query={{hash preview=true}}
               >
-                {{concept.nameNl}}
-              </AuButton>
+                {{! template-lint-disable no-triple-curlies~}}
+                {{{concept.nameNl}}}
+              </AuLink>
               {{#if concept.displayConfiguration.isNewConcept}}
                 <AuPill @skin="success">Nieuw</AuPill>
               {{/if}}
               {{#if concept.displayConfiguration.isInstantiated}}
-                <AuPill @skin="border">Toegevoegd</AuPill>
+                <AuPill @skin="warning">Toegevoegd</AuPill>
               {{/if}}
             </td>
             <td>{{concept.productId}}</td>

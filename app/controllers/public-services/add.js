@@ -6,6 +6,7 @@ import SelectUOrJeModalComponent from 'frontend-lpdc/components/select-u-or-je-m
 import AbstractConceptOverviewController from 'frontend-lpdc/controllers/public-services/abstract-concept-overview-controller';
 
 export default class PublicServicesAddController extends AbstractConceptOverviewController {
+  @service store;
   @service router;
   @service modals;
   @service('public-service') publicServiceService;

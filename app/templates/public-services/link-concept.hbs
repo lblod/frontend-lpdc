@@ -234,6 +234,7 @@
                   @skin="button-secondary"
                   @route="public-services.existing-instances"
                   @model={{concept.id}}
+                  @query={{hash publicServiceId=@model.publicService.id}}
                 >
                   Bekijk bestaande instanties
                 </AuLink>

@@ -12,6 +12,12 @@ export default class PublicServicesExistingInstancesController extends Controlle
   @service('concept') conceptService;
   @tracked sort = '-date-modified';
   @tracked page = 0;
+  queryParams = [{ publicServiceId: 'id' }];
+  publicServiceId = '';
+
+  get isLinkFlowPreview() {
+    return Boolean(this.publicServiceId);
+  }
 
   @dropTask
   *createPublicService(conceptUuid) {
@@ -30,5 +36,16 @@ export default class PublicServicesExistingInstancesController extends Controlle
         this.router.refresh();
       },
     });
+  }
+
+  @dropTask
+  *linkConcept() {
+    const { concept } = this.model;
+    const publicService =
+      yield this.publicServiceService.loadPublicServiceDetails(
+        this.publicServiceId
+      );
+    yield this.publicServiceService.linkConcept(publicService, concept);
+    this.router.replaceWith('public-services.details', publicService.id);
   }
 }

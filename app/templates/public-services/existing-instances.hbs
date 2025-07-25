@@ -30,13 +30,23 @@
     </div>
   </Group>
   <Group>
-    <AuLink
-      @icon="add"
-      @skin="button"
-      {{on "click" (perform this.createPublicService @model.concept.id)}}
-    >
-      Maak nieuwe instantie aan
-    </AuLink>
+    {{#if this.isLinkFlowPreview}}
+      <AuLink
+        @skin="button-secondary"
+        @icon="link"
+        {{on "click" (perform this.linkConcept)}}
+      >
+        Koppelen
+      </AuLink>
+    {{else}}
+      <AuLink
+        @icon="add"
+        @skin="button"
+        {{on "click" (perform this.createPublicService @model.concept.id)}}
+      >
+        Maak nieuwe instantie aan
+      </AuLink>
+    {{/if}}
   </Group>
 </AuToolbar>
 

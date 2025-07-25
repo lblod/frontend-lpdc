@@ -14,10 +14,11 @@ export default class PublicServicesExistingInstancesRoute extends Route {
     },
   };
 
-  async model({ sort, conceptId }) {
+  async model({ sort, page, conceptId }) {
     const concept = await this.conceptService.loadConceptDetails(conceptId);
     const query = {
       'filter[concept][:id:]': concept.id,
+      'page[number]': page,
       'fields[public-services]':
         'name,date-created,date-modified,creator,last-modifier,status',
       include: 'creator,last-modifier,status',

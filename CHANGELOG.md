@@ -1,3 +1,7 @@
+## v0.24.3 (2025-07-29)
+### :rocket: Enhancement
+* [#19](https://github.com/lblod/frontend-lpdc/pull/19) see existing instances before creating new one linked to the same concept [LPDC-1277] ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.24.2 (2025-07-14)
 ### :rocket: Enhancement
 * [#33](https://github.com/lblod/frontend-lpdc/pull/33) creator and last modifier filtering [LPDC-1421] ([@wolfderechter](https://github.com/wolfderechter))

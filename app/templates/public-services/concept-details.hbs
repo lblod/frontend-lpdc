@@ -9,13 +9,30 @@
     </Group>
 
     <Group>
-      <AuLink
-        @skin="button"
-        @icon="add"
-        {{on 'click' (perform this.createPublicService @model.concept.id)}}
-      >
-        Voeg toe
-      </AuLink>
+      {{#if this.model.concept.displayConfiguration.isInstantiated}}
+        <AuTooltip @placement="left" as |tooltip|>
+          <AuLink
+            {{tooltip.target}}
+            @route="public-services.existing-instances"
+            @model={{@model.concept.id}}
+            @query={{hash publicServiceId=null}}
+            @skin="button"
+          >
+            Bekijk bestaande instanties
+          </AuLink>
+          <tooltip.Content>
+            Er bestaan al instanties voor dit concept.
+          </tooltip.Content>
+        </AuTooltip>
+      {{else}}
+        <AuButton
+          @skin="primary"
+          @icon="add"
+          {{on "click" (perform this.createPublicService @model.concept.id)}}
+        >
+          Voeg toe
+        </AuButton>
+      {{/if}}
     </Group>
   </AuToolbar>
 {{else if this.isLinkFlowPreview}}
@@ -31,31 +48,49 @@
     </Group>
 
     <Group>
-      <AuLink
-        @skin="button-secondary"
-        @icon="link"
-        {{on 'click' (perform this.linkConcept)}}
-      >
-        Koppelen
-      </AuLink>
+      {{#if this.model.concept.displayConfiguration.isInstantiated}}
+        <AuLink
+          @skin="button-secondary"
+          @route="public-services.existing-instances"
+          @model={{@model.concept.id}}
+          @query={{hash publicServiceId=this.publicServiceId}}
+        >
+          Bekijk bestaande instanties
+        </AuLink>
+      {{else}}
+        <AuButton
+          @skin="secondary"
+          @icon="link"
+          {{on "click" (perform this.linkConcept)}}
+        >
+          Koppelen
+        </AuButton>
+      {{/if}}
     </Group>
   </AuToolbar>
 {{/if}}
 
 <AuToolbar @size="medium" as |Group|>
-  <Group>
+  <Group class="au-u-flex--vertical-center">
     <AuHeading @skin="2">
       {{! template-lint-disable no-triple-curlies}}
       Concept:
       {{{@model.concept.nameNl}}}
     </AuHeading>
+    {{#if @model.concept.displayConfiguration.isNewConcept}}
+      <AuPill @skin="success">Nieuw</AuPill>
+    {{/if}}
+    {{#if @model.concept.displayConfiguration.isInstantiated}}
+      <AuPill @skin="warning">Toegevoegd</AuPill>
+    {{/if}}
   </Group>
   {{#if this.isConceptLanguageVersionGenerated}}
     <Group>
       <GeneratedContentWarning
         @languageVersion={{@model.languageVersionOfConcept}}
         @conceptName={{@model.concept.nameNl}}
-        @conceptProductId={{@model.concept.productId}}/>
+        @conceptProductId={{@model.concept.productId}}
+      />
     </Group>
   {{/if}}
 </AuToolbar>

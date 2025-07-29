@@ -1,0 +1,137 @@
+{{page-title "Bestaande instanties"}}
+<AuToolbar class="au-u-flex--vertical-start" @border="bottom" @size="large" as |Group|>
+  <Group>
+    <div>
+      <AuHeading @skin="2">
+        Bestaande instanties voor
+      </AuHeading>
+      <AuHeading @skin="2" class="au-u-regular">
+        Concept:
+        {{! template-lint-disable no-triple-curlies }}
+        {{{@model.concept.nameNl}}}
+      </AuHeading>
+      <div class="au-u-margin-top">
+        <AuAlert @skin="info" @icon="circle-info" @size="small">
+          <p class="au-u-bold">
+            Er bestaan al één of meer instanties op basis van dit concept.
+          </p>
+          <p>
+            Vermijd meerdere versies van dezelfde dienstverlening: werk verder
+            op een bestaande instantie, of verwijder de bestaande versie(s).
+          </p>
+          {{#if this.isLinkFlowPreview}}
+            <p>
+              Wil je om een bepaalde reden toch een andere instantie koppelen
+              aan dit concept, klik dan rechtsboven op de knop “Koppelen”.
+            </p>
+          {{else}}
+            <p>
+              Wil je om een bepaalde reden toch een nieuwe versie aanmaken, klik
+              dan rechtsboven op de knop “Maak nieuwe instantie aan”.
+            </p>
+          {{/if}}
+        </AuAlert>
+      </div>
+    </div>
+  </Group>
+  <Group>
+    {{#if this.isLinkFlowPreview}}
+      <AuButton
+        @skin="secondary"
+        @icon="link"
+        {{on "click" (perform this.linkConcept)}}
+      >
+        Koppelen
+      </AuButton>
+    {{else}}
+      <AuButton
+        @icon="add"
+        @skin="primary"
+        {{on "click" (perform this.createPublicService @model.concept.id)}}
+      >
+        Maak nieuwe instantie aan
+      </AuButton>
+    {{/if}}
+  </Group>
+</AuToolbar>
+
+<AuDataTable
+  @content={{this.model.existingInstances}}
+  @sort={{this.sort}}
+  @page={{this.page}}
+  @size={{20}}
+  as |Table|
+>
+  <Table.content as |Content|>
+    <Content.header>
+      <AuDataTableThSortableReverseSortIndicated
+        @field="name"
+        @currentSorting={{this.sort}}
+        @label="Productnaam"
+      />
+      <AuDataTableThSortableReverseSortIndicated
+        @field="dateCreated"
+        @currentSorting={{this.sort}}
+        @label="Aangemaakt op"
+      />
+      <AuDataTableThSortableReverseSortIndicated
+        @field="creator.voornaam"
+        @currentSorting={{this.sort}}
+        @label="Aangemaakt door"
+      />
+      <AuDataTableThSortableReverseSortIndicated
+        @field="dateModified"
+        @currentSorting={{this.sort}}
+        @label="Laatst bewerkt op"
+      />
+      <AuDataTableThSortableReverseSortIndicated
+        @field="lastModifier.voornaam"
+        @currentSorting={{this.sort}}
+        @label="Laatst bewerkt door"
+      />
+      <AuDataTableThSortableReverseSortIndicated
+        @field="status.label"
+        @currentSorting={{this.sort}}
+        @label="Status"
+      />
+      <th></th>
+    </Content.header>
+    <Content.body as |instance|>
+      <td>
+        <AuLink @route="public-services.details" @model={{instance.id}}>
+          {{!-- template-lint-disable no-triple-curlies --}}
+          {{{instance.nameNlOrGeenTitel}}}
+        </AuLink>
+      </td>
+      <td>{{moment-format instance.dateCreated "DD-MM-YYYY - HH:mm"}}</td>
+      <td>
+        {{#if instance.creator}}
+          {{instance.creator.fullName}}
+        {{else}}
+          –
+        {{/if}}
+      </td>
+      <td>{{moment-format instance.dateModified "DD-MM-YYYY - HH:mm"}}</td>
+      <td>
+        {{#if instance.lastModifier}}
+          {{instance.lastModifier.fullName}}
+        {{else}}
+          –
+        {{/if}}
+      </td>
+      <td><Status @uri={{instance.status.uri}} /></td>
+      <td>
+        <AuButton
+          @skin="link"
+          @icon="bin"
+          @alert={{true}}
+          @disabled={{this.delete.isRunning}}
+          @loading={{this.delete.isRunning}}
+          @loadingMessage="Aan het verwijderen"
+          {{on "click" (fn this.removePublicService instance.uri)}}
+        >
+          Verwijderen
+        </AuButton></td>
+    </Content.body>
+  </Table.content>
+</AuDataTable>

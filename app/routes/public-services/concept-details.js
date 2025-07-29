@@ -3,6 +3,7 @@ import { inject as service } from '@ember/service';
 
 export default class PublicServicesConceptDetailsRoute extends Route {
   @service('concept') conceptService;
+  @service store;
 
   async model({ conceptId }) {
     const concept = await this.conceptService.loadConceptDetails(conceptId);

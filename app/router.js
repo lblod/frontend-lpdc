@@ -26,6 +26,11 @@ Router.map(function () {
       this.route('properties', { path: '/eigenschappen' });
     });
     this.route('link-concept', { path: '/:serviceId/koppelen' });
+
+    this.route('existing-instances', {
+      path: '/bestaande-instanties/:conceptId',
+    });
+
     this.route('concept-details', { path: '/concept/:conceptId' }, function () {
       this.route('content', { path: '/inhoud' });
       this.route('properties', { path: '/eigenschappen' });

@@ -17,24 +17,29 @@
         <AuLabel>Toon enkel</AuLabel>
         <AuCheckbox
           @checked={{this.isNewConcept}}
-          @onChange={{this.handleNewConceptFilterChange}}>
+          @onChange={{this.handleNewConceptFilterChange}}
+        >
           Nieuwe producten
         </AuCheckbox>
         <AuCheckbox
           @checked={{this.isNotInstantiated}}
-          @onChange={{this.handleNotInstantiatedConceptFilterChange}}>
+          @onChange={{this.handleNotInstantiatedConceptFilterChange}}
+        >
           Niet toegevoegde producten
         </AuCheckbox>
         <AuCheckbox
           @checked={{this.isYourEurope}}
-          @onChange={{this.handleYourEuropeConceptFilterChange}}>
+          @onChange={{this.handleYourEuropeConceptFilterChange}}
+        >
           Your Europe
         </AuCheckbox>
       </div>
 
       <div>
         <AuLabel>Filter op eigenschappen</AuLabel>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Producttype
         </label>
         <PowerSelectMultiple
@@ -42,10 +47,13 @@
           @selected={{this.producttypes}}
           @onChange={{this.handleProducttypesConceptFilterChange}}
           @searchField="label"
-          as |producttype|>
+          as |producttype|
+        >
           {{producttype.label}}
         </PowerSelectMultiple>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Doelgroepen
         </label>
         <PowerSelectMultiple
@@ -53,10 +61,13 @@
           @selected={{this.doelgroepen}}
           @onChange={{this.handleDoelgroepenConceptFilterChange}}
           @searchField="label"
-          as |doelgroep|>
+          as |doelgroep|
+        >
           {{doelgroep.label}}
         </PowerSelectMultiple>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Thema's
         </label>
         <PowerSelectMultiple
@@ -64,14 +75,19 @@
           @selected={{this.themas}}
           @onChange={{this.handleThemasConceptFilterChange}}
           @searchField="label"
-          as |thema|>
+          as |thema|
+        >
           {{thema.label}}
         </PowerSelectMultiple>
       </div>
 
       {{#if this.hasActiveFilters}}
         <div class="au-u-text-left@medium">
-          <AuButton @icon="cross" @skin="secondary" {{on "click" this.resetFilters}}>
+          <AuButton
+            @icon="cross"
+            @skin="secondary"
+            {{on "click" this.resetFilters}}
+          >
             Wis filters
           </AuButton>
         </div>
@@ -158,9 +174,8 @@
                 @icon="info-circle"
                 @skin="error"
                 @size="small"
-                class="au-u-margin-bottom-none">
-
-              </AuAlert>
+                class="au-u-margin-bottom-none"
+              />
             </td>
           </tr>
         {{else if this.hasResults}}
@@ -169,7 +184,7 @@
               <AuLink
                 @route="public-services.concept-details"
                 @model={{concept.id}}
-                @query={{hash publicServiceId=@model.publicService.id}}
+                @query={{hash publicServiceId=@model.publicService.id preview=null}}
               >
                 {{! template-lint-disable no-triple-curlies~}}
                 {{{concept.nameNl}}}
@@ -178,40 +193,60 @@
                 <AuPill @skin="success">Nieuw</AuPill>
               {{/if}}
               {{#if concept.displayConfiguration.isInstantiated}}
-                <AuPill @skin="border">Toegevoegd</AuPill>
+                <AuPill @skin="warning">Toegevoegd</AuPill>
               {{/if}}
             </td>
             <td>{{concept.productId}}</td>
             <td>{{concept.type.label}}</td>
             <td>
-              <PillList @list={{await concept.targetAudiencesOrderedOnLabel}} as |targetAudience|>
+              <PillList
+                @list={{await concept.targetAudiencesOrderedOnLabel}}
+                as |targetAudience|
+              >
                 <AuPill>
                   {{targetAudience.label}}
                 </AuPill>
               </PillList>
             </td>
             <td>
-              <PillList @list={{await concept.thematicAreasOrderedOnLabel}} as |thematicArea|>
+              <PillList
+                @list={{await concept.thematicAreasOrderedOnLabel}}
+                as |thematicArea|
+              >
                 <AuPill>
                   {{thematicArea.label}}
                 </AuPill>
               </PillList>
             </td>
             <td>
-              <PillList @list={{await concept.publicationMediaOrderedOnLabel}} as |publicationMedium|>
+              <PillList
+                @list={{await concept.publicationMediaOrderedOnLabel}}
+                as |publicationMedium|
+              >
                 <AuPill>
                   {{publicationMedium.label}}
                 </AuPill>
               </PillList>
             </td>
             <td class="u-table-cell-fit-content">
-              <AuLink
-                @icon="link"
-                @skin="button-secondary"
-                {{on 'click' (perform this.linkConcept concept)}}
-              >
-                Koppelen
-              </AuLink>
+              {{#if concept.displayConfiguration.isInstantiated}}
+                <AuLink
+                  @skin="button-secondary"
+                  @route="public-services.existing-instances"
+                  @model={{concept.id}}
+                  @query={{hash publicServiceId=@model.publicService.id}}
+                >
+                  Bekijk bestaande instanties
+                </AuLink>
+              {{else}}
+                <AuButton
+                  @icon="link"
+                  @skin="secondary"
+                  {{on "click" (perform this.linkConcept concept)}}
+                >
+                  Koppelen
+                </AuButton>
+              {{/if}}
             </td>
           </Content.body>
         {{else}}
@@ -222,8 +257,8 @@
                 @icon="info-circle"
                 @skin="info"
                 @size="small"
-                class="au-u-margin-bottom-none">
-              </AuAlert>
+                class="au-u-margin-bottom-none"
+              />
             </td>
           </tr>
         {{/if}}

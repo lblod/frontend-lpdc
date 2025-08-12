@@ -1,4 +1,4 @@
-## v0.24.4 (2025-07-29)
+## v0.24.4 (2025-08-12)
 ### :rocket: Enhancement
 * [#34](https://github.com/lblod/frontend-lpdc/pull/34) [LPDC-1378] Improve url validations ([@kobemertens](https://github.com/kobemertens))
 

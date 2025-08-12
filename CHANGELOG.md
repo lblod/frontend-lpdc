@@ -1,3 +1,7 @@
+## v0.24.4 (2025-08-12)
+### :rocket: Enhancement
+* [#34](https://github.com/lblod/frontend-lpdc/pull/34) [LPDC-1378] Improve url validations ([@kobemertens](https://github.com/kobemertens))
+
 ## v0.24.3 (2025-07-29)
 ### :rocket: Enhancement
 * [#19](https://github.com/lblod/frontend-lpdc/pull/19) see existing instances before creating new one linked to the same concept [LPDC-1277] ([@wolfderechter](https://github.com/wolfderechter))

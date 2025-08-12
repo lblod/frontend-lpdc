@@ -2,6 +2,7 @@ import { warn } from '@ember/debug';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { registerFormFields } from '@lblod/ember-submission-form-fields';
+import { registerCustomValidation } from '@lblod/submission-form-helpers';
 import ConceptSelector from 'frontend-lpdc/components/rdf-form-fields/concept-selector';
 import RichTextEditor from 'frontend-lpdc/components/rdf-form-fields/rich-text-editor';
 import TagSelector from 'frontend-lpdc/components/rdf-form-fields/tag-selector';
@@ -12,6 +13,7 @@ import LpdcDateTimeComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc
 import LpdcRdfInputFieldsConceptSchemeMultiSelectorComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-concept-scheme-multi-selector';
 import LpdcRdfHeadingComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-heading';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
+import isURL from 'validator/lib/isURL.js';
 
 export default class PublicServicesRoute extends Route {
   @service currentSession;
@@ -26,6 +28,7 @@ export default class PublicServicesRoute extends Route {
     super(...arguments);
 
     this.registerCustomFormFields();
+    this.registerCustomValidations();
   }
 
   beforeModel(transition) {
@@ -96,6 +99,18 @@ export default class PublicServicesRoute extends Route {
         edit: LpdcRdfHeadingComponent,
       },
     ]);
+  }
+
+  registerCustomValidations() {
+    registerCustomValidation(
+      'http://lblod.data.gift/vocabularies/forms/WebUriConstraint',
+      (value) =>
+        isURL(value.value, {
+          protocols: ['http', 'https'],
+          require_protocol: true,
+          require_valid_protocol: true,
+        })
+    );
   }
 
   async statutesConcepts() {

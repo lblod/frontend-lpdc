@@ -37,6 +37,7 @@
     "@embroider/addon-shim": "~1.9.0",
     "@embroider/macros": "~1.16.0",
     "@embroider/util": "^1.0.0",
+    "@ember/test-waiters": "^4.1.0",
     "@lblod/ember-mock-login": {
       "ember-concurrency": "$ember-concurrency"
     }
@@ -51,11 +52,11 @@
     "@babel/plugin-proposal-decorators": "^7.24.7",
     "@ember/optional-features": "^2.1.0",
     "@ember/string": "^4.0.0",
-    "@ember/test-helpers": "^3.3.1",
+    "@ember/test-helpers": "^4.0.5",
     "@glimmer/component": "^1.1.2",
     "@glimmer/tracking": "^1.1.2",
     "@lblod/ember-acmidm-login": "^2.3.0",
-    "@lblod/ember-mock-login": "^0.7.0",
+    "@lblod/ember-mock-login": "^0.14.0",
     "@lblod/ember-rdfa-editor": "^10.11.3",
     "@lblod/ember-submission-form-fields": "^2.14.1",
     "@lblod/submission-form-helpers": "^2.2.0",

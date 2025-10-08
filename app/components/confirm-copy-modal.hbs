@@ -12,7 +12,7 @@
       <Group>
         <AuButtonGroup>
           <AuButton
-            @disabled={{(or this.copyForMunicipalityMerger.isRunning this.copyNotForMunicipalityMerger.isRunning)}}
+            @disabled={{or this.copyForMunicipalityMerger.isRunning this.copyNotForMunicipalityMerger.isRunning}}
             @loading={{this.copyForMunicipalityMerger.isRunning}}
             @loadingMessage="Aan het kopiëren"
             {{on "click" (perform this.copyForMunicipalityMerger)}}
@@ -20,7 +20,7 @@
             Ja, bestemd voor een fusie
           </AuButton>
           <AuButton
-            @disabled={{(or this.copyForMunicipalityMerger.isRunning this.copyNotForMunicipalityMerger.isRunning)}}
+            @disabled={{or this.copyForMunicipalityMerger.isRunning this.copyNotForMunicipalityMerger.isRunning}}
             @loading={{this.copyNotForMunicipalityMerger.isRunning}}
             @loadingMessage="Aan het kopiëren"
             {{on "click" (perform this.copyNotForMunicipalityMerger)}}
@@ -32,7 +32,7 @@
       <Group>
         <AuButton
           @skin="naked"
-          @disabled={{(or this.copyForMunicipalityMerger.isRunning this.copyNotForMunicipalityMerger.isRunning)}}
+          @disabled={{or this.copyForMunicipalityMerger.isRunning this.copyNotForMunicipalityMerger.isRunning}}
           {{on "click" this.close}}
           data-test-confirm-copy-modal="cancel-button">
           Annuleer

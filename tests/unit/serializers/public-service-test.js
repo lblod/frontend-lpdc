@@ -6,8 +6,6 @@ module('Unit | Serializer | public service', function (hooks) {
   setupTest(hooks);
 
   test('it only serializes the allowed fields', function (assert) {
-    assert.expect(3);
-
     let store = this.owner.lookup('service:store');
     store.push({
       data: {

@@ -33,7 +33,7 @@ export default class ThreeWayCompareModalComponent extends Component {
         this.args.data.conceptSnapshotLatestForm.sourceNode,
         new NamedNode(this.args.data.field.path),
         undefined,
-        this.args.data.conceptSnapshotLatestForm.graphs.sourceGraph
+        this.args.data.conceptSnapshotLatestForm.graphs.sourceGraph,
       )
       .map((t) => t.object.value)
       .filter((it) => !!it);
@@ -48,7 +48,7 @@ export default class ThreeWayCompareModalComponent extends Component {
         this.args.data.instanceForm.sourceNode,
         new NamedNode(this.args.data.field.path),
         undefined,
-        this.args.data.instanceForm.graphs.sourceGraph
+        this.args.data.instanceForm.graphs.sourceGraph,
       )
       .map((t) => t.object.value)
       .filter((it) => !!it);

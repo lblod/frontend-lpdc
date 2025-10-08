@@ -20,7 +20,7 @@ export default class PublicServicesDetailsRoute extends Route {
 
     const languageVersionOfConcept = concept
       ? await this.conceptService.loadConceptLanguageVersionByConceptUri(
-          concept.uri
+          concept.uri,
         )
       : undefined;
 
@@ -30,7 +30,7 @@ export default class PublicServicesDetailsRoute extends Route {
     const functionallyChangedFields =
       await this.conceptSnapshotService.getFunctionallyChangedFields(
         publicService.versionedSource,
-        publicService.concept.get('hasLatestFunctionalChange')
+        publicService.concept.get('hasLatestFunctionalChange'),
       );
 
     const publicServiceIsPublished =

@@ -36,6 +36,6 @@ function isValidAcmidmConfig(acmidmConfig) {
     (value) =>
       typeof value === 'string' &&
       value.trim() !== '' &&
-      !value.startsWith('{{')
+      !value.startsWith('{{'),
   );
 }

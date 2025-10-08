@@ -26,12 +26,12 @@ export default class PublicServiceService extends Service {
   async updatePublicService(publicService, formData) {
     await this.httpRequest.put(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}`,
       formData,
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
   }
 
@@ -39,31 +39,31 @@ export default class PublicServiceService extends Service {
     let latestSnapshotQueryParams = '';
     if (publicService.reviewStatus) {
       const latestSnapshot = publicService.concept.get(
-        'hasLatestFunctionalChange'
+        'hasLatestFunctionalChange',
       );
       if (latestSnapshot) {
         latestSnapshotQueryParams = `?latestConceptSnapshotId=${encodeURIComponent(
-          latestSnapshot
+          latestSnapshot,
         )}`;
       }
     }
 
     return this.httpRequest.get(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
-      )}/form/${formId}${latestSnapshotQueryParams}`
+        publicService.uri,
+      )}/form/${formId}${latestSnapshotQueryParams}`,
     );
   }
 
   async unlinkConcept(publicService) {
     await this.httpRequest.put(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/ontkoppelen`,
       {},
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
     await this.loadPublicServiceDetails(publicService.id);
   }
@@ -71,13 +71,13 @@ export default class PublicServiceService extends Service {
   async linkConcept(publicService, concept) {
     await this.httpRequest.put(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/koppelen/${encodeURIComponent(concept.uri)}`,
       {},
       {
         test: 'test',
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
     await this.loadPublicServiceDetails(publicService.id);
   }
@@ -85,16 +85,16 @@ export default class PublicServiceService extends Service {
   async confirmUpToDateTillLatestFunctionalChange(publicService) {
     await this.httpRequest.post(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/confirm-up-to-date-till`,
       {
         upToDateTillConceptSnapshotId: publicService.concept.get(
-          'hasLatestFunctionalChange'
+          'hasLatestFunctionalChange',
         ),
       },
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
 
     await this.loadPublicServiceDetails(publicService.id);
@@ -103,12 +103,12 @@ export default class PublicServiceService extends Service {
   async confirmInstanceAlreadyInformal(publicService) {
     await this.httpRequest.post(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/confirm-instance-is-already-informal`,
       {},
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
 
     await this.loadPublicServiceDetails(publicService.id);
@@ -117,12 +117,12 @@ export default class PublicServiceService extends Service {
   async convertInstanceToInformal(publicService) {
     await this.httpRequest.post(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/convert-instance-to-informal`,
       {},
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
 
     await this.loadPublicServiceDetails(publicService.id);
@@ -131,16 +131,16 @@ export default class PublicServiceService extends Service {
   async fullyTakeConceptSnapshotOver(publicService) {
     await this.httpRequest.post(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/fully-take-concept-snapshot-over`,
       {
         conceptSnapshotId: publicService.concept.get(
-          'hasLatestFunctionalChange'
+          'hasLatestFunctionalChange',
         ),
       },
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
 
     await this.loadPublicServiceDetails(publicService.id);
@@ -149,25 +149,25 @@ export default class PublicServiceService extends Service {
   async createPublicService(conceptId) {
     const responseBody = await this.httpRequest.post(
       '/lpdc-management/public-services',
-      conceptId ? { conceptId: conceptId } : {}
+      conceptId ? { conceptId: conceptId } : {},
     );
     return responseBody.data.id;
   }
 
   async deletePublicService(publicServiceId) {
     await this.httpRequest.delete(
-      `/lpdc-management/public-services/${encodeURIComponent(publicServiceId)}`
+      `/lpdc-management/public-services/${encodeURIComponent(publicServiceId)}`,
     );
   }
 
   async copyPublicService(publicService, forMunicipalityMerger) {
     const responseBody = await this.httpRequest.post(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/copy`,
       {
         forMunicipalityMerger: forMunicipalityMerger,
-      }
+      },
     );
     return responseBody.data.id;
   }
@@ -175,12 +175,12 @@ export default class PublicServiceService extends Service {
   async reopenPublicService(publicService) {
     await this.httpRequest.put(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/reopen`,
       {},
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
     await this.loadPublicServiceDetails(publicService.id);
   }
@@ -188,24 +188,24 @@ export default class PublicServiceService extends Service {
   async validateInstance(publicService) {
     return await this.httpRequest.put(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/validate-for-publish`,
       {},
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
   }
 
   async publishInstance(publicService) {
     await this.httpRequest.put(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
+        publicService.uri,
       )}/publish`,
       {},
       {
         'instance-version': moment(publicService.dateModified).toISOString(),
-      }
+      },
     );
     await this.loadPublicServiceDetails(publicService.id);
   }
@@ -213,8 +213,8 @@ export default class PublicServiceService extends Service {
   async isPublished(publicService) {
     const response = await this.httpRequest.get(
       `/lpdc-management/public-services/${encodeURIComponent(
-        publicService.uri
-      )}/is-published`
+        publicService.uri,
+      )}/is-published`,
     );
     return response?.isPublished;
   }

@@ -14,7 +14,7 @@ export default class ContextService extends Service {
 
   findParentContextWithContract(aContract) {
     return this.parentContexts.find(
-      (pc) => typeof pc[aContract] === 'function'
+      (pc) => typeof pc[aContract] === 'function',
     );
   }
 }

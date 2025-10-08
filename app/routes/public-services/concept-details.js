@@ -10,7 +10,7 @@ export default class PublicServicesConceptDetailsRoute extends Route {
 
     const languageVersionOfConcept =
       await this.conceptService.loadConceptLanguageVersionByConceptUri(
-        concept.uri
+        concept.uri,
       );
 
     return {

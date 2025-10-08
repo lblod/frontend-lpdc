@@ -11,13 +11,13 @@ export default class PublicServicesLinkConceptRoute extends AbstractConceptOverv
   async model(params) {
     const publicService =
       await this.publicServiceService.loadPublicServiceDetails(
-        params.serviceId
+        params.serviceId,
       );
 
     if (hasConcept(publicService)) {
       return this.router.replaceWith(
         'public-services.details',
-        publicService.id
+        publicService.id,
       );
     }
 

@@ -53,7 +53,7 @@ export default class SelectWithCreateComponent extends SimpleInputFieldComponent
   *loadOptions() {
     const field = this.storeOptions.path.value.split('http://schema.org/')[1];
     this.options = yield this.httpRequest.get(
-      `/lpdc-management/contact-info-options/${field}`
+      `/lpdc-management/contact-info-options/${field}`,
     );
   }
 

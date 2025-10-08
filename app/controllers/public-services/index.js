@@ -22,37 +22,37 @@ export default class PublicServicesIndexController extends Controller {
 
   get statuses() {
     return this.statusIds.map((statusId) =>
-      this.statusesOptions.find((option) => option.id === statusId)
+      this.statusesOptions.find((option) => option.id === statusId),
     );
   }
 
   get doelgroepen() {
     return this.doelgroepenIds.map((doelgroepId) =>
-      this.doelgroepenOptions.find((option) => option.id === doelgroepId)
+      this.doelgroepenOptions.find((option) => option.id === doelgroepId),
     );
   }
 
   get producttypes() {
     return this.producttypesIds.map((producttypeId) =>
-      this.producttypesOptions.find((option) => option.id === producttypeId)
+      this.producttypesOptions.find((option) => option.id === producttypeId),
     );
   }
 
   get themas() {
     return this.themaIds.map((themaId) =>
-      this.themasOptions.find((option) => option.id === themaId)
+      this.themasOptions.find((option) => option.id === themaId),
     );
   }
 
   get creators() {
     return this.creatorIds.map((creatorId) =>
-      this.creatorOptions.find((option) => option.id === creatorId)
+      this.creatorOptions.find((option) => option.id === creatorId),
     );
   }
 
   get lastModifiers() {
     return this.lastModifierIds.map((lastModifierId) =>
-      this.lastModifierOptions.find((option) => option.id === lastModifierId)
+      this.lastModifierOptions.find((option) => option.id === lastModifierId),
     );
   }
 

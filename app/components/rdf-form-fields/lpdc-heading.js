@@ -30,13 +30,13 @@ export default class LpdcRdfHeadingComponent extends Component {
       formGenerator.getSourceNode('current'),
       new NamedNode(this.args.field.options.path),
       undefined,
-      formGenerator.getGraphs().metaGraph
+      formGenerator.getGraphs().metaGraph,
     ).length;
     const countConceptSnapshotLatest = this.args.formStore.match(
       formGenerator.getSourceNode('latest'),
       new NamedNode(this.args.field.options.path),
       undefined,
-      formGenerator.getGraphs().metaGraph
+      formGenerator.getGraphs().metaGraph,
     ).length;
 
     return (
@@ -49,10 +49,10 @@ export default class LpdcRdfHeadingComponent extends Component {
     const dutchLanguageVariant = this.args.formStore.match(
       undefined,
       new NamedNode(
-        'https://productencatalogus.data.vlaanderen.be/ns/ipdc-lpdc#dutchLanguageVariant'
+        'https://productencatalogus.data.vlaanderen.be/ns/ipdc-lpdc#dutchLanguageVariant',
       ),
       undefined,
-      this.args.formStore.sourceGraph
+      this.args.formStore.sourceGraph,
     )[0].object.value;
     const languageVersion =
       dutchLanguageVariant === 'nl-be-x-informal' ? 'nl/informeel' : 'nl';
@@ -60,14 +60,14 @@ export default class LpdcRdfHeadingComponent extends Component {
       undefined,
       new NamedNode('http://schema.org/productID'),
       undefined,
-      this.args.formStore.sourceGraph
+      this.args.formStore.sourceGraph,
     )[0].object.value;
 
     const currentConceptSnapshot = getUUIDFromUri(
-      this.getConceptSnapshotIri('current')
+      this.getConceptSnapshotIri('current'),
     );
     const latestConceptSnapshot = getUUIDFromUri(
-      this.getConceptSnapshotIri('latest')
+      this.getConceptSnapshotIri('latest'),
     );
 
     return `${ENV.ipdcUrl}/${languageVersion}/concept/${productId}/revisie/vergelijk?revisie1=${currentConceptSnapshot}&revisie2=${latestConceptSnapshot}`;
@@ -81,7 +81,7 @@ export default class LpdcRdfHeadingComponent extends Component {
           ? EXT('comparisonSourceCurrent')
           : EXT('comparisonSourceLatest'),
         undefined,
-        this.args.formStore.metaGraph
+        this.args.formStore.metaGraph,
       )
       .map(
         (t) =>
@@ -89,10 +89,10 @@ export default class LpdcRdfHeadingComponent extends Component {
             t.object,
             RDF('type'),
             new NamedNode(
-              'https://productencatalogus.data.vlaanderen.be/ns/ipdc-lpdc#ConceptualPublicServiceSnapshot'
+              'https://productencatalogus.data.vlaanderen.be/ns/ipdc-lpdc#ConceptualPublicServiceSnapshot',
             ),
-            this.args.formStore.metaGraph
-          )[0]
+            this.args.formStore.metaGraph,
+          )[0],
       )
       .filter((it) => !!it)[0].subject.value;
   }

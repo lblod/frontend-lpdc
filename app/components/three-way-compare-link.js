@@ -14,7 +14,7 @@ export default class ThreeWayCompareLinkComponent extends Component {
   @tracked isConceptTakenOver = false;
 
   formGenerator = new ThreeWayComparisonFormGenerator(
-    this.args.originalStoreOptions
+    this.args.originalStoreOptions,
   );
 
   constructor() {
@@ -49,12 +49,12 @@ export default class ThreeWayCompareLinkComponent extends Component {
     const currentSnapshotValues =
       this.formGenerator.getSortedLiteralValuesForPath(
         sourceNodeCurrent,
-        new NamedNode(this.args.field.path)
+        new NamedNode(this.args.field.path),
       );
     const latestSnapshotValues =
       this.formGenerator.getSortedLiteralValuesForPath(
         sourceNodeLatest,
-        new NamedNode(this.args.field.path)
+        new NamedNode(this.args.field.path),
       );
 
     const sourceAndLatestExistButContentDifferent =

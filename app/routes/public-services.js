@@ -109,7 +109,7 @@ export default class PublicServicesRoute extends Route {
           protocols: ['http', 'https'],
           require_protocol: true,
           require_valid_protocol: true,
-        })
+        }),
     );
   }
 
@@ -151,7 +151,7 @@ export default class PublicServicesRoute extends Route {
 
   async lastModifierConcepts() {
     return await this.httpRequest.get(
-      `/lpdc-management/last-modifier-options/`
+      `/lpdc-management/last-modifier-options/`,
     );
   }
 

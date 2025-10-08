@@ -30,7 +30,7 @@ export default class PublicServicesConceptDetailsController extends Controller {
   async hideNewConceptMessage() {
     try {
       await this.conceptService.removeIsNewConceptFlag(
-        this.model.concept.displayConfiguration
+        this.model.concept.displayConfiguration,
       );
       await this.conceptService.loadConceptDetails(this.model.concept.id);
     } catch (error) {
@@ -52,7 +52,7 @@ export default class PublicServicesConceptDetailsController extends Controller {
     const { concept } = this.model;
     const publicService =
       yield this.publicServiceService.loadPublicServiceDetails(
-        this.publicServiceId
+        this.publicServiceId,
       );
     yield this.publicServiceService.linkConcept(publicService, concept);
     this.router.replaceWith('public-services.details', publicService.id);

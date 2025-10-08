@@ -114,7 +114,7 @@ export default class BreadCrumbComponent extends Component {
 
   get crumbsForRoute() {
     const results = this.bread.filter(
-      (value) => value.route === this.router.currentRouteName
+      (value) => value.route === this.router.currentRouteName,
     );
     if (results.length <= 0) return [];
     return results[0].crumbs;

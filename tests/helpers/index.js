@@ -44,7 +44,7 @@ function createMockService(context, service, classBody) {
   class Store extends Service {}
 
   Object.entries(classBody).forEach(
-    ([key, value]) => (Store.prototype[key] = value)
+    ([key, value]) => (Store.prototype[key] = value),
   );
   context.owner.register(service, Store);
 }

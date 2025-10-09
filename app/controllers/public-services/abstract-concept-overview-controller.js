@@ -16,19 +16,19 @@ export default class AbstractConceptOverviewController extends Controller {
 
   get doelgroepen() {
     return this.doelgroepenIds.map((doelgroepId) =>
-      this.doelgroepenOptions.find((option) => option.id === doelgroepId)
+      this.doelgroepenOptions.find((option) => option.id === doelgroepId),
     );
   }
 
   get producttypes() {
     return this.producttypesIds.map((producttypeId) =>
-      this.producttypesOptions.find((option) => option.id === producttypeId)
+      this.producttypesOptions.find((option) => option.id === producttypeId),
     );
   }
 
   get themas() {
     return this.themaIds.map((themaId) =>
-      this.themasOptions.find((option) => option.id === themaId)
+      this.themasOptions.find((option) => option.id === themaId),
     );
   }
 

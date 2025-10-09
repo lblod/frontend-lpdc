@@ -41,33 +41,33 @@ export default class AddressSelectorComponent extends InputFieldComponent {
       this.storeOptions.sourceNode,
       undefined,
       undefined,
-      undefined
+      undefined,
     );
 
     this.initialObjectMunicipality = triples.find(
-      (triple) => triple.predicate.value === predicates.municipality
+      (triple) => triple.predicate.value === predicates.municipality,
     )?.object;
     this.municipality = this.initialObjectMunicipality?.value;
     this.initialObjectPostcode = triples.find(
-      (triple) => triple.predicate.value === predicates.postcode
+      (triple) => triple.predicate.value === predicates.postcode,
     )?.object;
     this.initialObjectStreet = triples.find(
-      (triple) => triple.predicate.value === predicates.street
+      (triple) => triple.predicate.value === predicates.street,
     )?.object;
     this.street = this.initialObjectStreet?.value;
     this.initialObjectHouseNumber = triples.find(
-      (triple) => triple.predicate.value === predicates.houseNumber
+      (triple) => triple.predicate.value === predicates.houseNumber,
     )?.object;
     this.houseNumber = this.initialObjectHouseNumber?.value;
     this.initialObjectBusNumber = triples.find(
-      (triple) => triple.predicate.value === predicates.busNumber
+      (triple) => triple.predicate.value === predicates.busNumber,
     )?.object;
     this.busNumber = this.initialObjectBusNumber?.value;
     this.initialObjectCountry = triples.find(
-      (triple) => triple.predicate.value === predicates.country
+      (triple) => triple.predicate.value === predicates.country,
     )?.object;
     this.initialObjectAdresId = triples.find(
-      (triple) => triple.predicate.value === predicates.hasAdresId
+      (triple) => triple.predicate.value === predicates.hasAdresId,
     )?.object;
   }
 
@@ -96,10 +96,10 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     const isMunicipalityMerger = this.args.formStore.match(
       undefined,
       new NamedNode(
-        'https://productencatalogus.data.vlaanderen.be/ns/ipdc-lpdc#forMunicipalityMerger'
+        'https://productencatalogus.data.vlaanderen.be/ns/ipdc-lpdc#forMunicipalityMerger',
       ),
       undefined,
-      this.args.formStore.sourceGraph
+      this.args.formStore.sourceGraph,
     )[0].object.value;
 
     return isMunicipalityMerger === '1';
@@ -166,7 +166,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
         : '';
       const queryParams = `municipality=${this.municipality}&street=${this.street}&houseNumber=${this.houseNumber}${busNumberQueryParam}`;
       return this.httpRequest.get(
-        `/lpdc-management/address/validate?${queryParams}`
+        `/lpdc-management/address/validate?${queryParams}`,
       );
     } else {
       return {};
@@ -177,7 +177,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
   *searchMunicipalities(searchString) {
     yield timeout(250);
     return this.httpRequest.get(
-      `/lpdc-management/address/municipalities?search=${searchString.trim()}`
+      `/lpdc-management/address/municipalities?search=${searchString.trim()}`,
     );
   }
 
@@ -186,7 +186,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     yield timeout(250);
     const trimmedSearchString = searchString.trim();
     return this.httpRequest.get(
-      `/lpdc-management/address/streets?municipality=${this.municipality}&search=${trimmedSearchString}`
+      `/lpdc-management/address/streets?municipality=${this.municipality}&search=${trimmedSearchString}`,
     );
   }
 
@@ -195,7 +195,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     this.updateField(
       predicates.municipality,
       newObject,
-      this.initialObjectMunicipality
+      this.initialObjectMunicipality,
     );
     this.initialObjectMunicipality = newObject;
   }
@@ -205,7 +205,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     this.updateField(
       predicates.postcode,
       newObject,
-      this.initialObjectPostcode
+      this.initialObjectPostcode,
     );
     this.initialObjectPostcode = newObject;
   }
@@ -221,7 +221,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     this.updateField(
       predicates.houseNumber,
       newObject,
-      this.initialObjectHouseNumber
+      this.initialObjectHouseNumber,
     );
     this.initialObjectHouseNumber = newObject;
   }
@@ -231,7 +231,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     this.updateField(
       predicates.busNumber,
       newObject,
-      this.initialObjectBusNumber
+      this.initialObjectBusNumber,
     );
     this.initialObjectBusNumber = newObject;
   }
@@ -249,7 +249,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     this.updateField(
       predicates.hasAdresId,
       newObject,
-      this.initialObjectAdresId
+      this.initialObjectAdresId,
     );
     this.initialObjectAdresId = newObject;
   }

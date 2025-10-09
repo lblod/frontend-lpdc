@@ -43,7 +43,7 @@ export default class PublicServicesExistingInstancesController extends Controlle
     const { concept } = this.model;
     const publicService =
       yield this.publicServiceService.loadPublicServiceDetails(
-        this.publicServiceId
+        this.publicServiceId,
       );
     yield this.publicServiceService.linkConcept(publicService, concept);
     this.router.replaceWith('public-services.details', publicService.id);

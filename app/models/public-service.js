@@ -79,7 +79,7 @@ export default class PublicServiceModel extends Model {
     return this.publicationMedia.some(
       (medium) =>
         medium.uri ===
-        'https://productencatalogus.data.vlaanderen.be/id/concept/PublicatieKanaal/YourEurope'
+        'https://productencatalogus.data.vlaanderen.be/id/concept/PublicatieKanaal/YourEurope',
     );
   }
 
@@ -89,7 +89,7 @@ export default class PublicServiceModel extends Model {
     }
     const nameNl = this.name.find((name) => name.language === 'nl')?.content;
     const nl = this.name.find((name) =>
-      name.language.startsWith('nl')
+      name.language.startsWith('nl'),
     )?.content;
     const fallBack = this.name[0].content;
     return nameNl ?? nl ?? fallBack;

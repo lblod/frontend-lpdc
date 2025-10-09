@@ -40,7 +40,7 @@ module('Integration | Component | reminder-u-or-je-choice', function (hooks) {
   test('when make choice is clicked then openSelectModal function is called', async function (assert) {
     this.openSelectModalFn = () => assert.step('make choice later clicked');
     await render(
-      hbs`<ReminderUOrJeChoice @chosenForm={{undefined}} @openSelectModal={{this.openSelectModalFn}} />`
+      hbs`<ReminderUOrJeChoice @chosenForm={{undefined}} @openSelectModal={{this.openSelectModalFn}} />`,
     );
 
     assert.dom(ELEMENTS.NO_CHOICE_ALERT).exists();

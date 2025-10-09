@@ -54,7 +54,7 @@ export default class ConceptualPublicServiceModel extends Model {
     }
     const nameNl = this.name.find((name) => name.language === 'nl')?.content;
     const nl = this.name.find((name) =>
-      name.language.startsWith('nl')
+      name.language.startsWith('nl'),
     )?.content;
     const fallBack = this.name[0].content;
     return nameNl ?? nl ?? fallBack;

@@ -132,7 +132,7 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
       this.hasBeenFocused = true;
       const htmlContent = this.editorController.htmlContent;
       const hasTextContent = Boolean(
-        this.editorController.mainEditorState.doc.textContent
+        this.editorController.mainEditorState.doc.textContent,
       );
       const editorValue = hasTextContent ? stripNbspEntities(htmlContent) : '';
 
@@ -181,8 +181,8 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
           domParser.parseFromString(this.value, 'text/html'),
           {
             preserveWhitespace: true,
-          }
-        )
+          },
+        ),
       );
       tr.setSelection(Selection.atEnd(tr.doc));
       editorController.editor.mainView.dispatch(tr);

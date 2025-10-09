@@ -9,13 +9,13 @@ export default class ConceptSnapshotService extends Service {
 
   async getFunctionallyChangedFields(
     currentConceptSnapshot,
-    latestConceptSnapshot
+    latestConceptSnapshot,
   ) {
     if (currentConceptSnapshot && latestConceptSnapshot) {
       return this.httpRequest.get(
         `/lpdc-management/concept-snapshot/compare?snapshot1=${encodeURIComponent(
-          currentConceptSnapshot
-        )}&snapshot2=${encodeURIComponent(latestConceptSnapshot)}`
+          currentConceptSnapshot,
+        )}&snapshot2=${encodeURIComponent(latestConceptSnapshot)}`,
       );
     }
   }

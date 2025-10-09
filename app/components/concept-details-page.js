@@ -36,7 +36,7 @@ export default class DetailsPageComponent extends Component {
       source: sourceTtl,
     } = yield this.conceptService.getConceptForm(
       this.args.concept.uri,
-      this.args.formId
+      this.args.formId,
     );
 
     let formStore = new ForkingStore();
@@ -48,7 +48,7 @@ export default class DetailsPageComponent extends Component {
       undefined,
       RDF('type'),
       FORM('Form'),
-      FORM_GRAPHS.formGraph
+      FORM_GRAPHS.formGraph,
     );
 
     this.form = form;

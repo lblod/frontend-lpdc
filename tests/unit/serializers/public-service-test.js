@@ -6,8 +6,6 @@ module('Unit | Serializer | public service', function (hooks) {
   setupTest(hooks);
 
   test('it only serializes the allowed fields', function (assert) {
-    assert.expect(3);
-
     let store = this.owner.lookup('service:store');
     store.push({
       data: {
@@ -32,23 +30,23 @@ module('Unit | Serializer | public service', function (hooks) {
 
     let serializedRecord = record.serialize();
     let serializedAttributeNames = Object.keys(
-      serializedRecord.data.attributes
+      serializedRecord.data.attributes,
     );
     let serializedRelationshipNames = Object.keys(
-      serializedRecord.data.relationships
+      serializedRecord.data.relationships,
     );
 
     for (let attribute of serializedAttributeNames) {
       assert.true(
         ALLOWED_FIELDS.includes(attribute),
-        'The attribute is allowed to be serialized'
+        'The attribute is allowed to be serialized',
       );
     }
 
     for (let relationship of serializedRelationshipNames) {
       assert.true(
         ALLOWED_FIELDS.includes(relationship),
-        'The relationship is allowed to be serialized'
+        'The relationship is allowed to be serialized',
       );
     }
   });

@@ -120,11 +120,11 @@ export default class ConceptSelector extends InputFieldComponent {
   updateSelection(newValues) {
     if (this.isMultiSelect) {
       this.updateSelectionInStore(
-        newValues.map((newValue) => ({ uri: newValue }))
+        newValues.map((newValue) => ({ uri: newValue })),
       );
     } else {
       this.updateSelectionInStore(
-        newValues[0] ? { uri: newValues[0] } : undefined
+        newValues[0] ? { uri: newValues[0] } : undefined,
       );
     }
   }
@@ -136,7 +136,7 @@ export default class ConceptSelector extends InputFieldComponent {
     // Cleanup old value(s) in the store
     const matches = triplesForPath(this.storeOptions, true).values;
     matches.forEach((m) =>
-      removeDatasetForSimpleFormValue(m, this.storeOptions)
+      removeDatasetForSimpleFormValue(m, this.storeOptions),
     );
 
     if (this.isMultiSelect) {
@@ -149,7 +149,7 @@ export default class ConceptSelector extends InputFieldComponent {
       if (newSelection) {
         updateSimpleFormValue(
           this.storeOptions,
-          new NamedNode(newSelection.uri)
+          new NamedNode(newSelection.uri),
         );
       }
     }

@@ -15,22 +15,22 @@ export default class ThreeWayComparisonFormGenerator {
     const instanceForm = this.createFormStoreForField(
       originalFormFieldUri,
       'Instantie',
-      metaTriples
+      metaTriples,
     );
     const conceptSnapshotCurrent = this.createFormStoreForField(
       originalFormFieldUri,
       `Concept waarop instantie is gebaseerd (${this.findGeneratedAtDateOfConceptSnapshot(
-        'current'
+        'current',
       )})`,
-      metaTriples
+      metaTriples,
     );
 
     const conceptSnapshotLatest = this.createFormStoreForField(
       originalFormFieldUri,
       `Meest recente concept (${this.findGeneratedAtDateOfConceptSnapshot(
-        'latest'
+        'latest',
       )})`,
-      metaTriples
+      metaTriples,
     );
 
     return {
@@ -61,7 +61,7 @@ export default class ThreeWayComparisonFormGenerator {
   getSortedLiteralValuesForPath(
     sourceNode,
     path,
-    graph = this.getGraphs().metaGraph
+    graph = this.getGraphs().metaGraph,
   ) {
     return this.storeOptions.store
       .match(sourceNode, path, undefined, graph)
@@ -74,7 +74,7 @@ export default class ThreeWayComparisonFormGenerator {
       undefined,
       RDF('type'),
       FORM('Form'),
-      this.storeOptions.formGraph
+      this.storeOptions.formGraph,
     );
   }
 
@@ -85,7 +85,7 @@ export default class ThreeWayComparisonFormGenerator {
         ? EXT('comparisonSourceCurrent')
         : EXT('comparisonSourceLatest'),
       undefined,
-      this.storeOptions.metaGraph
+      this.storeOptions.metaGraph,
     );
   }
 
@@ -121,7 +121,7 @@ export default class ThreeWayComparisonFormGenerator {
             triple.subject,
             triple.predicate,
             new Literal(newFieldTitle),
-            triple.graph
+            triple.graph,
           );
         }
         return triple;
@@ -133,19 +133,19 @@ export default class ThreeWayComparisonFormGenerator {
         formIri,
         RDF('type'),
         FORM('Form'),
-        this.storeOptions.formGraph
+        this.storeOptions.formGraph,
       ),
       new Statement(
         formIri,
         RDF('type'),
         FORM('TopLevelForm'),
-        this.storeOptions.formGraph
+        this.storeOptions.formGraph,
       ),
       new Statement(
         formIri,
         FORM('includes'),
         fieldIri,
-        this.storeOptions.formGraph
+        this.storeOptions.formGraph,
       ),
     ];
 
@@ -153,25 +153,25 @@ export default class ThreeWayComparisonFormGenerator {
       fieldIri,
       SHACL('group'),
       undefined,
-      this.storeOptions.formGraph
+      this.storeOptions.formGraph,
     );
 
     const group = this.storeOptions.store.match(
       groupIri,
       RDF('type'),
       undefined,
-      this.storeOptions.formGraph
+      this.storeOptions.formGraph,
     );
 
     const validationIds = this.storeOptions.store.match(
       fieldIri,
       FORM('validations'),
       undefined,
-      this.storeOptions.formGraph
+      this.storeOptions.formGraph,
     );
 
     const validations = validationIds.flatMap((v) =>
-      this.storeOptions.store.match(v.object, undefined, undefined, undefined)
+      this.storeOptions.store.match(v.object, undefined, undefined, undefined),
     );
 
     return {
@@ -186,7 +186,7 @@ export default class ThreeWayComparisonFormGenerator {
       undefined,
       undefined,
       undefined,
-      this.storeOptions.sourceGraph
+      this.storeOptions.sourceGraph,
     );
 
     const conceptSnapshotSource = metaTriples.map(
@@ -195,8 +195,8 @@ export default class ThreeWayComparisonFormGenerator {
           t.subject,
           t.predicate,
           t.object,
-          this.storeOptions.sourceGraph
-        )
+          this.storeOptions.sourceGraph,
+        ),
     );
     return [...source, ...conceptSnapshotSource];
   }
@@ -206,7 +206,7 @@ export default class ThreeWayComparisonFormGenerator {
       undefined,
       undefined,
       undefined,
-      this.storeOptions.metaGraph
+      this.storeOptions.metaGraph,
     );
   }
 
@@ -218,15 +218,15 @@ export default class ThreeWayComparisonFormGenerator {
           ? EXT('comparisonSourceCurrent')
           : EXT('comparisonSourceLatest'),
         undefined,
-        this.storeOptions.metaGraph
+        this.storeOptions.metaGraph,
       )
       .map((t) =>
         this.storeOptions.store.any(
           t.object,
           PROV('generatedAtTime'),
           undefined,
-          this.storeOptions.metaGraph
-        )
+          this.storeOptions.metaGraph,
+        ),
       )
       .filter((it) => !!it)[0].value;
 

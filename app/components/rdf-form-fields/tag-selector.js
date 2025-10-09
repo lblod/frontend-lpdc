@@ -51,7 +51,7 @@ export default class TagSelectorComponent extends InputFieldComponent {
     }
 
     let tagAlreadyExists = this.selectedTags.some(
-      (tagLiteral) => tagLiteral.value === term.trim()
+      (tagLiteral) => tagLiteral.value === term.trim(),
     );
 
     return !tagAlreadyExists;
@@ -64,7 +64,7 @@ export default class TagSelectorComponent extends InputFieldComponent {
   @action
   updateSelection(newSelectionValues) {
     this.updateStore(
-      newSelectionValues.map((value) => new Literal(value, 'nl'))
+      newSelectionValues.map((value) => new Literal(value, 'nl')),
     );
   }
 
@@ -72,7 +72,7 @@ export default class TagSelectorComponent extends InputFieldComponent {
     // Cleanup old value(s) in the store
     const matches = triplesForPath(this.storeOptions, true).values;
     matches.forEach((m) =>
-      removeDatasetForSimpleFormValue(m, this.storeOptions)
+      removeDatasetForSimpleFormValue(m, this.storeOptions),
     );
 
     if (newSelection.length > 0) {

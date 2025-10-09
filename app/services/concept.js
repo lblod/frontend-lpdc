@@ -17,16 +17,16 @@ export default class ConceptService extends Service {
   async getConceptForm(serviceId, formId) {
     return this.httpRequest.get(
       `/lpdc-management/conceptual-public-services/${encodeURIComponent(
-        serviceId
-      )}/form/${formId}`
+        serviceId,
+      )}/form/${formId}`,
     );
   }
 
   async loadConceptLanguageVersionByConceptUri(conceptUri) {
     const responseBody = await this.httpRequest.get(
       `/lpdc-management/conceptual-public-services/${encodeURIComponent(
-        conceptUri
-      )}/dutch-language-version`
+        conceptUri,
+      )}/dutch-language-version`,
     );
     return responseBody.languageVersion;
   }
@@ -91,8 +91,8 @@ export default class ConceptService extends Service {
   async removeIsNewConceptFlag(conceptDisplayConfiguration) {
     await this.httpRequest.put(
       `/lpdc-management/concept-display-configuration/${encodeURIComponent(
-        conceptDisplayConfiguration.uri
-      )}/remove-is-new-flag`
+        conceptDisplayConfiguration.uri,
+      )}/remove-is-new-flag`,
     );
   }
 }

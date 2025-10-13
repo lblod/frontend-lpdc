@@ -1,6 +1,6 @@
-## v0.24.4 (2025-08-12)
+## v0.24.5 (2025-10-13)
 ### :rocket: Enhancement
-* [#34](https://github.com/lblod/frontend-lpdc/pull/34) [LPDC-1378] Improve url validations ([@kobemertens](https://github.com/kobemertens))
+* [#35](https://github.com/lblod/frontend-lpdc/pull/35) [LPDC-1441] upgrade to ember v5 ([@wolfderechter](https://github.com/wolfderechter))
 
 ## v0.24.3 (2025-07-29)
 ### :rocket: Enhancement

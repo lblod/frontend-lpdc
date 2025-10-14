@@ -1,3 +1,8 @@
+## v0.25.0 (2025-10-14)
+
+#### :rocket: Enhancement
+* [#36](https://github.com/lblod/frontend-lpdc/pull/36) [LPDC-1074] Always open rich text editor links in a new window ([@Windvis](https://github.com/Windvis))
+
 ## v0.24.5 (2025-10-13)
 ### :rocket: Enhancement
 * [#35](https://github.com/lblod/frontend-lpdc/pull/35) [LPDC-1441] upgrade to ember v5 ([@wolfderechter](https://github.com/wolfderechter))

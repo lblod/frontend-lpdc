@@ -49,10 +49,13 @@ import {
 } from '@lblod/ember-rdfa-editor/plugins/list/input_rules';
 import { placeholder } from '@lblod/ember-rdfa-editor/plugins/placeholder';
 import SimpleInputFieldComponent from '@lblod/ember-submission-form-fields/components/rdf-input-fields/simple-value-input-field';
+import { modifier } from 'ember-modifier';
 
 export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFieldComponent {
   @tracked editorController;
   inputId = 'richtext-' + guidFor(this);
+
+  forceOpenLinksInNewTab = forceOpenLinksInNewTab;
 
   nodeViews = (controller) => {
     return {
@@ -196,3 +199,25 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
 function stripNbspEntities(htmlContent) {
   return htmlContent.replaceAll(/&nbsp;/gm, ' ');
 }
+
+// Modifier that forces the link children of a certain element to open in a new tab, regardless of the _blank attribute on the elements.
+// We use this to always open user provided links in a new tab.
+const forceOpenLinksInNewTab = modifier(
+  function forceOpenLinksInNewTab(contentElement) {
+    const links = contentElement.querySelectorAll('a');
+
+    function clickHandler(event) {
+      const link = event.target;
+      event.preventDefault();
+      window.open(link.href, '_blank', 'noopener,noreferrer');
+    }
+
+    links.forEach((link) => {
+      link.addEventListener('click', clickHandler);
+    });
+
+    return () => {
+      links.forEach((link) => link.removeEventListener('click', clickHandler));
+    };
+  },
+);

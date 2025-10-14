@@ -20,7 +20,11 @@
 {{/if}}
 
 {{#if @show}}
-  <AuContent @skin="tiny" class="rich-text-editor-content">
+  <AuContent
+    @skin="tiny"
+    class="rich-text-editor-content"
+    {{this.forceOpenLinksInNewTab}}
+  >
     {{! template-lint-disable no-triple-curlies}}
     {{{this.value}}}
   </AuContent>

@@ -1,3 +1,8 @@
+## v0.25.1 (2025-12-11)
+
+#### :rocket: Enhancement
+* [#37](https://github.com/lblod/frontend-lpdc/pull/37) [LPDC-1496]: update start and endDate titles ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.25.0 (2025-10-14)
 
 #### :rocket: Enhancement

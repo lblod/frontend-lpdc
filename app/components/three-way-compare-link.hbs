@@ -1,10 +1,14 @@
 {{#if this.visible}}
-  {{! We're using a link here because buttons (styled as links) have styling conflicts with the CSS hacks we use to layout the forms.
-  TODO: Replace this with an AuButton once the CSS layouting hacks are removed }}
-  <a href="#" class="au-c-link au-u-margin-tiny" {{on "click" this.openModal}}>
+   <AuButton
+    @skin="link"
+    class="au-u-margin-tiny"
+    {{on "click" this.openModal}}>
     {{#if this.isConceptTakenOver}}
-      <AuIcon @size="large" @icon="check" />
+      <AuIcon
+        @size="large"
+        @icon="check">
+      </AuIcon>
     {{/if}}
     Conceptwijzigingen overnemen
-  </a>
+  </AuButton>
 {{/if}}

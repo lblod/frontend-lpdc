@@ -1,4 +1,4 @@
-## Unreleased
+## v0.25.2 (2026-01-15)
 
 #### :rocket: Enhancement
 * [#38](https://github.com/lblod/frontend-lpdc/pull/38) [LPDC-1500]: use new listing layout for rdfForms ([@wolfderechter](https://github.com/wolfderechter))

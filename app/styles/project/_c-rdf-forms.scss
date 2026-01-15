@@ -1,19 +1,6 @@
-/* stylelint-disable scss/at-extend-no-missing-placeholder */
 // Specific styling for LPDC RDF form
 .au-c-rdf-form {
   padding: $au-unit;
-
-  .au-c-heading--2 {
-    @include au-font-size($au-heading-3-small);
-
-    @include mq(small) {
-      @include au-font-size($au-heading-3);
-    }
-  }
-
-  .au-c-heading--3 {
-    @extend .au-c-heading--4;
-  }
 }
 
 .three-way-compare-form.au-c-rdf-form > .au-o-grid > .au-o-grid__item {

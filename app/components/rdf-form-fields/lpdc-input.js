@@ -8,9 +8,6 @@ export default class LpdcInputComponent extends SimpleInputFieldComponent {
   get helpText() {
     return this.args.field.options.helpText;
   }
-  get helpTextMoreInfoUrl() {
-    return this.args.field.options.helpTextMoreInfoUrl;
-  }
   get subTitleHelpText() {
     return this.args.field.options.subTitleHelpText;
   }

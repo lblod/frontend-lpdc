@@ -53,21 +53,8 @@
         class="au-u-margin-right-small au-u-flex-shrink-0"
       />
       <div class="au-u-flex au-u-flex--column au-u-flex--spaced-tiny">
-        <p>
-          {{! template-lint-disable no-triple-curlies }}
-          {{{this.helpText}}}
-        </p>
-
-        {{#if this.helpTextMoreInfoUrl}}
-          <p>
-            Meer info
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={{this.helpTextMoreInfoUrl}}
-            >{{this.helpTextMoreInfoUrl}}</a>
-          </p>
-        {{/if}}
+        {{! template-lint-disable no-triple-curlies }}
+        {{{this.helpText}}}
       </div>
     </div>
   {{/if}}

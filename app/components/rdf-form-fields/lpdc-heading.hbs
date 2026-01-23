@@ -1,8 +1,22 @@
 <div class="au-u-flex">
   <AuHeading @level={{this.level}} @skin={{this.skin}}>
     {{@field.label}}
+    {{#if this.tooltipText}}
+      <AuTooltip @placement="bottom" as |tooltip|>
+        {{! template-lint-disable no-inline-styles }}
+        <span
+          style="vertical-align: middle; cursor: pointer;"
+          {{tooltip.target}}
+        >
+          <AuIcon @icon="question-circle" @size="large" />
+        </span>
+        <tooltip.Content>
+          {{this.tooltipText}}
+        </tooltip.Content>
+      </AuTooltip>
+    {{/if}}
   </AuHeading>
-  {{#if this.showPill }}
+  {{#if this.showPill}}
     <AuPill
       class="au-u-flex-self-center au-u-margin-tiny"
       @skin="warning"
@@ -11,9 +25,7 @@
     >
       {{this.pillText}}
     </AuPill>
-    <AuLinkExternal
-      href={{this.ipdcConceptCompareLink}}
-      target="blank">
+    <AuLinkExternal href={{this.ipdcConceptCompareLink}} target="blank">
       Bekijk conceptwijzigingen
     </AuLinkExternal>
   {{/if}}

@@ -18,6 +18,10 @@ export default class LpdcRdfHeadingComponent extends Component {
     return this.args.field.options.pillText;
   }
 
+  get tooltipText() {
+    return this.args.field.options.tooltipText;
+  }
+
   get showPill() {
     const formGenerator = new ThreeWayComparisonFormGenerator({
       store: this.args.formStore,

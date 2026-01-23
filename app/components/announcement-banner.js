@@ -3,7 +3,8 @@ import config from 'frontend-lpdc/config/environment';
 
 export default class AnnouncementBanner extends Component {
   get showBanner() {
-    return !config.announcementMessage.startsWith('{{');
+    const message = config.announcementMessage;
+    return Boolean(message) && !message.startsWith('{{');
   }
 
   get message() {

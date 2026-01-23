@@ -30,6 +30,45 @@
   </div>
 {{/if}}
 
-{{#each this.errors as |error|}}
-  <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
-{{/each}}
+<div class="au-o-grid au-o-grid--tiny au-u-margin-top-tiny">
+  <AuInput
+    class="au-o-grid__item au-u-2-3 au-u-flex-grow"
+    @error={{this.hasErrors}}
+    @disabled={{@show}}
+    @width="block"
+    id={{this.inputId}}
+    value={{this.value}}
+    {{on "blur" this.updateValue}}
+  />
+
+  {{#each this.errors as |error|}}
+    <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
+  {{/each}}
+
+  {{#if this.helpText}}
+    <div class="au-o-grid__item au-u-muted au-u-1-3 au-u-flex au-u-flex--row">
+      <AuIcon
+        @icon="info-circle"
+        @size="large"
+        class="au-u-margin-right-small au-u-flex-shrink-0"
+      />
+      <div class="au-u-flex au-u-flex--column au-u-flex--spaced-tiny">
+        <p>
+          {{! template-lint-disable no-triple-curlies }}
+          {{{this.helpText}}}
+        </p>
+
+        {{#if this.helpTextMoreInfoUrl}}
+          <p>
+            Meer info
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              href={{this.helpTextMoreInfoUrl}}
+            >{{this.helpTextMoreInfoUrl}}</a>
+          </p>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+</div>

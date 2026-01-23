@@ -4,6 +4,9 @@ import { action } from '@ember/object';
 
 export default class LpdcInputComponent extends SimpleInputFieldComponent {
   inputId = 'input-' + guidFor(this);
+  get subTitleHelpText() {
+    return this.args.field.options.subTitleHelpText;
+  }
 
   @action
   updateValue(e) {

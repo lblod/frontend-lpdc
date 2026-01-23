@@ -23,14 +23,12 @@
   </div>
 {{/unless}}
 
-<AuInput
-  @error={{this.hasErrors}}
-  @disabled={{@show}}
-  @width="block"
-  id={{this.inputId}}
-  value={{this.value}}
-  {{on "blur" this.updateValue}}
-/>
+{{#if this.subTitleHelpText}}
+  <div class="au-u-muted au-u-margin-bottom-tiny">
+    {{! template-lint-disable no-triple-curlies }}
+    {{{this.subTitleHelpText}}}
+  </div>
+{{/if}}
 
 {{#each this.errors as |error|}}
   <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>

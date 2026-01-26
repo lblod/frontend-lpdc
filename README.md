@@ -24,6 +24,7 @@ The [ember-proxy-service](https://github.com/mu-semtech/ember-proxy-service#conf
 | `EMBER_ACMIDM_LOGOUT_URL`          | The URL where users will be redirected to when they want to log out                                                                                      |
 | `EMBER_ACMIDM_SWITCH_REDIRECT_URL` | The URL that will be used when "switching users" is enabled in ACM/IDM. After logout, users can select one of their other accounts to simplify the flow. |
 | `EMBER_ADMIN_ROLE`                 | The name of the ACM/IDM admin role as configured in ACM. This role gets administrator privileges and can use impersonation.                              |
+| `EMBER_ANNOUNCEMENT_MESSAGE`                 | A text that will be displayed in an announcement banner, eg. to announce down-time                               |
 
 > When ACM/IDM is not configured, the frontend will default to the "mock login" setup instead.
 >

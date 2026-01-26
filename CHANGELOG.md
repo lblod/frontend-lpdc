@@ -1,3 +1,8 @@
+## v0.26.0 (2026-01-26)
+
+#### :rocket: Enhancement
+* [#40](https://github.com/lblod/frontend-lpdc/pull/40) [LPDC-1498]: Add announcement banner component ([@nikidevisscher](https://github.com/nikidevisscher))
+
 ## v0.25.2 (2026-01-15)
 
 #### :rocket: Enhancement

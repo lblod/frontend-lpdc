@@ -13,6 +13,7 @@ The [ember-proxy-service](https://github.com/mu-semtech/ember-proxy-service#conf
 | `EMBER_FUSIES`    | Toggle fusies                 |
 | `EMBER_IPDC_URL`  | Link to the IPDC application  |
 | `EMBER_LOKET_URL` | Link to the Loket application |
+| `EMBER_ANNOUNCEMENT_MESSAGE` | A text that will be displayed in an announcement banner, eg. to announce down-time |
 
 ### ACM/IDM
 

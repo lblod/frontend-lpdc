@@ -57,6 +57,7 @@ module.exports = function (environment) {
     },
     loketUrl: '{{LOKET_URL}}',
     ipdcUrl: '{{IPDC_URL}}',
+    announcementMessage: '{{ANNOUNCEMENT_MESSAGE}}',
   };
 
   if (environment === 'development') {

@@ -1,7 +1,7 @@
 <div class="au-u-flex">
   <AuHeading @level={{this.level}} @skin={{this.skin}}>
     {{@field.label}}
-    {{#if this.tooltipText}}
+    {{#if (and this.tooltipText (not @show))}}
       <AuTooltip @placement="bottom" as |tooltip|>
         {{! template-lint-disable no-inline-styles }}
         <span

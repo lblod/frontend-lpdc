@@ -6,10 +6,14 @@ export default class LpdcInputComponent extends SimpleInputFieldComponent {
   inputId = 'input-' + guidFor(this);
 
   get helpText() {
-    return this.args.field.options.helpText;
+    return this.isLinkedToConcept
+      ? this.args.field.options.conceptHelpText
+      : this.args.field.options.helpText;
   }
   get subTitleHelpText() {
-    return this.args.field.options.subTitleHelpText;
+    return this.isLinkedToConcept
+      ? this.args.field.options.conceptSubTitleHelpText
+      : this.args.field.options.subTitleHelpText;
   }
 
   @action

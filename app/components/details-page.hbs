@@ -222,10 +222,27 @@
 </AuToolbar>
 <AuTabs as |Tab|>
   <Tab>
-    <AuLink @route="public-services.details.content">Inhoud</AuLink>
+    <AuTooltip @placement="top" as |tooltip|>
+      <AuLink
+        {{tooltip.target}}
+        @route="public-services.details.content"
+      >Inhoud</AuLink>
+      <tooltip.Content>Voeg hier inhoudelijke informatie toe over het product /
+        de dienst.
+      </tooltip.Content>
+    </AuTooltip>
   </Tab>
   <Tab>
-    <AuLink @route="public-services.details.properties">Eigenschappen</AuLink>
+    <AuTooltip @placement="top" as |tooltip|>
+      <AuLink
+        {{tooltip.target}}
+        @route="public-services.details.properties"
+      >Eigenschappen</AuLink>
+      <tooltip.Content>
+        Voeg hier informatie-labels toe aan de productfiche om deze vindbaar te
+        maken voor hergebruikers
+      </tooltip.Content>
+    </AuTooltip>
   </Tab>
 </AuTabs>
 

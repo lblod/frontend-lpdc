@@ -24,13 +24,13 @@
 {{/unless}}
 
 {{#if (and this.subTitleHelpText (not @show))}}
-  <div class="au-u-muted au-u-margin-bottom-tiny">
+  <AuHelpText @size="normal" @skin="secondary">
     {{! template-lint-disable no-triple-curlies }}
     {{{this.subTitleHelpText}}}
-  </div>
+  </AuHelpText>
 {{/if}}
 
-<div class="au-o-grid au-o-grid--tiny au-u-margin-top-tiny">
+<div class="au-o-grid au-o-grid--flush">
   <AuInput
     class="au-o-grid__item au-u-2-3 au-u-flex-grow"
     @error={{this.hasErrors}}
@@ -50,12 +50,12 @@
       <AuIcon
         @icon="info-circle"
         @size="large"
-        class="au-u-margin-right-small au-u-flex-shrink-0"
+        class="au-u-margin-left-small au-u-margin-right-small au-u-flex-shrink-0"
       />
-      <div class="au-u-flex au-u-flex--column au-u-flex--spaced-tiny">
+      <AuHelpText @size="normal" @skin="secondary" class="au-u-margin-top-none">
         {{! template-lint-disable no-triple-curlies }}
         {{{this.helpText}}}
-      </div>
+      </AuHelpText>
     </div>
   {{/if}}
 </div>

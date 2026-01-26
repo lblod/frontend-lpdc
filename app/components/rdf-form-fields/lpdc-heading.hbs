@@ -32,8 +32,8 @@
 </div>
 
 {{#if (and this.subTitleHelpText (not @show))}}
-  <div class="au-u-muted au-u-margin-bottom-tiny">
+  <AuHelpText @size="normal" @skin="secondary">
     {{! template-lint-disable no-triple-curlies }}
     {{{this.subTitleHelpText}}}
-  </div>
+  </AuHelpText>
 {{/if}}

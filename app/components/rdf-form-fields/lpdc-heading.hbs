@@ -30,3 +30,10 @@
     </AuLinkExternal>
   {{/if}}
 </div>
+
+{{#if (and this.subTitleHelpText (not @show))}}
+  <div class="au-u-muted au-u-margin-bottom-tiny">
+    {{! template-lint-disable no-triple-curlies }}
+    {{{this.subTitleHelpText}}}
+  </div>
+{{/if}}

@@ -22,6 +22,10 @@ export default class LpdcRdfHeadingComponent extends Component {
     return this.args.field.options.tooltipText;
   }
 
+  get subTitleHelpText() {
+    return this.args.field.options.subTitleHelpText;
+  }
+
   get showPill() {
     const formGenerator = new ThreeWayComparisonFormGenerator({
       store: this.args.formStore,
@@ -99,5 +103,19 @@ export default class LpdcRdfHeadingComponent extends Component {
           )[0],
       )
       .filter((it) => !!it)[0].subject.value;
+  }
+
+  get isLinkedToConcept() {
+    const { formStore, sourceNode, graphs } = this.args;
+
+    // Check if there's a concept linked via dct:source
+    const conceptLink = formStore.any(
+      sourceNode,
+      new NamedNode('http://purl.org/dc/terms/source'),
+      undefined,
+      graphs.sourceGraph,
+    );
+
+    return !!conceptLink;
   }
 }

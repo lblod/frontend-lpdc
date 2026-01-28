@@ -242,7 +242,7 @@ export default class DetailsPageComponent extends Component {
 
   @dropTask
   *requestSubmitConfirmation() {
-    let isValidForm = validateForm(this.form, {
+    let isValidForm = yield validateForm(this.form, {
       ...this.graphs,
       sourceNode: this.sourceNode,
       store: this.formStore,

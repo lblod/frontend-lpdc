@@ -31,15 +31,16 @@
 {{/if}}
 
 <div class="au-o-grid au-o-grid--flush">
-  <AuInput
-    class="au-o-grid__item au-u-2-3 au-u-flex-grow"
-    @error={{this.hasErrors}}
-    @disabled={{@show}}
-    @width="block"
-    id={{this.inputId}}
-    value={{this.value}}
-    {{on "blur" this.updateValue}}
-  />
+  <div class="au-o-grid__item au-u-2-3 au-u-flex-grow">
+    <AuInput
+      @error={{this.hasErrors}}
+      @disabled={{@show}}
+      @width="block"
+      id={{this.inputId}}
+      value={{this.value}}
+      {{on "blur" this.updateValue}}
+    />
+  </div>
 
   {{#each this.errors as |error|}}
     <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>

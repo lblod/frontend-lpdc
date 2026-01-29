@@ -63,9 +63,6 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
       ? this.args.field.options.conceptHelpText
       : this.args.field.options.helpText;
   }
-  get helpTextMoreInfoUrl() {
-    return this.args.field.options.helpTextMoreInfoUrl;
-  }
 
   nodeViews = (controller) => {
     return {

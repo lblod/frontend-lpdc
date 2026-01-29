@@ -11,11 +11,6 @@ export default class LpdcInputComponent extends SimpleInputFieldComponent {
       ? this.args.field.options.conceptHelpText
       : this.args.field.options.helpText;
   }
-  get subTitleHelpText() {
-    return this.isLinkedToConcept
-      ? this.args.field.options.conceptSubTitleHelpText
-      : this.args.field.options.subTitleHelpText;
-  }
 
   @action
   updateValue(e) {

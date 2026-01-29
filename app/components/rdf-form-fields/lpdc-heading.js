@@ -22,10 +22,6 @@ export default class LpdcRdfHeadingComponent extends Component {
     return this.args.field.options.tooltipText;
   }
 
-  get subTitleHelpText() {
-    return this.args.field.options.subTitleHelpText;
-  }
-
   get showPill() {
     const formGenerator = new ThreeWayComparisonFormGenerator({
       store: this.args.formStore,

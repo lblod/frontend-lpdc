@@ -23,11 +23,14 @@
   </div>
 {{/unless}}
 
-{{#if (and this.subTitleHelpText (not @show))}}
-  <AuHelpText @size="normal" @skin="secondary">
-    {{! template-lint-disable no-triple-curlies }}
-    {{{this.subTitleHelpText}}}
-  </AuHelpText>
+{{#if (and @field.help (not @show))}}
+  {{! template-lint-disable no-triple-curlies}}
+  <AuHelpText
+    @size="normal"
+    @skin="secondary"
+    class="au-u-margin-top-none au-u-margin-bottom-tiny"
+  >
+    {{{@field.help}}}</AuHelpText>
 {{/if}}
 
 <div class="au-o-grid au-o-grid--flush">

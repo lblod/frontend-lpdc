@@ -19,58 +19,103 @@
   <p class="au-u-light au-u-margin-bottom-tiny">{{@field.description}}</p>
 {{/if}}
 
-{{#if @show}}
-  <AuContent
-    @skin="tiny"
-    class="rich-text-editor-content"
-    {{this.forceOpenLinksInNewTab}}
+{{#if (and @field.help (not @show))}}
+  {{! template-lint-disable no-triple-curlies}}
+  <AuHelpText
+    @size="normal"
+    @skin="secondary"
+    class="au-u-margin-top-none au-u-margin-bottom-tiny"
   >
-    {{! template-lint-disable no-triple-curlies}}
-    {{{this.value}}}
-  </AuContent>
-{{else}}
-  <div class="rich-text-editor" {{on "focusout" this.updateValue}}>
-    <EditorContainer>
-      <:top>
-        <ResponsiveToolbar>
-          <:main as |Tb|>
-            <Tb.Group>
-              <Plugins::Heading::HeadingMenu
-                @controller={{this.editorController}}
-              />
-            </Tb.Group>
-            <Tb.Group>
-              <Plugins::TextStyle::Bold @controller={{this.editorController}} />
-              <Plugins::TextStyle::Italic @controller={{this.editorController}} />
-              <RdfFormFields::RichTextEditor::ExtraFormattingOptions
-                @controller={{this.editorController}}
-              />
-            </Tb.Group>
-            <Tb.Group>
-              <Plugins::List::Unordered @controller={{this.editorController}} />
-              <Plugins::List::Ordered @controller={{this.editorController}} />
-            </Tb.Group>
-            <Tb.Group>
-              <Plugins::Link::LinkMenu @controller={{this.editorController}} />
-            </Tb.Group>
-            <Tb.Group>
-              <Plugins::Table::TableMenu @controller={{this.editorController}} />
-            </Tb.Group>
-          </:main>
-        </ResponsiveToolbar>
-      </:top>
-      <:default>
-        <Editor
-          @schema={{this.schema}}
-          @rdfaEditorInit={{this.handleRdfaEditorInit}}
-          @plugins={{this.plugins}}
-          @nodeViews={{this.nodeViews}}
-        />
-      </:default>
-    </EditorContainer>
-  </div>
+    {{{@field.help}}}</AuHelpText>
 {{/if}}
 
-{{#each this.errors as |error|}}
-  <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
-{{/each}}
+<div class="au-o-grid au-o-grid--flush">
+  <div class="au-o-grid__item au-u-2-3 au-u-flex-grow">
+    {{#if @show}}
+      <AuContent
+        @skin="tiny"
+        class="rich-text-editor-content"
+        {{this.forceOpenLinksInNewTab}}
+      >
+        {{! template-lint-disable no-triple-curlies}}
+        {{{this.value}}}
+      </AuContent>
+    {{else}}
+      <div class="rich-text-editor" {{on "focusout" this.updateValue}}>
+        <EditorContainer>
+          <:top>
+            <ResponsiveToolbar>
+              <:main as |Tb|>
+                <Tb.Group>
+                  <Plugins::Heading::HeadingMenu
+                    @controller={{this.editorController}}
+                  />
+                </Tb.Group>
+                <Tb.Group>
+                  <Plugins::TextStyle::Bold
+                    @controller={{this.editorController}}
+                  />
+                  <Plugins::TextStyle::Italic
+                    @controller={{this.editorController}}
+                  />
+                  <RdfFormFields::RichTextEditor::ExtraFormattingOptions
+                    @controller={{this.editorController}}
+                  />
+                </Tb.Group>
+                <Tb.Group>
+                  <Plugins::List::Unordered
+                    @controller={{this.editorController}}
+                  />
+                  <Plugins::List::Ordered
+                    @controller={{this.editorController}}
+                  />
+                </Tb.Group>
+                <Tb.Group>
+                  <Plugins::Link::LinkMenu
+                    @controller={{this.editorController}}
+                  />
+                </Tb.Group>
+                <Tb.Group>
+                  <Plugins::Table::TableMenu
+                    @controller={{this.editorController}}
+                  />
+                </Tb.Group>
+              </:main>
+            </ResponsiveToolbar>
+          </:top>
+          <:default>
+            <Editor
+              @schema={{this.schema}}
+              @rdfaEditorInit={{this.handleRdfaEditorInit}}
+              @plugins={{this.plugins}}
+              @nodeViews={{this.nodeViews}}
+            />
+          </:default>
+        </EditorContainer>
+      </div>
+    {{/if}}
+    {{#each this.errors as |error|}}
+      <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
+    {{/each}}
+  </div>
+
+  {{#if (and this.helpText (not @show))}}
+    <div class="au-o-grid__item au-u-muted au-u-1-3 au-u-flex au-u-flex--row">
+      <AuIcon
+        @icon="info-circle"
+        @size="large"
+        class="au-u-margin-left-small au-u-margin-right-small au-u-flex-shrink-0"
+      />
+      <AuContent>
+        <AuHelpText
+          @size="normal"
+          @skin="secondary"
+          class="au-u-margin-top-none"
+        >
+          {{! template-lint-disable no-triple-curlies }}
+          {{{this.helpText}}}
+        </AuHelpText>
+      </AuContent>
+    </div>
+  {{/if}}
+</div>

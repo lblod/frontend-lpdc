@@ -55,10 +55,16 @@
         @size="large"
         class="au-u-margin-left-small au-u-margin-right-small au-u-flex-shrink-0"
       />
-      <AuHelpText @size="normal" @skin="secondary" class="au-u-margin-top-none">
-        {{! template-lint-disable no-triple-curlies }}
-        {{{this.helpText}}}
-      </AuHelpText>
+      <AuContent>
+        <AuHelpText
+          @size="normal"
+          @skin="secondary"
+          class="au-u-margin-top-none"
+        >
+          {{! template-lint-disable no-triple-curlies }}
+          {{{this.helpText}}}
+        </AuHelpText>
+      </AuContent>
     </div>
   {{/if}}
 </div>

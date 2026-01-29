@@ -70,37 +70,24 @@
       >
         Product kopiëren
       </AuButton>
-      {{#if this.isStatusVerzondenAndPublished}}
-        <AuTooltip @placement="left" as |tooltip|>
-          {{! template-lint-disable require-context-role }}
-          <AuButton
-            @skin="link"
-            @icon="bin"
-            role="menuitem"
-            @alert={{true}}
-            @disabled={{this.shouldDisplayProductVerwijderenButton}}
-            {{on "click" this.removePublicService}}
-            {{tooltip.target}}
-          >
-            Product verwijderen
-          </AuButton>
-          <tooltip.Content>
-            Klik eerst op de blauwe knop "Product opnieuw bewerken" om je
-            productfiche te verwijderen
-          </tooltip.Content>
-        </AuTooltip>
-      {{else}}
+      <AuTooltip @placement="left" as |tooltip|>
+        {{! template-lint-disable require-context-role }}
         <AuButton
           @skin="link"
           @icon="bin"
           role="menuitem"
           @alert={{true}}
           @disabled={{this.shouldDisplayProductVerwijderenButton}}
+          {{(if this.shouldDisplayProductVerwijderenButton tooltip.target)}}
           {{on "click" this.removePublicService}}
         >
           Product verwijderen
         </AuButton>
-      {{/if}}
+        <tooltip.Content>
+          Klik eerst op de blauwe knop "Product opnieuw bewerken" om je
+          productfiche te verwijderen
+        </tooltip.Content>
+      </AuTooltip>
     </AuDropdown>
   </Group>
 </AuToolbar>

@@ -5,6 +5,21 @@
     for={{this.inputId}}
   >
     {{@field.label}}
+    {{#if (and this.tooltipText (not @show))}}
+      <AuTooltip @placement="bottom" as |tooltip|>
+        {{! template-lint-disable no-inline-styles }}
+        <span
+          class="au-u-margin-left-tiny"
+          style="vertical-align: middle; cursor: pointer;"
+          {{tooltip.target}}
+        >
+          <AuIcon @icon="question-circle" @size="medium" />
+        </span>
+        <tooltip.Content>
+          {{this.tooltipText}}
+        </tooltip.Content>
+      </AuTooltip>
+    {{/if}}
   </AuLabel>
   <ThreeWayCompareLink
     @visible={{not @show}}
@@ -13,35 +28,71 @@
     @updateValues={{this.updateSelection}}
   />
 </div>
-<div class={{if this.hasErrors "ember-power-select--error"}}>
-  <this.selectComponent
-    @triggerId={{this.inputId}}
-    @selected={{this.selected}}
-    @searchEnabled={{this.isSearchEnabled}}
-    @search={{if this.isBackendSearch (perform this.search)}}
-    @searchField="label"
-    @options={{this.options}}
-    @onClose={{fn (mut this.hasBeenFocused) true}}
-    @onChange={{this.updateSelectionInStore}}
-    @allowClear={{true}}
-    @searchMessage={{this.searchMessage}}
-    @loadingMessage="Aan het laden..."
-    @noMatchesMessage="Geen resultaten gevonden"
-    @disabled={{@show}}
-    @optionsComponent={{component
-      "infinite-select-options"
-      canLoadMore=this.canLoadMoreConcepts
-      loadMore=this.loadMoreConcepts.perform
-      isLoadingMore=this.loadMoreConcepts.isRunning
-    }}
-    @registerAPI={{this.registerAPI}}
-    data-test-field-uri={{@field.uri.value}}
-    as |concept|
-  >
-    {{concept.label}}
-  </this.selectComponent>
-</div>
 
-{{#each this.errors as |error|}}
-  <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
-{{/each}}
+{{#if (and @field.help (not @show))}}
+  {{! template-lint-disable no-triple-curlies}}
+  <AuHelpText
+    @size="normal"
+    @skin="secondary"
+    class="au-u-margin-top-none au-u-margin-bottom-tiny"
+  >
+    {{{@field.help}}}</AuHelpText>
+{{/if}}
+
+<div class="au-o-grid au-o-grid--flush">
+  <div
+    class="au-o-grid__item au-u-2-3 au-u-flex-grow
+      {{if this.hasErrors 'ember-power-select--error'}}"
+  >
+    <this.selectComponent
+      @triggerId={{this.inputId}}
+      @selected={{this.selected}}
+      @searchEnabled={{this.isSearchEnabled}}
+      @search={{if this.isBackendSearch (perform this.search)}}
+      @searchField="label"
+      @options={{this.options}}
+      @onClose={{fn (mut this.hasBeenFocused) true}}
+      @onChange={{this.updateSelectionInStore}}
+      @allowClear={{true}}
+      @searchMessage={{this.searchMessage}}
+      @loadingMessage="Aan het laden..."
+      @noMatchesMessage="Geen resultaten gevonden"
+      @disabled={{@show}}
+      @optionsComponent={{component
+        "infinite-select-options"
+        canLoadMore=this.canLoadMoreConcepts
+        loadMore=this.loadMoreConcepts.perform
+        isLoadingMore=this.loadMoreConcepts.isRunning
+      }}
+      @registerAPI={{this.registerAPI}}
+      data-test-field-uri={{@field.uri.value}}
+      as |concept|
+    >
+      {{concept.label}}
+    </this.selectComponent>
+  </div>
+
+  {{#each this.errors as |error|}}
+    <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
+  {{/each}}
+
+  {{#if (and this.helpText (not @show))}}
+    <div class="au-o-grid__item au-u-muted au-u-1-3 au-u-flex au-u-flex--row">
+      <AuIcon
+        @icon="info-circle"
+        @size="large"
+        class="au-u-margin-left-small au-u-margin-right-small au-u-flex-shrink-0"
+      />
+      <AuContent>
+        <AuHelpText
+          @size="normal"
+          @skin="secondary"
+          class="au-u-margin-top-none"
+        >
+          {{! template-lint-disable no-triple-curlies }}
+          {{{this.helpText}}}
+        </AuHelpText>
+      </AuContent>
+    </div>
+  {{/if}}
+</div>

@@ -50,12 +50,19 @@ import {
 import { placeholder } from '@lblod/ember-rdfa-editor/plugins/placeholder';
 import SimpleInputFieldComponent from '@lblod/ember-submission-form-fields/components/rdf-input-fields/simple-value-input-field';
 import { modifier } from 'ember-modifier';
+import { NamedNode } from 'rdflib';
 
 export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFieldComponent {
   @tracked editorController;
   inputId = 'richtext-' + guidFor(this);
 
   forceOpenLinksInNewTab = forceOpenLinksInNewTab;
+
+  get helpText() {
+    return this.isLinkedToConcept
+      ? this.args.field.options.conceptHelpText
+      : this.args.field.options.helpText;
+  }
 
   nodeViews = (controller) => {
     return {
@@ -190,6 +197,20 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
       tr.setSelection(Selection.atEnd(tr.doc));
       editorController.editor.mainView.dispatch(tr);
     }
+  }
+
+  get isLinkedToConcept() {
+    const { formStore, sourceNode, graphs } = this.args;
+
+    // Check if there's a concept linked via dct:source
+    const conceptLink = formStore.any(
+      sourceNode,
+      new NamedNode('http://purl.org/dc/terms/source'),
+      undefined,
+      graphs.sourceGraph,
+    );
+
+    return !!conceptLink;
   }
 }
 

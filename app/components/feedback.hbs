@@ -6,14 +6,15 @@
       <span
         class="au-u-muted au-u-margin-left-tiny au-u-margin-right"
       >(geweigerd)</span>
-      <AuButton @skin="primary" {{on "click" (perform this.sendAnswer)}}>
-        Antwoord verzenden
-      </AuButton>
-
+      {{#if (not-eq this.feedbackStatus undefined)}}
+        <AuButton @skin="primary" {{on "click" (perform this.sendAnswer)}}>
+          Antwoord verzenden
+        </AuButton>
+      {{/if}}
       {{! TODO: check which button skins to use here }}
       {{! template-lint-disable no-inline-styles }}
       <AuDropdown
-        @skin="naked"
+        @skin="link-secondary"
         @icon="three-dots"
         @hideText={{true}}
         @alignment="left"
@@ -25,14 +26,16 @@
           @skin="link"
           role="menuitem"
           class={{if
-            this.feedbackStatus
+            (and (not-eq this.feedbackStatus undefined) this.feedbackStatus)
             "au-u-background-gray-200"
             "au-c-button--link-secondary"
           }}
           {{on "click" this.markFeedbackProcessed}}
         >
           Feedback verwerkt
-          {{#if this.feedbackStatus}}
+          {{#if
+            (and (not-eq this.feedbackStatus undefined) this.feedbackStatus)
+          }}
             <AuIcon @size="medium" @icon="check" />
           {{/if}}
         </AuButton>
@@ -41,22 +44,28 @@
           @icon="circle-x"
           role="menuitem"
           class={{if
-            this.feedbackStatus
-            "au-c-button--link-secondary"
+            (and
+              (not-eq this.feedbackStatus undefined) (not this.feedbackStatus)
+            )
             "au-u-background-gray-200"
+            "au-c-button--link-secondary"
           }}
           {{on "click" this.markFeedbackDenied}}
         >
           Feedback geweigerd
-          {{#unless this.feedbackStatus}}
+          {{#if
+            (and
+              (not-eq this.feedbackStatus undefined) (not this.feedbackStatus)
+            )
+          }}
             <AuIcon @size="medium" @icon="check" />
-          {{/unless}}
+          {{/if}}
         </AuButton>
       </AuDropdown>
     </div>
     {{! template-lint-disable no-inline-styles }}
-    {{!-- TODO: check if there will be html in the feedback or if textarea is enough--}}
-    {{!-- TODO: add the is-disabled class when the feedback is sent --}}
+    {{! TODO: check if there will be html in the feedback or if textarea is enough}}
+    {{! TODO: add the is-disabled class when the feedback is sent }}
     <div
       class="au-c-textarea au-c-textarea--block"
       style="overflow-y: scroll; resize: vertical; color: var(--au-gray-900); background-color: var(--au-white)"

@@ -1,9 +1,12 @@
 <AuModal @modalOpen={{true}} @closeModal={{this.close}} @size="small">
   <:title>Antwoord verzenden</:title>
   <:body>
-    <p>Hiermee bevestig je dat de feedback is verwerkt in je instantie. Indien
-      gewenst kan je je antwoord motiveren in onderstaand veld.</p>
-
+  {{#if @data.feedbackAccepted}}
+    <p>Hiermee bevestig je dat de feedback is verwerkt in je instantie.</p>
+  {{else}}
+    <p>Je hebt de feedback geweigerd.</p>
+  {{/if}}
+    <p>Indien gewenst kan je je antwoord motiveren in onderstaand veld.</p>
     <div class="au-u-margin-top-small">
       <AuLabel>Antwoord
         <AuHelpText

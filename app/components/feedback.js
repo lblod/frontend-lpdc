@@ -16,6 +16,7 @@ export default class FeedbackComponent extends Component {
   @task
   *sendAnswer() {
     yield this.modals.open(ConfirmFeedbackSubmitModal, {
+      feedbackAccepted: this.feedbackStatus,
       submitHandler: async (value) => {
         console.log(
           'Feedback processed: ',

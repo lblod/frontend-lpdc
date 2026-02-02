@@ -41,6 +41,8 @@ export default class DetailsPageComponent extends Component {
   @tracked hasUnsavedChanges = false;
   @tracked forceShowErrors = false;
   @tracked form;
+  // TODO: expand only if there is (open) feedback
+  @tracked feedbackExpanded = true;
 
   id = guidFor(this);
   @tracked formStore;
@@ -54,6 +56,11 @@ export default class DetailsPageComponent extends Component {
     if (!this.args.readOnly) {
       this.router.on('routeWillChange', this, this.showUnsavedChangesModal);
     }
+  }
+
+  @action
+  toggleFeedback() {
+    this.feedbackExpanded = !this.feedbackExpanded;
   }
 
   #showToasterErrorMessage(message) {

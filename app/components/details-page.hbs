@@ -39,7 +39,7 @@
       @iconAlignment="right"
       role="menu"
     >
-      {{#if this.shouldDisplayEnLinkToIpdc }}
+      {{#if this.shouldDisplayEnLinkToIpdc}}
         <AuLinkExternal
           href={{this.ipdcEnLink}}
           @skin="link"
@@ -50,12 +50,12 @@
           Bekijk Engelse vertaling
         </AuLinkExternal>
       {{/if}}
-      {{#if this.shouldDisplayReadonlyEnLinkToIpdc }}
+      {{#if this.shouldDisplayReadonlyEnLinkToIpdc}}
         <AuButton
           @icon="not-visible"
           @skin="link"
           role="menuitem"
-          @disabled ={{true}}
+          @disabled={{true}}
           target="blank"
         >
           Engelse vertaling na publicatie
@@ -83,9 +83,13 @@
     </AuDropdown>
   </Group>
 </AuToolbar>
-<AuToolbar @size="small" class="au-u-flex au-u-flex--vertical-start au-u-padding-bottom-none au-u-padding-top-none" as |Group|>
+<AuToolbar
+  @size="small"
+  class="au-u-flex au-u-flex--vertical-start au-u-padding-bottom-none au-u-padding-top-none"
+  as |Group|
+>
   <Group class="w-100">
-  {{#if @publicService.reviewStatus}}
+    {{#if @publicService.reviewStatus}}
       <AuAlert
         @skin={{if this.isConceptUpdatedStatus "warning" "error"}}
         @icon="alert-triangle"
@@ -94,11 +98,13 @@
       >
         {{#if this.isConceptUpdatedStatus}}
           <p>
-            In het concept waarop dit product is gebaseerd, zijn de volgende velden
-            aangepast: <strong>{{this.functionallyChangedFields}}</strong>.
+            In het concept waarop dit product is gebaseerd, zijn de volgende
+            velden aangepast:
+            <strong>{{this.functionallyChangedFields}}</strong>.
           </p>
           <p>
-            Je kan ervoor kiezen om elk veld afzonderlijk over te nemen of het concept als geheel.
+            Je kan ervoor kiezen om elk veld afzonderlijk over te nemen of het
+            concept als geheel.
           </p>
         {{else}}
           <p>
@@ -119,21 +125,24 @@
                 Concept bekijken
               </AuLinkExternal>
 
-            {{#if this.isConceptUpdatedStatus}}
-              <AuButton
-                @skin="primary"
-                @icon="copy"
-                {{on "click" this.fullyTakeConceptSnapshotOver}}
-              >
-                Wijzigingen overnemen
-              </AuButton>
-            {{/if}}
+              {{#if this.isConceptUpdatedStatus}}
+                <AuButton
+                  @skin="primary"
+                  @icon="copy"
+                  {{on "click" this.fullyTakeConceptSnapshotOver}}
+                >
+                  Wijzigingen overnemen
+                </AuButton>
+              {{/if}}
 
             {{/if}}
             <AuButton
               @skin="secondary"
               @icon="check"
-              @disabled={{or this.markAsReviewed.isRunning this.hasUnsavedChanges}}
+              @disabled={{or
+                this.markAsReviewed.isRunning
+                this.hasUnsavedChanges
+              }}
               @loading={{this.markAsReviewed.isRunning}}
               @loadingMessage="Aan het verwerken"
               {{on "click" (perform this.markAsReviewed)}}
@@ -143,8 +152,8 @@
           </AuButtonGroup>
         </div>
       </AuAlert>
-  {{/if}}
-  {{#if this.shouldShowConversionAlertPublishedInstance }}
+    {{/if}}
+    {{#if this.shouldShowConversionAlertPublishedInstance}}
       <AuAlert
         @title="Omzetting naar de je-vorm"
         @skin="info"
@@ -153,7 +162,8 @@
         class="au-u-margin-bottom-none au-u-1-2"
       >
         <p>
-          Indien gewenst kan de inhoud van deze instantie automatisch worden omgezet naar de je-vorm.
+          Indien gewenst kan de inhoud van deze instantie automatisch worden
+          omgezet naar de je-vorm.
         </p>
         <div class="au-u-margin-top-small">
           <AuButtonGroup>
@@ -182,8 +192,8 @@
           </AuButtonGroup>
         </div>
       </AuAlert>
-  {{/if}}
-  {{#if this.shouldShowConversionAlertDraftInstance }}
+    {{/if}}
+    {{#if this.shouldShowConversionAlertDraftInstance}}
       <AuAlert
         @skin="info"
         @size="small"
@@ -191,12 +201,11 @@
         class="au-u-margin-bottom-none au-u-1-2"
       >
         <p>
-          Deze instantie kan na verzending naar de Vlaamse overheid automatisch worden omgezet naar de je-vorm
-          (de
-          publicatie duurt enkele minuten).
+          Deze instantie kan na verzending naar de Vlaamse overheid automatisch
+          worden omgezet naar de je-vorm (de publicatie duurt enkele minuten).
         </p>
       </AuAlert>
-  {{/if}}
+    {{/if}}
   </Group>
 </AuToolbar>
 <AuTabs as |Tab|>
@@ -208,45 +217,103 @@
   </Tab>
 </AuTabs>
 
-<AuBodyContainer @scroll={{true}}>
-  {{#if this.loadForm.isRunning}}
-    <div class="au-o-box">
-      <p class="au-u-h4 au-u-medium" aria-hidden="true">
-        Formulier aan het laden
-      </p>
-      <AuLoader @padding="small" />
-    </div>
-  {{else if this.loadForm.last.isError}}
-    <div class="au-o-box">
-      <AuAlert
-        @title="Onverwachte fout"
-        @skin="error"
-        @icon="circle-x"
-        @size="small"
-        class="au-u-max-width-small"
-      >
-        <p>
-          Er ging iets fout bij het laden van het formulier, gelieve de helpdesk
-          te contacteren.
+<AuMainContainer class="au-u-flex--row-reverse" as |m|>
+  <m.content @scroll={{true}}>
+    {{#if this.loadForm.isRunning}}
+      <div class="au-o-box">
+        <p class="au-u-h4 au-u-medium" aria-hidden="true">
+          Formulier aan het laden
         </p>
-      </AuAlert>
-    </div>
-  {{else}}
-    <form
-      id={{this.id}}
-      {{on "submit" (perform this.handleFormSubmit)}}
-      class="au-c-rdf-form {{@tabName}}"
-    >
-      <RdfForm
-        @groupClass="au-o-grid__item"
-        @form={{this.form}}
-        @graphs={{this.graphs}}
-        @sourceNode={{this.sourceNode}}
-        @formStore={{this.formStore}}
-        @forceShowErrors={{this.forceShowErrors}}
-        @show={{@readOnly}}
-        @useNewListingLayout={{true}}
-      />
-    </form>
-  {{/if}}
-</AuBodyContainer>
+        <AuLoader @padding="small" />
+      </div>
+    {{else if this.loadForm.last.isError}}
+      <div class="au-o-box">
+        <AuAlert
+          @title="Onverwachte fout"
+          @skin="error"
+          @icon="circle-x"
+          @size="small"
+          class="au-u-max-width-small"
+        >
+          <p>
+            Er ging iets fout bij het laden van het formulier, gelieve de
+            helpdesk te contacteren.
+          </p>
+        </AuAlert>
+      </div>
+    {{else}}
+      <div class="au-u-flex">
+        <form
+          id={{this.id}}
+          {{on "submit" (perform this.handleFormSubmit)}}
+          class="au-c-rdf-form {{@tabName}} au-u-flex-grow-1"
+        >
+          <RdfForm
+            @groupClass="au-o-grid__item"
+            @form={{this.form}}
+            @graphs={{this.graphs}}
+            @sourceNode={{this.sourceNode}}
+            @formStore={{this.formStore}}
+            @forceShowErrors={{this.forceShowErrors}}
+            @show={{@readOnly}}
+            @useNewListingLayout={{true}}
+          />
+        </form>
+      </div>
+
+    {{/if}}
+  </m.content>
+
+  {{! template-lint-disable no-inline-styles }}
+  <m.sidebar
+    @size={{if this.feedbackExpanded "large" "collapsed"}}
+    class="au-c-main-container__content--scroll au-c-card--standout"
+    style="border-left: 0.1rem solid var(--au-divider-color);"
+  >
+    {{#if this.feedbackExpanded}}
+      <div class="au-u-padding-top-small">
+        <div class="au-u-flex au-u-flex--vertical-baseline">
+          <AuButton
+            @skin="link-secondary"
+            @size="large"
+            class="au-u-flex-shrink-0"
+            {{on "click" this.toggleFeedback}}
+          >
+            <AuIcon @size="large" @icon="nav-right" />
+          </AuButton>
+          <div>
+            <div class="au-u-flex au-u-flex--between">
+              <AuHeading @skin="3" @level="2">Feedback</AuHeading>
+              <AuToggleSwitch
+                @checked={{true}}
+                @onChange={{perform this.toggleFeedback}}
+              >
+                Afgesloten feedback tonen
+              </AuToggleSwitch>
+            </div>
+            <p>Verwerk de gekregen feedback door je product te bewerken of door
+              de feedback te weigeren. Verzend daarna je antwoord.
+            </p>
+          </div>
+        </div>
+        <AuHr />
+        <Feedback @publicService={{@publicService}} />
+        <AuHr />
+        <Feedback @publicService={{@publicService}} />
+        <AuHr />
+        <Feedback @publicService={{@publicService}} />
+      </div>
+    {{else}}
+      <div class="au-u-padding-tiny">
+        <AuButton
+          @skin="link-secondary"
+          @size="large"
+          class="au-u-flex-shrink-0"
+          {{on "click" this.toggleFeedback}}
+        >
+          <AuIcon @size="large" @icon="nav-left" />
+        </AuButton>
+      </div>
+    {{/if}}
+  </m.sidebar>
+</AuMainContainer>

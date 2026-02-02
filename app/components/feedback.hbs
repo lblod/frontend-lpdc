@@ -1,0 +1,72 @@
+<div class="au-u-padding-small au-u-padding-top-none">
+  <AuFormRow>
+    <div
+      class="au-u-flex au-u-flex--vertical-center au-u-margin-bottom-tiny au-u-1-1"
+    >#1
+      <span
+        class="au-u-muted au-u-margin-left-tiny au-u-margin-right"
+      >(geweigerd)</span>
+      <AuButton @skin="primary" {{on "click" (perform this.sendAnswer)}}>
+        Antwoord verzenden
+      </AuButton>
+
+      {{! TODO: check which button skins to use here }}
+      {{! template-lint-disable no-inline-styles }}
+      <AuDropdown
+        @skin="naked"
+        @icon="three-dots"
+        @hideText={{true}}
+        @alignment="left"
+        role="menu"
+        style="margin-left: auto;"
+      >
+        <AuButton
+          @icon="circle-check"
+          @skin="link"
+          role="menuitem"
+          class={{if
+            this.feedbackStatus
+            "au-u-background-gray-200"
+            "au-c-button--link-secondary"
+          }}
+          {{on "click" this.markFeedbackProcessed}}
+        >
+          Feedback verwerkt
+          {{#if this.feedbackStatus}}
+            <AuIcon @size="medium" @icon="check" />
+          {{/if}}
+        </AuButton>
+        <AuButton
+          @skin="link"
+          @icon="circle-x"
+          role="menuitem"
+          class={{if
+            this.feedbackStatus
+            "au-c-button--link-secondary"
+            "au-u-background-gray-200"
+          }}
+          {{on "click" this.markFeedbackDenied}}
+        >
+          Feedback geweigerd
+          {{#unless this.feedbackStatus}}
+            <AuIcon @size="medium" @icon="check" />
+          {{/unless}}
+        </AuButton>
+      </AuDropdown>
+    </div>
+    {{! template-lint-disable no-inline-styles }}
+    {{!-- TODO: check if there will be html in the feedback or if textarea is enough--}}
+    {{!-- TODO: add the is-disabled class when the feedback is sent --}}
+    <div
+      class="au-c-textarea au-c-textarea--block"
+      style="overflow-y: scroll; resize: vertical; color: var(--au-gray-900); background-color: var(--au-white)"
+    >
+      {{! template-lint-disable no-triple-curlies }}
+      {{{this.mockText}}}
+    </div>
+  </AuFormRow>
+  <AuFormRow class="au-u-flex--row au-u-flex--between">
+    <span>{{this.organization}}</span>
+    <span class="au-u-muted">{{this.feedbackDate}}</span>
+  </AuFormRow>
+</div>

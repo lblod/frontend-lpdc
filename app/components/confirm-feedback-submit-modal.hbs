@@ -1,11 +1,11 @@
 <AuModal @modalOpen={{true}} @closeModal={{this.close}} @size="small">
   <:title>Antwoord verzenden</:title>
   <:body>
-  {{#if @data.feedbackAccepted}}
-    <p>Hiermee bevestig je dat de feedback is verwerkt in je instantie.</p>
-  {{else}}
-    <p>Je hebt de feedback geweigerd.</p>
-  {{/if}}
+    {{#if @data.feedbackAccepted}}
+      <p>Hiermee bevestig je dat de feedback is verwerkt in je instantie.</p>
+    {{else}}
+      <p>Je hebt de feedback geweigerd.</p>
+    {{/if}}
     <p>Indien gewenst kan je je antwoord motiveren in onderstaand veld.</p>
     <div class="au-u-margin-top-small">
       <AuLabel>Antwoord
@@ -25,15 +25,21 @@
     </div>
   </:body>
   <:footer>
-    <AuButtonGroup>
-      <AuButton
-        @disabled={{this.submit.isRunning}}
-        @loading={{this.submit.isRunning}}
-        {{on "click" (perform this.submit)}}
-      >
-        Verzend
-      </AuButton>
-      <AuButton @skin="secondary" {{on "click" this.close}}>Annuleer</AuButton>
-    </AuButtonGroup>
+    <AuToolbar as |Group|>
+      <Group>
+        <AuButton
+          @skin="secondary"
+          {{on "click" this.close}}
+        >Annuleer</AuButton>
+      </Group>
+      <Group>
+        <AuButton
+          @loading={{this.submit.isRunning}}
+          {{on "click" (perform this.submit)}}
+        >
+          Verzend
+        </AuButton>
+      </Group>
+    </AuToolbar>
   </:footer>
 </AuModal>

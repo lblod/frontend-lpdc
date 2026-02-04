@@ -183,11 +183,23 @@ div.au-u-margin-bottom-small:has(.address-form) {
 
 .u-border-divider {
   --divider-thickness: 0.1rem;
+
   border: 0 solid var(--au-gray-300);
 }
 
 /* Modifier classes for direction */
-.u-border-divider--left   { border-left-width: var(--divider-thickness); }
-.u-border-divider--right  { border-right-width: var(--divider-thickness); }
-.u-border-divider--top    { border-top-width: var(--divider-thickness); }
-.u-border-divider--bottom { border-bottom-width: var(--divider-thickness); }
+.u-border-divider--left {
+  border-left-width: var(--divider-thickness);
+}
+
+.u-border-divider--right {
+  border-right-width: var(--divider-thickness);
+}
+
+.u-border-divider--top {
+  border-top-width: var(--divider-thickness);
+}
+
+.u-border-divider--bottom {
+  border-bottom-width: var(--divider-thickness);
+}

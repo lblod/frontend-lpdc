@@ -1,35 +1,33 @@
 <div class="au-u-padding-small au-u-padding-top-none">
-  <AuFormRow>
+  <div>
     <div
       class="au-u-flex au-u-flex--vertical-center au-u-margin-bottom-tiny au-u-1-1"
-    >#1
-      <span
+    >
+    <AuHelpText @skin="primary" @size="large" class="au-u-margin-top-none au-u-medium">#1</AuHelpText>
+    <AuHelpText @skin="secondary" class="au-u-margin-top-none au-u-margin-left-tiny au-u-margin-right">(geweigerd)</AuHelpText>
+      {{!-- <span
         class="au-u-muted au-u-margin-left-tiny au-u-margin-right"
-      >(geweigerd)</span>
+      >(geweigerd)</span> --}}
       {{#if (not-eq this.feedbackStatus undefined)}}
         <AuButton @skin="primary" {{on "click" (perform this.sendAnswer)}}>
           Antwoord verzenden
         </AuButton>
       {{/if}}
-      {{! TODO: check which button skins to use here }}
       {{! template-lint-disable no-inline-styles }}
       <AuDropdown
-        @skin="link-secondary"
+        @skin="naked"
         @icon="three-dots"
         @hideText={{true}}
         @alignment="left"
+        @size="large"
         role="menu"
         style="margin-left: auto;"
       >
         <AuButton
           @icon="circle-check"
-          @skin="link"
+          @skin={{if this.feedbackStatus "link" "link-secondary" }}
           role="menuitem"
-          class={{if
-            (and (not-eq this.feedbackStatus undefined) this.feedbackStatus)
-            "au-u-background-gray-200"
-            "au-c-button--link-secondary"
-          }}
+          class={{if this.feedbackStatus "au-u-background-gray-200" }}
           {{on "click" this.markFeedbackProcessed}}
         >
           Feedback verwerkt
@@ -40,16 +38,10 @@
           {{/if}}
         </AuButton>
         <AuButton
-          @skin="link"
+          @skin={{if this.feedbackStatus "link-secondary" "link" }}
           @icon="circle-x"
           role="menuitem"
-          class={{if
-            (and
-              (not-eq this.feedbackStatus undefined) (not this.feedbackStatus)
-            )
-            "au-u-background-gray-200"
-            "au-c-button--link-secondary"
-          }}
+          class={{if this.feedbackStatus "" "au-u-background-gray-200" }}
           {{on "click" this.markFeedbackDenied}}
         >
           Feedback geweigerd
@@ -73,9 +65,9 @@
       {{! template-lint-disable no-triple-curlies }}
       {{{this.mockText}}}
     </div>
-  </AuFormRow>
-  <AuFormRow class="au-u-flex--row au-u-flex--between">
+  </div>
+  <div class="au-u-flex au-u-flex--row au-u-flex--between">
     <span>{{this.organization}}</span>
-    <span class="au-u-muted">{{this.feedbackDate}}</span>
-  </AuFormRow>
+    <AuHelpText @skin="secondary" class="au-u-margin-top-none">{{this.date}}</AuHelpText>
+  </div>
 </div>

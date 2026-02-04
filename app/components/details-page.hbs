@@ -267,12 +267,11 @@
   {{! template-lint-disable no-inline-styles }}
   <m.sidebar
     @size={{if this.feedbackExpanded "large" "collapsed"}}
-    class="au-c-main-container__content--scroll au-c-card--standout"
-    style="border-left: 0.1rem solid var(--au-divider-color);"
+    class="au-c-main-container__content--scroll au-c-card--standout u-border-divider u-border-divider--left"
   >
     {{#if this.feedbackExpanded}}
       <div class="au-u-padding-top-small">
-        <div class="au-u-flex au-u-flex--vertical-baseline">
+        <div class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small">
           <AuButton
             @skin="link-secondary"
             @size="large"
@@ -296,11 +295,8 @@
             </p>
           </div>
         </div>
-        <AuHr />
         <Feedback @publicService={{@publicService}} />
-        <AuHr />
         <Feedback @publicService={{@publicService}} />
-        <AuHr />
         <Feedback @publicService={{@publicService}} />
       </div>
     {{else}}

@@ -217,99 +217,105 @@
   </Tab>
 </AuTabs>
 
-<AuMainContainer class="au-u-flex--row-reverse" as |m|>
-  <m.content @scroll={{true}}>
-    {{#if this.loadForm.isRunning}}
-      <div class="au-o-box">
-        <p class="au-u-h4 au-u-medium" aria-hidden="true">
-          Formulier aan het laden
-        </p>
-        <AuLoader @padding="small" />
-      </div>
-    {{else if this.loadForm.last.isError}}
-      <div class="au-o-box">
-        <AuAlert
-          @title="Onverwachte fout"
-          @skin="error"
-          @icon="circle-x"
-          @size="small"
-          class="au-u-max-width-small"
-        >
-          <p>
-            Er ging iets fout bij het laden van het formulier, gelieve de
-            helpdesk te contacteren.
+<SidebarContainer
+  @scroll={{true}}
+  @size="large"
+  @collapsed={{not this.feedbackExpanded}}
+  class="au-u-flex--row-reverse"
+>
+  <:content>
+    <AuBodyContainer @scroll={{true}}>
+      {{#if this.loadForm.isRunning}}
+        <div class="au-o-box">
+          <p class="au-u-h4 au-u-medium" aria-hidden="true">
+            Formulier aan het laden
           </p>
-        </AuAlert>
-      </div>
-    {{else}}
-      <div class="au-u-flex">
-        <form
-          id={{this.id}}
-          {{on "submit" (perform this.handleFormSubmit)}}
-          class="au-c-rdf-form {{@tabName}} au-u-flex-grow-1"
-        >
-          <RdfForm
-            @groupClass="au-o-grid__item"
-            @form={{this.form}}
-            @graphs={{this.graphs}}
-            @sourceNode={{this.sourceNode}}
-            @formStore={{this.formStore}}
-            @forceShowErrors={{this.forceShowErrors}}
-            @show={{@readOnly}}
-            @useNewListingLayout={{true}}
-          />
-        </form>
-      </div>
+          <AuLoader @padding="small" />
+        </div>
+      {{else if this.loadForm.last.isError}}
+        <div class="au-o-box">
+          <AuAlert
+            @title="Onverwachte fout"
+            @skin="error"
+            @icon="circle-x"
+            @size="small"
+            class="au-u-max-width-small"
+          >
+            <p>
+              Er ging iets fout bij het laden van het formulier, gelieve de
+              helpdesk te contacteren.
+            </p>
+          </AuAlert>
+        </div>
+      {{else}}
+        <div class="au-u-flex">
+          <form
+            id={{this.id}}
+            {{on "submit" (perform this.handleFormSubmit)}}
+            class="au-c-rdf-form {{@tabName}} au-u-flex-grow-1"
+          >
+            <RdfForm
+              @groupClass="au-o-grid__item"
+              @form={{this.form}}
+              @graphs={{this.graphs}}
+              @sourceNode={{this.sourceNode}}
+              @formStore={{this.formStore}}
+              @forceShowErrors={{this.forceShowErrors}}
+              @show={{@readOnly}}
+              @useNewListingLayout={{true}}
+            />
+          </form>
+        </div>
 
-    {{/if}}
-  </m.content>
-
-  {{! template-lint-disable no-inline-styles }}
-  <m.sidebar
-    @size={{if this.feedbackExpanded "large" "collapsed"}}
-    class="au-c-main-container__content--scroll au-c-card--standout u-border-divider u-border-divider--left"
-  >
-    {{#if this.feedbackExpanded}}
-      <div class="au-u-padding-top-small">
-        <div class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small">
+      {{/if}}
+    </AuBodyContainer>
+  </:content>
+  <:sidebar>
+    <div class="au-u-height-full u-border-divider u-border-divider--left">
+      {{#if this.feedbackExpanded}}
+        <div class="au-u-padding-top-small">
+          <div
+            class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small"
+          >
+            <AuButton
+              @skin="link-secondary"
+              @size="large"
+              class="au-u-flex-shrink-0"
+              {{on "click" this.toggleFeedback}}
+            >
+              <AuIcon @size="large" @icon="nav-right" />
+            </AuButton>
+            <div>
+              <div class="au-u-flex au-u-flex--between au-u-margin-right-small">
+                <AuHeading @skin="3" @level="2">Feedback</AuHeading>
+                <AuToggleSwitch
+                  @checked={{true}}
+                  @onChange={{perform this.toggleFeedback}}
+                >
+                  Inclusief historiek
+                </AuToggleSwitch>
+              </div>
+              <p>Verwerk de gekregen feedback door je product te bewerken of
+                door de feedback te weigeren. Verzend daarna je antwoord.
+              </p>
+            </div>
+          </div>
+          <Feedback @publicService={{@publicService}} />
+          <Feedback @publicService={{@publicService}} />
+          <Feedback @publicService={{@publicService}} />
+        </div>
+      {{else}}
+        <div class="au-u-padding-top">
           <AuButton
             @skin="link-secondary"
             @size="large"
             class="au-u-flex-shrink-0"
             {{on "click" this.toggleFeedback}}
           >
-            <AuIcon @size="large" @icon="nav-right" />
+            <AuIcon @size="large" @icon="nav-left" />
           </AuButton>
-          <div>
-            <div class="au-u-flex au-u-flex--between au-u-margin-right-small">
-              <AuHeading @skin="3" @level="2">Feedback</AuHeading>
-              <AuToggleSwitch
-                @checked={{true}}
-                @onChange={{perform this.toggleFeedback}}
-              >
-                Afgesloten feedback tonen
-              </AuToggleSwitch>
-            </div>
-            <p>Verwerk de gekregen feedback door je product te bewerken of door
-              de feedback te weigeren. Verzend daarna je antwoord.
-            </p>
-          </div>
         </div>
-        <Feedback @publicService={{@publicService}} />
-        <Feedback @publicService={{@publicService}} />
-        <Feedback @publicService={{@publicService}} />
-      </div>
-    {{else}}
-      <div class="au-u-padding-tiny">
-        <AuButton
-          @skin="link-secondary"
-          @size="large"
-          class="au-u-flex-shrink-0"
-          {{on "click" this.toggleFeedback}}
-        >
-          <AuIcon @size="large" @icon="nav-left" />
-        </AuButton>
-      </div>
-    {{/if}}
-  </m.sidebar>
-</AuMainContainer>
+      {{/if}}
+    </div>
+  </:sidebar>
+</SidebarContainer>

@@ -1,37 +1,33 @@
-<div
-  class="au-u-padding-right-small au-u-padding-top-none u-border-divider u-border-divider--top"
->
+<div class="au-u-padding-right-small u-border-divider u-border-divider--bottom">
   <div class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small">
     <AuButton
       @skin="link-secondary"
       @size="large"
+      @icon={{if this.feedbackExpanded "nav-up" "nav-down"}}
+      @hideText={{true}}
       class="au-u-flex-shrink-0"
       {{on "click" this.toggleFeedback}}
-    >
-      <AuIcon
-        @size="large"
-        @icon={{if this.feedbackExpanded "nav-up" "nav-down"}}
-      />
-    </AuButton>
+    />
     <div class="au-u-1-1">
       <div
-        class="au-u-flex au-u-flex--vertical-center au-u-margin-top-tiny au-u-margin-bottom-tiny au-u-1-1"
+        class="au-u-flex au-u-flex--vertical-center au-u-margin-top-tiny au-u-margin-bottom-tiny"
       >
         <AuHelpText
           @skin="primary"
           @size="large"
           class="au-u-margin-top-none au-u-medium"
         >#1</AuHelpText>
+          {{! template-lint-disable no-inline-styles }}
         <AuHelpText
           @skin="secondary"
-          class="au-u-margin-top-none au-u-margin-left-tiny au-u-margin-right"
+          class="au-u-margin-top-none au-u-margin-left-tiny"
+          style="margin-right: auto;"
         >(geweigerd)</AuHelpText>
         {{#if (not-eq this.feedbackStatus undefined)}}
           <AuButton @skin="primary" {{on "click" (perform this.sendAnswer)}}>
             Antwoord verzenden
           </AuButton>
         {{/if}}
-        {{! template-lint-disable no-inline-styles }}
         <AuDropdown
           @skin="naked"
           @icon="three-dots"
@@ -39,7 +35,6 @@
           @alignment="left"
           @size="large"
           role="menu"
-          style="margin-left: auto;"
         >
           <AuButton
             @icon="circle-check"
@@ -84,9 +79,7 @@
           {{{this.mockText}}}
         </div>
       {{/if}}
-      <div
-        class="au-u-flex au-u-flex--row au-u-flex--between au-u-margin-top-tiny"
-      >
+      <div class="au-u-flex au-u-flex--between au-u-margin-top-tiny">
         <span>{{this.organization}}</span>
         <AuHelpText
           @skin="secondary"

@@ -12,6 +12,12 @@ export default class FeedbackComponent extends Component {
   @tracked feedbackStatus;
   @tracked date = '26-01-2026';
   @tracked organization = 'Gemeente Gent';
+  @tracked feedbackExpanded = true;
+
+  @action
+  toggleFeedback() {
+    this.feedbackExpanded = !this.feedbackExpanded;
+  }
 
   @task
   *sendAnswer() {

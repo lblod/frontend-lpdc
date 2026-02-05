@@ -42,7 +42,7 @@ export default class DetailsPageComponent extends Component {
   @tracked forceShowErrors = false;
   @tracked form;
   // TODO: expand only if there is (open) feedback
-  @tracked feedbackExpanded = true;
+  @tracked feedbackSidebarExpanded = true;
 
   id = guidFor(this);
   @tracked formStore;
@@ -59,8 +59,8 @@ export default class DetailsPageComponent extends Component {
   }
 
   @action
-  toggleFeedback() {
-    this.feedbackExpanded = !this.feedbackExpanded;
+  toggleFeedbackSidebar() {
+    this.feedbackSidebarExpanded = !this.feedbackSidebarExpanded;
   }
 
   #showToasterErrorMessage(message) {

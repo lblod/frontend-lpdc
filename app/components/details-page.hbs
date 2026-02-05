@@ -220,7 +220,7 @@
 <SidebarContainer
   @scroll={{true}}
   @size="large"
-  @collapsed={{not this.feedbackExpanded}}
+  @collapsed={{not this.feedbackSidebarExpanded}}
   class="au-u-flex--row-reverse"
 >
   <:content>
@@ -272,7 +272,7 @@
   </:content>
   <:sidebar>
     <div class="au-u-height-full u-border-divider u-border-divider--left">
-      {{#if this.feedbackExpanded}}
+      {{#if this.feedbackSidebarExpanded}}
         <div class="au-u-padding-top-small">
           <div
             class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small"
@@ -281,7 +281,7 @@
               @skin="link-secondary"
               @size="large"
               class="au-u-flex-shrink-0"
-              {{on "click" this.toggleFeedback}}
+              {{on "click" this.toggleFeedbackSidebar}}
             >
               <AuIcon @size="large" @icon="nav-right" />
             </AuButton>
@@ -290,7 +290,7 @@
                 <AuHeading @skin="3" @level="2">Feedback</AuHeading>
                 <AuToggleSwitch
                   @checked={{true}}
-                  @onChange={{perform this.toggleFeedback}}
+                  @onChange={{perform this.toggleFeedbackSidebar}}
                 >
                   Inclusief historiek
                 </AuToggleSwitch>
@@ -310,7 +310,7 @@
             @skin="link-secondary"
             @size="large"
             class="au-u-flex-shrink-0"
-            {{on "click" this.toggleFeedback}}
+            {{on "click" this.toggleFeedbackSidebar}}
           >
             <AuIcon @size="large" @icon="nav-left" />
           </AuButton>

@@ -17,7 +17,7 @@
           @size="large"
           class="au-u-margin-top-none au-u-medium"
         >#1</AuHelpText>
-          {{! template-lint-disable no-inline-styles }}
+        {{! template-lint-disable no-inline-styles }}
         <AuHelpText
           @skin="secondary"
           class="au-u-margin-top-none au-u-margin-left-tiny"
@@ -28,45 +28,48 @@
             Antwoord verzenden
           </AuButton>
         {{/if}}
-        <AuDropdown
-          @skin="naked"
-          @icon="three-dots"
-          @hideText={{true}}
-          @alignment="left"
-          @size="large"
-          role="menu"
-        >
-          <AuButton
-            @icon="circle-check"
-            @skin={{if this.feedbackStatus "link" "link-secondary"}}
-            role="menuitem"
-            class={{if this.feedbackStatus "au-u-background-gray-200"}}
-            {{on "click" this.markFeedbackProcessed}}
+        {{#if this.feedbackExpanded}}
+          <AuDropdown
+            @skin="naked"
+            @icon="three-dots"
+            @hideText={{true}}
+            @alignment="left"
+            @size="large"
+            role="menu"
           >
-            Feedback verwerkt
-            {{#if
-              (and (not-eq this.feedbackStatus undefined) this.feedbackStatus)
-            }}
-              <AuIcon @size="medium" @icon="check" />
-            {{/if}}
-          </AuButton>
-          <AuButton
-            @skin={{if this.feedbackStatus "link-secondary" "link"}}
-            @icon="circle-x"
-            role="menuitem"
-            class={{if this.feedbackStatus "" "au-u-background-gray-200"}}
-            {{on "click" this.markFeedbackDenied}}
-          >
-            Feedback geweigerd
-            {{#if
-              (and
-                (not-eq this.feedbackStatus undefined) (not this.feedbackStatus)
-              )
-            }}
-              <AuIcon @size="medium" @icon="check" />
-            {{/if}}
-          </AuButton>
-        </AuDropdown>
+            <AuButton
+              @icon="circle-check"
+              @skin={{if this.feedbackStatus "link" "link-secondary"}}
+              role="menuitem"
+              class={{if this.feedbackStatus "au-u-background-gray-200"}}
+              {{on "click" this.markFeedbackProcessed}}
+            >
+              Feedback verwerkt
+              {{#if
+                (and (not-eq this.feedbackStatus undefined) this.feedbackStatus)
+              }}
+                <AuIcon @size="medium" @icon="check" />
+              {{/if}}
+            </AuButton>
+            <AuButton
+              @skin={{if this.feedbackStatus "link-secondary" "link"}}
+              @icon="circle-x"
+              role="menuitem"
+              class={{if this.feedbackStatus "" "au-u-background-gray-200"}}
+              {{on "click" this.markFeedbackDenied}}
+            >
+              Feedback geweigerd
+              {{#if
+                (and
+                  (not-eq this.feedbackStatus undefined)
+                  (not this.feedbackStatus)
+                )
+              }}
+                <AuIcon @size="medium" @icon="check" />
+              {{/if}}
+            </AuButton>
+          </AuDropdown>
+        {{/if}}
       </div>
       {{#if this.feedbackExpanded}}
         {{! template-lint-disable no-inline-styles }}

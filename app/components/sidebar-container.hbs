@@ -1,5 +1,6 @@
 <div
   class="au-c-sidebar-container
+    {{if @reverse 'au-c-sidebar-container--reverse'}}
     {{if @collapsed 'au-c-sidebar-container--collapsed'}}
     {{if (eq @size 'large') 'au-c-sidebar-container--large'}}"
   ...attributes

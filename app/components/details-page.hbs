@@ -221,7 +221,7 @@
   @scroll={{true}}
   @size="large"
   @collapsed={{not this.feedbackSidebarExpanded}}
-  class="au-u-flex--row-reverse"
+  @reverse={{true}}
 >
   <:content>
     <AuBodyContainer @scroll={{true}}>
@@ -271,7 +271,7 @@
     </AuBodyContainer>
   </:content>
   <:sidebar>
-    <div class="au-u-height-full u-border-divider u-border-divider--left">
+    {{!-- <div class="au-u-height-full u-border-divider u-border-divider--left"> --}}
       {{#if this.feedbackSidebarExpanded}}
         <div class="au-u-padding-top-small">
           <div
@@ -316,6 +316,6 @@
           </AuButton>
         </div>
       {{/if}}
-    </div>
+    {{!-- </div> --}}
   </:sidebar>
 </SidebarContainer>

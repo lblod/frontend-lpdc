@@ -40,7 +40,6 @@ import { lastKeyPressedPlugin } from '@lblod/ember-rdfa-editor/plugins/last-key-
 import {
   bulletListWithConfig,
   listItemWithConfig,
-  listTrackingPlugin,
   orderedListWithConfig,
 } from '@lblod/ember-rdfa-editor/plugins/list';
 import {
@@ -110,7 +109,6 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
 
   plugins = [
     lastKeyPressedPlugin,
-    listTrackingPlugin(),
     tablePlugin,
     tableKeymap,
     inputRules({

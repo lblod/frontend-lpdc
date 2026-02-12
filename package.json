@@ -40,7 +40,8 @@
     "@ember/test-waiters": "^4.1.0",
     "@lblod/ember-mock-login": {
       "ember-concurrency": "$ember-concurrency"
-    }
+    },
+    "ember-truth-helpers": "^5.0.0"
   },
   "overridesNotes": {
     "addon-shim and macros": "there is an issue with the latest release that requires us to pin to the previous version: https://github.com/embroider-build/embroider/issues/2440."

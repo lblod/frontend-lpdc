@@ -132,7 +132,6 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
 
     //rdfaEditor setup is async, updateValue may be called before it is set
     if (this.editorController) {
-      this.hasBeenFocused = true; // property of `SimpleInputFieldComponent`
       const htmlContent = this.editorController.htmlContent;
       const hasTextContent = Boolean(
         this.editorController.mainEditorState.doc.textContent,

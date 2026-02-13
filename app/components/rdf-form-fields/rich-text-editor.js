@@ -1,12 +1,7 @@
 import { action } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import { tracked } from '@glimmer/tracking';
-import {
-  inputRules,
-  ProseParser,
-  Schema,
-  Selection,
-} from '@lblod/ember-rdfa-editor';
+import { inputRules, Schema } from '@lblod/ember-rdfa-editor';
 import {
   blockRdfaWithConfig,
   docWithConfig,
@@ -40,7 +35,6 @@ import { lastKeyPressedPlugin } from '@lblod/ember-rdfa-editor/plugins/last-key-
 import {
   bulletListWithConfig,
   listItemWithConfig,
-  listTrackingPlugin,
   orderedListWithConfig,
 } from '@lblod/ember-rdfa-editor/plugins/list';
 import {
@@ -110,7 +104,6 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
 
   plugins = [
     lastKeyPressedPlugin,
-    listTrackingPlugin(),
     tablePlugin,
     tableKeymap,
     inputRules({
@@ -139,7 +132,6 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
 
     //rdfaEditor setup is async, updateValue may be called before it is set
     if (this.editorController) {
-      this.hasBeenFocused = true;
       const htmlContent = this.editorController.htmlContent;
       const hasTextContent = Boolean(
         this.editorController.mainEditorState.doc.textContent,
@@ -177,25 +169,7 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
 
   setEditorValue() {
     if (this.value !== undefined && this.value !== null) {
-      // We replicate the behavior of the controller.setHtmlContent method without focussing the field.
-      // Since we use the `focusout` event focusing the field would trigger the `updateValue` action,
-      // which in turn causes the "unsaved changes" modal to appear when it shouldn't.
-      // Source: https://github.com/lblod/ember-rdfa-editor/blob/4dc3fdf14ac3e92567db22811bb76b2079c2280b/addon/core/say-controller.ts#L42-L58
-      const { editorController } = this;
-      const tr = editorController.mainEditorState.tr;
-      const domParser = new DOMParser();
-      tr.replaceWith(
-        0,
-        tr.doc.nodeSize - 2,
-        ProseParser.fromSchema(this.schema).parse(
-          domParser.parseFromString(this.value, 'text/html'),
-          {
-            preserveWhitespace: true,
-          },
-        ),
-      );
-      tr.setSelection(Selection.atEnd(tr.doc));
-      editorController.editor.mainView.dispatch(tr);
+      this.editorController.initialize(this.value, { shouldFocus: false });
     }
   }
 

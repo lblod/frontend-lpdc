@@ -10,45 +10,49 @@
     @visible={{not @show}}
     @originalStoreOptions={{this.storeOptions}}
     @field={{@field}}
-    @updateValues={{this.updateSelection}}>
-  </ThreeWayCompareLink>
+    @updateValues={{this.updateSelection}}
+  />
 </div>
 
-{{#if @show}}
-  {{#if this.hasTags}}
-    <AuList @direction="horizontal" as |Item|>
-      {{#each this.selectedTags as |tagLiteral|}}
-        <Item>
-          <AuPill>
-            {{tagLiteral.value}}
-          </AuPill>
-        </Item>
-      {{/each}}
-    </AuList>
-  {{else}}
-    <span class="au-u-muted">-</span>
-  {{/if}}
-{{else}}
-  <div class={{if this.hasErrors "ember-power-select--error"}}>
-    <PowerSelectMultipleWithCreate
-      @searchField="value"
-      @searchMessage="Typ om een nieuwe tag toe te voegen"
-      @selected={{this.selectedTags}}
-      @onChange={{this.handleTagSelection}}
-      @onCreate={{this.createTag}}
-      @onClose={{fn (mut this.hasBeenFocused) true}}
-      @buildSuggestion={{this.buildSuggestion}}
-      @showCreateWhen={{this.showCreateWhen}}
-      @loadingMessage="Aan het laden..."
-      @noMatchesMessage="Geen resultaten"
-      @triggerId={{this.id}}
-      as |tagLiteral|
-    >
-      {{tagLiteral.value}}
-    </PowerSelectMultipleWithCreate>
-  </div>
-{{/if}}
+<div class="au-o-grid au-o-grid--flush">
+  <div class="au-o-grid__item au-u-2-3 {{if @show 'au-u-flex-grow'}}">
+    {{#if @show}}
+      {{#if this.hasTags}}
+        <AuList @direction="horizontal" as |Item|>
+          {{#each this.selectedTags as |tagLiteral|}}
+            <Item>
+              <AuPill>
+                {{tagLiteral.value}}
+              </AuPill>
+            </Item>
+          {{/each}}
+        </AuList>
+      {{else}}
+        <span class="au-u-muted">-</span>
+      {{/if}}
+    {{else}}
+      <div class={{if this.hasErrors "ember-power-select--error"}}>
+        <PowerSelectMultipleWithCreate
+          @searchField="value"
+          @searchMessage="Typ om een nieuwe tag toe te voegen"
+          @selected={{this.selectedTags}}
+          @onChange={{this.handleTagSelection}}
+          @onCreate={{this.createTag}}
+          @onClose={{fn (mut this.hasBeenFocused) true}}
+          @buildSuggestion={{this.buildSuggestion}}
+          @showCreateWhen={{this.showCreateWhen}}
+          @loadingMessage="Aan het laden..."
+          @noMatchesMessage="Geen resultaten"
+          @triggerId={{this.id}}
+          as |tagLiteral|
+        >
+          {{tagLiteral.value}}
+        </PowerSelectMultipleWithCreate>
+      </div>
+    {{/if}}
 
-{{#each this.errors as |error|}}
-  <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
-{{/each}}
+    {{#each this.errors as |error|}}
+      <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
+    {{/each}}
+  </div>
+</div>

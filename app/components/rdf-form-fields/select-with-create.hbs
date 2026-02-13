@@ -8,7 +8,7 @@
 
 {{!-- template-lint-disable no-inline-styles --}}
 <div class="au-o-grid au-o-grid--flush">
-  <div class="au-o-grid__item au-u-2-3 au-u-flex-grow">
+  <div class="au-o-grid__item au-u-2-3 {{if @show 'au-u-flex-grow'}}">
     {{#if @show}}
       <AuInput @disabled="true" value={{this.value}} />
     {{else}}

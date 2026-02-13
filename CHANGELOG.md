@@ -1,3 +1,9 @@
+## v0.27.0 (2026-01-26)
+
+#### :rocket: Enhancement
+* [#43](https://github.com/lblod/frontend-lpdc/pull/43) [LPDC-1457]: update @lblod/ember-rdfa-editor to version 13.1.1 ([@elpoelma](https://github.com/elpoelma))
+* [#39](https://github.com/lblod/frontend-lpdc/pull/39) [LPDC-1012]: add support for helptexts ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.26.0 (2026-01-26)
 
 #### :rocket: Enhancement

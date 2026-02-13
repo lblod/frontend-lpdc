@@ -27,6 +27,16 @@ export default class ConceptSelector extends InputFieldComponent {
     this.loadPersistedValues();
   }
 
+  get tooltipText() {
+    return this.args.field.options.tooltipText;
+  }
+
+  get helpText() {
+    return this.isLinkedToConcept
+      ? this.args.field.options.conceptHelpText
+      : this.args.field.options.helpText;
+  }
+
   get shouldPreloadData() {
     return this.args.field.options.preload ?? true;
   }
@@ -183,6 +193,20 @@ export default class ConceptSelector extends InputFieldComponent {
     this.options = yield this.loadConcepts({
       filter: searchTerm,
     });
+  }
+
+  get isLinkedToConcept() {
+    const { formStore, sourceNode, graphs } = this.args;
+
+    // Check if there's a concept linked via dct:source
+    const conceptLink = formStore.any(
+      sourceNode,
+      new NamedNode('http://purl.org/dc/terms/source'),
+      undefined,
+      graphs.sourceGraph,
+    );
+
+    return !!conceptLink;
   }
 }
 

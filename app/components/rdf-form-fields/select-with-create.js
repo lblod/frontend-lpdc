@@ -5,6 +5,7 @@ import { guidFor } from '@ember/object/internals';
 import { task } from 'ember-concurrency';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
 import { inject as service } from '@ember/service';
+import { NamedNode } from 'rdflib';
 
 export default class SelectWithCreateComponent extends SimpleInputFieldComponent {
   @tracked
@@ -17,6 +18,12 @@ export default class SelectWithCreateComponent extends SimpleInputFieldComponent
   constructor() {
     super(...arguments);
     this.loadOptions.perform();
+  }
+
+  get helpText() {
+    return this.isLinkedToConcept
+      ? this.args.field.options.conceptHelpText
+      : this.args.field.options.helpText;
   }
 
   @action
@@ -59,5 +66,19 @@ export default class SelectWithCreateComponent extends SimpleInputFieldComponent
 
   updateStore() {
     super.updateValue(this.value);
+  }
+
+  get isLinkedToConcept() {
+    const { formStore, sourceNode, graphs } = this.args;
+
+    // Check if there's a concept linked via dct:source
+    const conceptLink = formStore.any(
+      sourceNode,
+      new NamedNode('http://purl.org/dc/terms/source'),
+      undefined,
+      graphs.sourceGraph,
+    );
+
+    return !!conceptLink;
   }
 }

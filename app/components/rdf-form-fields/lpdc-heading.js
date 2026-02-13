@@ -18,7 +18,23 @@ export default class LpdcRdfHeadingComponent extends Component {
     return this.args.field.options.pillText;
   }
 
+  get tooltipText() {
+    return this.args.field.options.tooltipText;
+  }
+
+  get helpText() {
+    return this.isLinkedToConcept
+      ? this.args.field.options.conceptHelpText
+      : this.args.field.options.helpText;
+  }
+
   get showPill() {
+    const path = this.args.field.options.path;
+
+    if (!path) {
+      return false;
+    }
+
     const formGenerator = new ThreeWayComparisonFormGenerator({
       store: this.args.formStore,
       sourceNode: this.args.sourceNode,
@@ -28,13 +44,13 @@ export default class LpdcRdfHeadingComponent extends Component {
     });
     const countConceptSnapshotCurrent = this.args.formStore.match(
       formGenerator.getSourceNode('current'),
-      new NamedNode(this.args.field.options.path),
+      new NamedNode(path),
       undefined,
       formGenerator.getGraphs().metaGraph,
     ).length;
     const countConceptSnapshotLatest = this.args.formStore.match(
       formGenerator.getSourceNode('latest'),
-      new NamedNode(this.args.field.options.path),
+      new NamedNode(path),
       undefined,
       formGenerator.getGraphs().metaGraph,
     ).length;
@@ -95,5 +111,19 @@ export default class LpdcRdfHeadingComponent extends Component {
           )[0],
       )
       .filter((it) => !!it)[0].subject.value;
+  }
+
+  get isLinkedToConcept() {
+    const { formStore, sourceNode, graphs } = this.args;
+
+    // Check if there's a concept linked via dct:source
+    const conceptLink = formStore.any(
+      sourceNode,
+      new NamedNode('http://purl.org/dc/terms/source'),
+      undefined,
+      graphs.sourceGraph,
+    );
+
+    return !!conceptLink;
   }
 }

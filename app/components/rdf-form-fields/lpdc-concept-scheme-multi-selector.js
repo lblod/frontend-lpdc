@@ -27,6 +27,12 @@ export default class LpdcConceptSchemeMultiSelector extends InputFieldComponent 
   @tracked conceptLimit = PAGE_SIZE;
   @tracked isSearching = false;
 
+  get helpText() {
+    return this.isLinkedToConcept
+      ? this.args.field.options.conceptHelpText
+      : this.args.field.options.helpText;
+  }
+
   get canShowMoreConcepts() {
     return !this.isSearching && this.conceptLimit < this.options.length;
   }
@@ -138,4 +144,18 @@ export default class LpdcConceptSchemeMultiSelector extends InputFieldComponent 
       this.conceptLimit += PAGE_SIZE;
     }
   });
+
+  get isLinkedToConcept() {
+    const { formStore, sourceNode, graphs } = this.args;
+
+    // Check if there's a concept linked via dct:source
+    const conceptLink = formStore.any(
+      sourceNode,
+      new NamedNode('http://purl.org/dc/terms/source'),
+      undefined,
+      graphs.sourceGraph,
+    );
+
+    return !!conceptLink;
+  }
 }

@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import SimpleInputFieldComponent from '@lblod/ember-submission-form-fields/components/rdf-input-fields/simple-value-input-field';
 import { triplesForPath, XSD } from '@lblod/submission-form-helpers';
 import { literal } from 'rdflib';
+import { NamedNode } from 'rdflib';
 
 export default class RdfInputFieldsDateTimeComponent extends SimpleInputFieldComponent {
   inputId = 'date-time-' + guidFor(this);
@@ -11,6 +12,12 @@ export default class RdfInputFieldsDateTimeComponent extends SimpleInputFieldCom
   @tracked value = null;
   @tracked hour = null;
   @tracked minutes = null;
+
+  get helpText() {
+    return this.isLinkedToConcept
+      ? this.args.field.options.conceptHelpText
+      : this.args.field.options.helpText;
+  }
 
   loadProvidedValue() {
     const matches = triplesForPath(this.storeOptions);
@@ -33,5 +40,19 @@ export default class RdfInputFieldsDateTimeComponent extends SimpleInputFieldCom
   updateValueInStore(values) {
     super.updateValue(values[0]);
     this.loadProvidedValue();
+  }
+
+  get isLinkedToConcept() {
+    const { formStore, sourceNode, graphs } = this.args;
+
+    // Check if there's a concept linked via dct:source
+    const conceptLink = formStore.any(
+      sourceNode,
+      new NamedNode('http://purl.org/dc/terms/source'),
+      undefined,
+      graphs.sourceGraph,
+    );
+
+    return !!conceptLink;
   }
 }

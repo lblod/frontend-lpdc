@@ -40,8 +40,7 @@
     "@ember/test-waiters": "^4.1.0",
     "@lblod/ember-mock-login": {
       "ember-concurrency": "$ember-concurrency"
-    },
-    "ember-truth-helpers": "^5.0.0"
+    }
   },
   "overridesNotes": {
     "addon-shim and macros": "there is an issue with the latest release that requires us to pin to the previous version: https://github.com/embroider-build/embroider/issues/2440."
@@ -59,7 +58,7 @@
     "@lblod/ember-acmidm-login": "^2.3.0",
     "@lblod/ember-mock-login": "^0.14.0",
     "@lblod/ember-rdfa-editor": "~13.1.1",
-    "@lblod/ember-submission-form-fields": "^3.1.2",
+    "@lblod/ember-submission-form-fields": "^3.3.0",
     "@lblod/submission-form-helpers": "^3.0.0",
     "@sentry/ember": "^7.54.0",
     "broccoli-asset-rev": "^3.0.0",

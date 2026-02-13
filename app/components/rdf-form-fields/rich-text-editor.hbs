@@ -41,7 +41,7 @@
         {{{this.value}}}
       </AuContent>
     {{else}}
-      <div class="rich-text-editor" {{on "focusout" this.updateValue}}>
+      <div class="rich-text-editor">
         <EditorContainer>
           <:top>
             <ResponsiveToolbar>
@@ -90,12 +90,14 @@
             </ResponsiveToolbar>
           </:top>
           <:default>
-            <Editor
-              @schema={{this.schema}}
-              @rdfaEditorInit={{this.handleRdfaEditorInit}}
-              @plugins={{this.plugins}}
-              @nodeViews={{this.nodeViews}}
-            />
+            <div {{on 'focusout' this.updateValue}}>
+              <Editor
+                @schema={{this.schema}}
+                @rdfaEditorInit={{this.handleRdfaEditorInit}}
+                @plugins={{this.plugins}}
+                @nodeViews={{this.nodeViews}}
+              />
+            </div>
           </:default>
         </EditorContainer>
       </div>

@@ -127,25 +127,23 @@ export default class LpdcConceptSchemeMultiSelector extends InputFieldComponent 
     }
   }
 
-  @restartableTask
-  *search(term) {
-    yield timeout(600);
+  search = restartableTask(async (term) => {
+    await timeout(600);
     this.isSearching = true;
 
     return this.options.filter((value) =>
       value.label.toLowerCase().includes(term.toLowerCase()),
     );
-  }
+  });
 
-  @restartableTask
-  *showMoreConcepts() {
+  showMoreConcepts = restartableTask(async () => {
     if (this.canShowMoreConcepts) {
       // We add an artificial delay so users see the loading animation and know something is happening
-      yield timeout(300);
+      await timeout(300);
 
       this.conceptLimit += PAGE_SIZE;
     }
-  }
+  });
 
   get isLinkedToConcept() {
     const { formStore, sourceNode, graphs } = this.args;

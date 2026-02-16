@@ -18,12 +18,13 @@ export default class ImpersonateController extends Controller {
     this.queryStore.perform();
   }
 
-  queryStore = task(async () => {
+  @task
+  *queryStore() {
     const filter = { provider: 'https://github.com/lblod/mock-login-service' };
     if (this.gemeente) {
       filter.gebruiker = { bestuurseenheden: this.gemeente };
     }
-    const accounts = await this.store.query('account', {
+    const accounts = yield this.store.query('account', {
       include: 'gebruiker,gebruiker.bestuurseenheden',
       filter: filter,
       page: { size: this.size, number: this.page },
@@ -31,20 +32,22 @@ export default class ImpersonateController extends Controller {
     });
 
     this.model = accounts;
-  });
+  }
 
-  updateSearch = restartableTask(async (event) => {
-    await timeout(500);
+  @restartableTask
+  *updateSearch(event) {
+    yield timeout(500);
     this.page = 0;
     this.gemeente = event.target.value;
 
-    await this.queryStore.perform();
-  });
+    yield this.queryStore.perform();
+  }
 
-  impersonateAccount = task(async (accountId) => {
-    await this.impersonation.impersonate(accountId);
+  @task
+  *impersonateAccount(accountId) {
+    yield this.impersonation.impersonate(accountId);
     const indexUrl = this.router.urlFor('application');
     // We do a hard redirect so any previously loaded data is removed from the EmberData store
     window.location.href = indexUrl;
-  });
+  }
 }

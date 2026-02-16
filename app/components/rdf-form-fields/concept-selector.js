@@ -169,7 +169,8 @@ export default class ConceptSelector extends InputFieldComponent {
     super.updateValidations();
   }
 
-  loadMoreConcepts = restartableTask(async () => {
+  @restartableTask
+  *loadMoreConcepts() {
     if (this.canLoadMoreConcepts) {
       const query = {
         'page[number]': this.options.meta.pagination.next.number,
@@ -179,11 +180,11 @@ export default class ConceptSelector extends InputFieldComponent {
         query.filter = this.searchTerm;
       }
 
-      const newConcepts = await this.loadConcepts(query);
+      const newConcepts = yield this.loadConcepts(query);
       this.options = [...this.options, ...newConcepts];
       this.options.meta = newConcepts.meta;
     }
-  });
+  }
 
   @restartableTask
   *search(searchTerm) {

@@ -3,11 +3,10 @@ import Component from '@glimmer/component';
 import { dropTask } from 'ember-concurrency';
 
 export default class ConfirmReopeningModalComponent extends Component {
-  @dropTask
-  *reopen() {
-    yield this.args.data.reopeningHandler();
+  reopen = dropTask(async () => {
+    await this.args.data.reopeningHandler();
     this.args.close();
-  }
+  });
 
   @action
   close() {

@@ -20,15 +20,14 @@ export default class SelectUOrJeModalComponent extends Component {
     this.showFormError = false;
   }
 
-  @dropTask
-  *confirm() {
+  confirm = dropTask(async () => {
     if (this.selectedVorm) {
-      yield this.args.data.submitHandler(this.selectedVorm);
+      await this.args.data.submitHandler(this.selectedVorm);
       this.close();
     } else {
       this.showFormError = true;
     }
-  }
+  });
 
   @action
   makeChoiceLater() {

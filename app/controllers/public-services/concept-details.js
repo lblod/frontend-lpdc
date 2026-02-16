@@ -38,23 +38,21 @@ export default class PublicServicesConceptDetailsController extends Controller {
     }
   }
 
-  @dropTask
-  *createPublicService(conceptUuid) {
-    const concept = yield this.conceptService.loadConceptDetails(conceptUuid);
+  createPublicService = dropTask(async (conceptUuid) => {
+    const concept = await this.conceptService.loadConceptDetails(conceptUuid);
     const publicServiceUuid =
-      yield this.publicServiceService.createPublicService(concept.uri);
+      await this.publicServiceService.createPublicService(concept.uri);
 
     this.router.transitionTo('public-services.details', publicServiceUuid);
-  }
+  });
 
-  @dropTask
-  *linkConcept() {
+  linkConcept = dropTask(async () => {
     const { concept } = this.model;
     const publicService =
-      yield this.publicServiceService.loadPublicServiceDetails(
+      await this.publicServiceService.loadPublicServiceDetails(
         this.publicServiceId,
       );
-    yield this.publicServiceService.linkConcept(publicService, concept);
+    await this.publicServiceService.linkConcept(publicService, concept);
     this.router.replaceWith('public-services.details', publicService.id);
-  }
+  });
 }

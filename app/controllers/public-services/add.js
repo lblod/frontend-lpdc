@@ -30,13 +30,12 @@ export default class PublicServicesAddController extends AbstractConceptOverview
     });
   }
 
-  @dropTask
-  *createPublicService(conceptUuid) {
+  createPublicService = dropTask(async (conceptUuid) => {
     const conceptId = conceptUuid
-      ? (yield this.conceptService.loadConceptDetails(conceptUuid)).uri
+      ? (await this.conceptService.loadConceptDetails(conceptUuid)).uri
       : undefined;
     const publicServiceUuid =
-      yield this.publicServiceService.createPublicService(conceptId);
+      await this.publicServiceService.createPublicService(conceptId);
     this.router.transitionTo('public-services.details', publicServiceUuid);
-  }
+  });
 }

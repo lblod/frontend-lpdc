@@ -86,12 +86,12 @@ export default class PublicServicesDetailsController extends Controller {
     this.shouldShowUnlinkWarning = false;
   }
 
-  @dropTask()
-  *unlinkConcept() {
+  unlinkConcept = dropTask(async () => {
     const { publicService } = this.model;
-    yield this.publicServiceService.unlinkConcept(publicService);
+    await this.publicServiceService.unlinkConcept(publicService);
     this.hideUnlinkWarning();
-  }
+  });
+
   hasUnsavedChangesObserver(aValue) {
     this.formHasUnsavedChanges = aValue;
   }

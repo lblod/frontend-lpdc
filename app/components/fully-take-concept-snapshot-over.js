@@ -3,17 +3,15 @@ import Component from '@glimmer/component';
 import { dropTask } from 'ember-concurrency';
 
 export default class FullyTakeConceptSnapshotOverModalComponent extends Component {
-  @dropTask
-  *fullyTakeConceptSnapshotOver() {
-    yield this.args.data.fullyTakeConceptSnapshotOverHandler();
+  fullyTakeConceptSnapshotOver = dropTask(async () => {
+    await this.args.data.fullyTakeConceptSnapshotOverHandler();
     this.args.close();
-  }
+  });
 
-  @dropTask
-  *updateConceptSnapshotByField() {
-    yield this.args.data.updateConceptSnapshotByFieldHandler();
+  updateConceptSnapshotByField = dropTask(async () => {
+    await this.args.data.updateConceptSnapshotByFieldHandler();
     this.args.close();
-  }
+  });
 
   @action
   close() {

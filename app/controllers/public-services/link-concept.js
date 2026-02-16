@@ -6,10 +6,9 @@ export default class PublicServicesLinkConceptIndexController extends AbstractCo
   @service router;
   @service('public-service') publicServiceService;
 
-  @dropTask
-  *linkConcept(concept) {
+  linkConcept = dropTask(async (concept) => {
     const { publicService } = this.model;
-    yield this.publicServiceService.linkConcept(publicService, concept);
+    await this.publicServiceService.linkConcept(publicService, concept);
     this.router.replaceWith('public-services.details', publicService.id);
-  }
+  });
 }

@@ -141,10 +141,9 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     this.validateAddress.perform();
   }
 
-  @restartableTask
-  *validateAddress(updateTriples = true) {
-    yield timeout(250);
-    const result = yield this.performValidateAddress();
+  validateAddress = restartableTask(async (updateTriples = true) => {
+    await timeout(250);
+    const result = await this.performValidateAddress();
     this.adresMatchFound = !!result.adressenRegisterId;
     if (updateTriples) {
       this.adresMatchFound
@@ -157,7 +156,7 @@ export default class AddressSelectorComponent extends InputFieldComponent {
         ? this.updateAddressRegisterIdTriple(result.adressenRegisterId)
         : this.updateAddressRegisterIdTriple(null);
     }
-  }
+  });
 
   async performValidateAddress() {
     if (this.municipality && this.street && this.houseNumber) {
@@ -173,22 +172,20 @@ export default class AddressSelectorComponent extends InputFieldComponent {
     }
   }
 
-  @restartableTask
-  *searchMunicipalities(searchString) {
-    yield timeout(250);
+  searchMunicipalities = restartableTask(async (searchString) => {
+    await timeout(250);
     return this.httpRequest.get(
       `/lpdc-management/address/municipalities?search=${searchString.trim()}`,
     );
-  }
+  });
 
-  @restartableTask
-  *searchStreets(searchString) {
-    yield timeout(250);
+  searchStreets = restartableTask(async (searchString) => {
+    await timeout(250);
     const trimmedSearchString = searchString.trim();
     return this.httpRequest.get(
       `/lpdc-management/address/streets?municipality=${this.municipality}&search=${trimmedSearchString}`,
     );
-  }
+  });
 
   updateMunicipalityTriple() {
     const newObject = this.createObjectFromValue(this.municipality, 'nl');

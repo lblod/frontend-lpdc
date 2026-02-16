@@ -3,11 +3,10 @@ import Component from '@glimmer/component';
 import { dropTask } from 'ember-concurrency';
 
 export default class ConfirmSubmitModalComponent extends Component {
-  @dropTask
-  *submit() {
-    yield this.args.data.submitHandler();
+  submit = dropTask(async () => {
+    await this.args.data.submitHandler();
     this.args.close();
-  }
+  });
 
   @action
   close() {

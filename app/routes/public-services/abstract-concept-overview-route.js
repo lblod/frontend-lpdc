@@ -33,19 +33,8 @@ export default class AbstractConceptOverviewRoute extends Route {
     },
   };
 
-  @restartableTask
-  *loadConceptualPublicServicesTask({
-    search,
-    page,
-    sort,
-    isNewConcept,
-    isNotInstantiated,
-    isYourEurope,
-    doelgroepenIds,
-    producttypesIds,
-    themaIds,
-  }) {
-    return yield this.conceptService.loadAllConcepts({
+  loadConceptualPublicServicesTask = restartableTask(
+    async ({
       search,
       page,
       sort,
@@ -55,6 +44,18 @@ export default class AbstractConceptOverviewRoute extends Route {
       doelgroepenIds,
       producttypesIds,
       themaIds,
-    });
-  }
+    }) => {
+      return await this.conceptService.loadAllConcepts({
+        search,
+        page,
+        sort,
+        isNewConcept,
+        isNotInstantiated,
+        isYourEurope,
+        doelgroepenIds,
+        producttypesIds,
+        themaIds,
+      });
+    },
+  );
 }

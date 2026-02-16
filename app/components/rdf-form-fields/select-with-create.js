@@ -56,13 +56,12 @@ export default class SelectWithCreateComponent extends SimpleInputFieldComponent
     this.updateStore();
   }
 
-  @task
-  *loadOptions() {
+  loadOptions = task(async () => {
     const field = this.storeOptions.path.value.split('http://schema.org/')[1];
-    this.options = yield this.httpRequest.get(
+    this.options = await this.httpRequest.get(
       `/lpdc-management/contact-info-options/${field}`,
     );
-  }
+  });
 
   updateStore() {
     super.updateValue(this.value);

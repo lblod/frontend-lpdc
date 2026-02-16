@@ -3,11 +3,10 @@ import Component from '@glimmer/component';
 import { dropTask } from 'ember-concurrency';
 
 export default class ConfirmDeletionModalComponent extends Component {
-  @dropTask
-  *delete() {
-    yield this.args.data.deleteHandler();
+  delete = dropTask(async () => {
+    await this.args.data.deleteHandler();
     this.args.close();
-  }
+  });
 
   @action
   close() {

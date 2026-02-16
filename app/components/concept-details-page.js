@@ -28,13 +28,12 @@ export default class DetailsPageComponent extends Component {
     this.sourceNode = new NamedNode(this.args.concept.uri);
   }
 
-  @task
-  *loadForm() {
+  loadForm = task(async () => {
     const {
       form: formTtl,
       meta: metaTtl,
       source: sourceTtl,
-    } = yield this.conceptService.getConceptForm(
+    } = await this.conceptService.getConceptForm(
       this.args.concept.uri,
       this.args.formId,
     );
@@ -53,5 +52,5 @@ export default class DetailsPageComponent extends Component {
 
     this.form = form;
     this.formStore = formStore;
-  }
+  });
 }

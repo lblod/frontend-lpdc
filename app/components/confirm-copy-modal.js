@@ -3,17 +3,15 @@ import Component from '@glimmer/component';
 import { dropTask } from 'ember-concurrency';
 
 export default class ConfirmCopyModalComponent extends Component {
-  @dropTask
-  *copyForMunicipalityMerger() {
-    yield this.args.data.copyHandler(true);
+  copyForMunicipalityMerger = dropTask(async () => {
+    await this.args.data.copyHandler(true);
     this.args.close();
-  }
+  });
 
-  @dropTask
-  *copyNotForMunicipalityMerger() {
-    yield this.args.data.copyHandler(false);
+  copyNotForMunicipalityMerger = dropTask(async () => {
+    await this.args.data.copyHandler(false);
     this.args.close();
-  }
+  });
 
   @action
   close() {

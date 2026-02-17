@@ -8,6 +8,11 @@ module.exports = function (defaults) {
     'ember-simple-auth': {
       useSessionSetupMethod: true,
     },
+    babel: {
+      plugins: [
+        require.resolve('ember-concurrency/async-arrow-task-transform'),
+      ],
+    },
   };
 
   let app = new EmberApp(defaults, customBuildConfig);

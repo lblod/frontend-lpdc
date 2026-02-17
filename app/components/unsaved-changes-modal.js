@@ -3,12 +3,11 @@ import Component from '@glimmer/component';
 import { dropTask } from 'ember-concurrency';
 
 export default class UnsavedChangesModalComponent extends Component {
-  @dropTask
-  *save() {
-    yield this.args.data.saveHandler();
+  save = dropTask(async () => {
+    await this.args.data.saveHandler();
 
     this.args.close({ shouldTransition: true, saved: true });
-  }
+  });
 
   @action
   discardChanges() {

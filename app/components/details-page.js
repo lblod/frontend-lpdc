@@ -157,13 +157,12 @@ export default class DetailsPageComponent extends Component {
     );
   }
 
-  @task
-  *loadForm() {
+  loadForm = task(async () => {
     const {
       form: formTtl,
       meta: metaTtl,
       source: sourceTtl,
-    } = yield this.publicServiceService.getPublicServiceForm(
+    } = await this.publicServiceService.getPublicServiceForm(
       this.args.publicService,
       this.args.formId,
     );
@@ -187,7 +186,7 @@ export default class DetailsPageComponent extends Component {
     this.form = form;
     this.formStore = formStore;
     this.updateHasUnsavedChanges(false);
-  }
+  });
 
   @action
   updateFormDirtyState(/* delta */) {
@@ -204,24 +203,22 @@ export default class DetailsPageComponent extends Component {
 
   @dropTaskGroup publicServiceAction;
 
-  @task({ group: 'publicServiceAction' })
-  *publishPublicService() {
+  publishPublicService = task({ group: 'publicServiceAction' }, async () => {
     // NOTE (10/04/2025): Before calling this the `publicService` should have
     // been validated using `this.publicServiceService.validateInstance`,
     // otherwise incorrect product instances can be published.
     const { publicService } = this.args;
-    yield this.publicServiceService.publishInstance(publicService);
+    await this.publicServiceService.publishInstance(publicService);
 
     this.router.transitionTo('public-services');
-  }
+  });
 
-  @task({ group: 'publicServiceAction' })
-  *handleFormSubmit(event) {
+  handleFormSubmit = task({ group: 'publicServiceAction' }, async (event) => {
     event?.preventDefault?.();
-    yield this.saveSemanticForm.unlinked().perform();
+    await this.saveSemanticForm.unlinked().perform();
 
     if (this.args.publicService.reviewStatus) {
-      yield this.modals.open(ConfirmUpToDateTillModal, {
+      await this.modals.open(ConfirmUpToDateTillModal, {
         confirmUpToDateTillHandler: async () => {
           await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
             this.args.publicService,
@@ -229,27 +226,25 @@ export default class DetailsPageComponent extends Component {
         },
       });
     }
-  }
+  });
 
-  @dropTask
-  *saveSemanticForm() {
+  saveSemanticForm = dropTask(async () => {
     let { publicService } = this.args;
     let serializedData = this.formStore.serializeDataWithAddAndDelGraph(
       this.graphs.sourceGraph,
       'application/n-triples',
     );
 
-    yield this.publicServiceService.updatePublicService(
+    await this.publicServiceService.updatePublicService(
       publicService,
       serializedData,
     );
-    yield this.publicServiceService.loadPublicServiceDetails(publicService.id);
-    yield this.loadForm.perform();
-  }
+    await this.publicServiceService.loadPublicServiceDetails(publicService.id);
+    await this.loadForm.perform();
+  });
 
-  @dropTask
-  *requestSubmitConfirmation() {
-    let isValidForm = yield validateForm(this.form, {
+  requestSubmitConfirmation = dropTask(async () => {
+    let isValidForm = await validateForm(this.form, {
       ...this.graphs,
       sourceNode: this.sourceNode,
       store: this.formStore,
@@ -258,7 +253,7 @@ export default class DetailsPageComponent extends Component {
 
     // Save this form first
     if (this.hasUnsavedChanges) {
-      yield this.saveSemanticForm.unlinked().perform();
+      await this.saveSemanticForm.unlinked().perform();
     }
 
     if (isValidForm) {
@@ -266,13 +261,13 @@ export default class DetailsPageComponent extends Component {
       // validated. Otherwise, the user gets duplicate error messages when the
       // currently open form contains an error. One message from the `else`
       // block below and one from `validateInstance`.
-      const publishErrors = yield this.publicServiceService.validateInstance(
+      const publishErrors = await this.publicServiceService.validateInstance(
         this.args.publicService,
       );
 
       if (publishErrors.length === 0) {
         if (this.args.publicService.reviewStatus) {
-          yield this.modals.open(ConfirmUpToDateTillModal, {
+          await this.modals.open(ConfirmUpToDateTillModal, {
             confirmUpToDateTillHandler: async () => {
               await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
                 this.args.publicService,
@@ -281,7 +276,7 @@ export default class DetailsPageComponent extends Component {
           });
         }
 
-        yield this.modals.open(ConfirmSubmitModal, {
+        await this.modals.open(ConfirmSubmitModal, {
           submitHandler: async () => {
             await this.publishPublicService.perform();
           },
@@ -294,15 +289,14 @@ export default class DetailsPageComponent extends Component {
     } else {
       this.#showToasterErrorMessage('Formulier is ongeldig');
     }
-  }
+  });
 
-  @dropTask()
-  *confirmInstanceAlreadyInformal() {
+  confirmInstanceAlreadyInformal = dropTask(async () => {
     const { publicService } = this.args;
-    yield this.publicServiceService.confirmInstanceAlreadyInformal(
+    await this.publicServiceService.confirmInstanceAlreadyInformal(
       publicService,
     );
-  }
+  });
 
   @action
   requestReopeningConfirmation() {
@@ -403,13 +397,12 @@ export default class DetailsPageComponent extends Component {
     });
   }
 
-  @dropTask
-  *markAsReviewed() {
+  markAsReviewed = dropTask(async () => {
     let { publicService } = this.args;
-    yield this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
+    await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
       publicService,
     );
-  }
+  });
 
   async showUnsavedChangesModal(transition) {
     if (transition.isAborted) {

@@ -130,13 +130,12 @@ export default class AbstractConceptOverviewController extends Controller {
     this.themaIds = [];
   }
 
-  @restartableTask
-  *searchTask(searchValue) {
-    yield timeout(500);
+  searchTask = restartableTask(async (searchValue) => {
+    await timeout(500);
 
     this.search = searchValue;
     this.page = 0;
-  }
+  });
 }
 
 function sortByLabel(concepts = []) {

@@ -185,15 +185,14 @@ export default class ConceptSelector extends InputFieldComponent {
     }
   });
 
-  @restartableTask
-  *search(searchTerm) {
-    yield timeout(300);
+  search = restartableTask(async (searchTerm) => {
+    await timeout(300);
 
     this.searchTerm = searchTerm;
-    this.options = yield this.loadConcepts({
+    this.options = await this.loadConcepts({
       filter: searchTerm,
     });
-  }
+  });
 
   get isLinkedToConcept() {
     const { formStore, sourceNode, graphs } = this.args;

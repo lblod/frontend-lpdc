@@ -1,4 +1,9 @@
-## v0.27.0 (2026-01-26)
+## v0.27.1 (2026-02-16)
+
+#### :rocket: Enhancement
+* [#44](https://github.com/lblod/frontend-lpdc/pull/44) [LPDC-1581]: fix deprecated tasks of ember-concurrency ([@wolfderechter](https://github.com/wolfderechter))
+
+## v0.27.0 (2026-02-13)
 
 #### :rocket: Enhancement
 * [#43](https://github.com/lblod/frontend-lpdc/pull/43) [LPDC-1457]: update @lblod/ember-rdfa-editor to version 13.1.1 ([@elpoelma](https://github.com/elpoelma))

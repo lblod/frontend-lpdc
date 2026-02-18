@@ -4,13 +4,16 @@ import ConfirmFeedbackSubmitModal from './confirm-feedback-submit-modal';
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
+import {
+  FEEDBACK_STATUS,
+  PROCESSING_STATUS,
+} from 'frontend-lpdc/models/feedback';
 
 export default class FeedbackComponent extends Component {
   @service modals;
-  // TODO: use the actual statuses
-  // currently true => processed, false => denied
-  @tracked feedbackStatus;
-  @tracked date = '26-01-2026';
+  @service store;
+  @service currentSession;
+
   @tracked organization = 'Gemeente Gent';
   @tracked feedbackExpanded = true;
 
@@ -19,39 +22,92 @@ export default class FeedbackComponent extends Component {
     this.feedbackExpanded = !this.feedbackExpanded;
   }
 
+  constructor() {
+    super(...arguments);
+  }
+
   @task
   *sendAnswer() {
     yield this.modals.open(ConfirmFeedbackSubmitModal, {
-      feedbackAccepted: this.feedbackStatus,
+      feedbackAccepted: this.feedback.isProcessingAccepted,
       submitHandler: async (value) => {
-        console.log(
-          'Feedback processed: ',
-          this.feedbackStatus ? 'accepted' : 'denied',
-        );
-        console.log('answer:', value);
+        const answer = await this.store.createRecord('feedback-answer', {
+          answer: value,
+          timestamp: new Date(),
+          from: this.currentSession.group.uri, //using the logged in org here
+          to: this.question.get('from'),
+        });
+        await answer.save();
+
+        const verwerkt = await this.findConcept(FEEDBACK_STATUS.VERWERKT);
+
+        this.feedback.answer = answer;
+        this.feedback.status = verwerkt;
+        await this.feedback.save();
       },
     });
   }
 
-  get mockText() {
-    // return '<h4>Lorem ipsum</h4> dolor sit amet consectetur. Velit suspendisse dolor posuere in cursus mauris tellus diam semper. Nulla ut at quam ut et. Nisi venenatis at morbi malesuada ut erat orci malesuada. Pharetra fringilla facilisi dignissim.Pharetra fringilla facilisi dignissim.Pharetra fringilla facilisi dignissim.';
-    return `Bedankt. Als gebruiker is het wel nog wat verwarrend: in de inleiding staat voor iedere inwoner, lager bij voorwaarden staan voorwaarden.
-
-Voorstel:
-
-Titel: Korting op warme maaltijden
-Beschrijving:
-
-Iedere inwoner van Merksplas kan een warme maaltijd aanvragen via het OCMW. Heb je een leefloon of een IGO, dan krijg je korting.
-Bewijsstukken: wat bedoel je met een geldig attest?`;
+  async findConcept(statusUri) {
+    const status = await this.store.query('concept', {
+      'filter[:uri:]': statusUri,
+      page: { size: 1 },
+    });
+    return status.at(0);
   }
 
   @action
-  markFeedbackDenied() {
-    this.feedbackStatus = false;
+  async markAsDenied() {
+    const busy = await this.findConcept(FEEDBACK_STATUS.BEZIG);
+    const denied = await this.findConcept(PROCESSING_STATUS.GEWEIGERD);
+
+    this.feedback.status = busy;
+    this.feedback.processingStatus = denied;
+    await this.feedback.save();
   }
+
   @action
-  markFeedbackProcessed() {
-    this.feedbackStatus = true;
+  async markAsAccepted() {
+    const busy = await this.findConcept(FEEDBACK_STATUS.BEZIG);
+    const accepted = await this.findConcept(PROCESSING_STATUS.GEACCEPTEERD);
+
+    this.feedback.status = busy;
+    this.feedback.processingStatus = accepted;
+    await this.feedback.save();
+  }
+
+  get feedback() {
+    return this.args.feedback;
+  }
+
+  get createdAt() {
+    return this.feedback.createdAt;
+  }
+
+  get question() {
+    return this.feedback.question;
+  }
+  get answer() {
+    return this.feedback.answer;
+  }
+  get indexNumber() {
+    return this.args.index + 1;
+  }
+
+  get feedbackStatusLabel() {
+    // If feedback is still getting processed, fetch and show the processingStatus (accepted/denied)
+    if (this.feedback.isVerwerkt) {
+      return this.feedback.processingStatus.get('label');
+    } else {
+      return this.feedback.status.get('label');
+    }
+  }
+
+  // Button is shown when user has selected a processingStatus (accepted/denied) and feedback is not processed
+  get showSendAnswerButton() {
+    return (
+      this.args.feedback.processingStatus.get('uri') &&
+      !this.args.feedback.isVerwerkt
+    );
   }
 }

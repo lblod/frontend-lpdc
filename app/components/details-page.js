@@ -22,6 +22,7 @@ import { isConceptUpdated } from 'frontend-lpdc/models/public-service';
 import FullyTakeConceptSnapshotOverModalComponent from 'frontend-lpdc/components/fully-take-concept-snapshot-over';
 import ConfirmConvertToInformalModalComponent from 'frontend-lpdc/components/confirm-convert-to-informal-modal';
 import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
+import { FEEDBACK_STATUS } from 'frontend-lpdc/models/feedback';
 
 const FORM_GRAPHS = {
   formGraph: new NamedNode('http://data.lblod.info/form'),
@@ -41,9 +42,9 @@ export default class DetailsPageComponent extends Component {
   @tracked hasUnsavedChanges = false;
   @tracked forceShowErrors = false;
   @tracked form;
-  // TODO: expand only if there is (open) feedback
-  @tracked feedbackSidebarExpanded = true;
-
+  @tracked includeFeedbackHistory = true;
+  @tracked feedbackSidebarExpanded = this.feedbackAvailable;
+  @tracked feedbacks = [];
   id = guidFor(this);
   @tracked formStore;
   graphs = FORM_GRAPHS;
@@ -51,6 +52,7 @@ export default class DetailsPageComponent extends Component {
   constructor() {
     super(...arguments);
     this.loadForm.perform();
+    this.loadFeedbacks.perform();
     this.sourceNode = new NamedNode(this.args.publicService.uri);
 
     if (!this.args.readOnly) {
@@ -61,6 +63,12 @@ export default class DetailsPageComponent extends Component {
   @action
   toggleFeedbackSidebar() {
     this.feedbackSidebarExpanded = !this.feedbackSidebarExpanded;
+  }
+
+  @action
+  toggleIncludeFeedbackHistory() {
+    this.includeFeedbackHistory = !this.includeFeedbackHistory;
+    this.loadFeedbacks.perform();
   }
 
   #showToasterErrorMessage(message) {
@@ -157,6 +165,10 @@ export default class DetailsPageComponent extends Component {
     );
   }
 
+  get feedbackAvailable() {
+    return this.args.publicService.feedbackAvailable;
+  }
+
   loadForm = task(async () => {
     const {
       form: formTtl,
@@ -187,6 +199,25 @@ export default class DetailsPageComponent extends Component {
     this.formStore = formStore;
     this.updateHasUnsavedChanges(false);
   });
+
+  @task
+  *loadFeedbacks() {
+    const allFeedbacks = yield this.store.query('feedback', {
+      'filter[instance][:uri:]': this.args.publicService.uri,
+      include: 'question,answer,status,processing-status',
+      sort: '-created-at',
+    });
+
+    const openFeedbacks = allFeedbacks.filter((feedback) => {
+      const statusUri = feedback.belongsTo('status').value().uri;
+      return statusUri !== FEEDBACK_STATUS.VERWERKT;
+    });
+
+    // TODO: use the feedbackAvailable flag (could be slightly delayed) for this or check on load?
+    // this.feedbackSidebarExpanded = openFeedbacks.length > 0;
+    // this.feedbackSidebarExpanded = this.args.publicService.feedbackAvailable;
+    this.feedbacks = this.includeFeedbackHistory ? allFeedbacks : openFeedbacks;
+  }
 
   @action
   updateFormDirtyState(/* delta */) {

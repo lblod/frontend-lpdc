@@ -217,3 +217,18 @@ $au-pill-border-color-feedback: #2da4aa !default;
     background-color: $au-pill-background-color-link-hover;
   }
 }
+
+.feedback-text {
+  overflow-y: scroll;
+  resize: vertical;
+}
+
+.feedback-text--open {
+  background-color: var(--au-white);
+  color: var(--au-gray-900);
+}
+
+.feedback-text--closed {
+  background-color: var(--au-gray-100);
+  color: var(--au-gray-700);
+}

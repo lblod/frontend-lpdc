@@ -203,3 +203,17 @@ div.au-u-margin-bottom-small:has(.address-form) {
 .u-border-divider--bottom {
   border-bottom-width: var(--divider-thickness);
 }
+
+$au-pill-color-feedback: #207478 !default;
+$au-pill-background-color-feedback: #e5f2f3 !default;
+$au-pill-border-color-feedback: #2da4aa !default;
+.au-c-pill--feedback {
+  color: $au-pill-color-feedback;
+  background-color: $au-pill-background-color-feedback;
+  border-color: $au-pill-border-color-feedback;
+
+  &.au-c-pill--hover:hover,
+  &.au-c-pill--hover:focus {
+    background-color: $au-pill-background-color-link-hover;
+  }
+}

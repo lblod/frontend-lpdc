@@ -33,7 +33,7 @@ export default class FeedbackModel extends Model {
   answer;
   @belongsTo('public-service', {
     async: true,
-    inverse: 'feedbacks',
+    inverse: 'feedback',
   })
   instance;
 

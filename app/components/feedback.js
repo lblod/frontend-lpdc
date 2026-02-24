@@ -14,7 +14,7 @@ export default class FeedbackComponent extends Component {
   @service store;
   @service currentSession;
 
-  @tracked organization = 'Gemeente Gent';
+  @tracked organization = 'Gemeente Aalter';
   @tracked feedbackExpanded = true;
 
   @action
@@ -26,9 +26,8 @@ export default class FeedbackComponent extends Component {
     super(...arguments);
   }
 
-  @task
-  *sendAnswer() {
-    yield this.modals.open(ConfirmFeedbackSubmitModal, {
+  sendAnswer = task(async () => {
+    await this.modals.open(ConfirmFeedbackSubmitModal, {
       feedbackAccepted: this.feedback.isProcessingAccepted,
       submitHandler: async (value) => {
         const answer = await this.store.createRecord('feedback-answer', {
@@ -46,7 +45,7 @@ export default class FeedbackComponent extends Component {
         await this.feedback.save();
       },
     });
-  }
+  });
 
   async findConcept(statusUri) {
     const status = await this.store.query('concept', {

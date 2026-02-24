@@ -30,53 +30,53 @@
         {{/if}}
         {{#if this.feedbackExpanded}}
           {{#unless this.feedback.isVerwerkt}}
-          <AuDropdown
-            @skin="naked"
-            @icon="three-dots"
-            @hideText={{true}}
-            @alignment="left"
-            @size="large"
-            role="menu"
-          >
-            <AuButton
-              @icon="circle-check"
-              @skin={{if
-                this.feedback.isProcessingAccepted
-                "link"
-                "link-secondary"
-              }}
-              role="menuitem"
-              class={{if
-                this.feedback.isProcessingAccepted
-                "au-u-background-gray-200"
-              }}
-              {{on "click" this.markAsAccepted}}
+            <AuDropdown
+              @skin="naked"
+              @icon="three-dots"
+              @hideText={{true}}
+              @alignment="left"
+              @size="large"
+              role="menu"
             >
-              Feedback verwerkt
-              {{#if this.feedback.isProcessingAccepted}}
-                <AuIcon @size="medium" @icon="check" />
-              {{/if}}
-            </AuButton>
-            <AuButton
-              @skin={{if
-                this.feedback.isProcessingDenied
-                "link"
-                "link-secondary"
-              }}
-              @icon="circle-x"
-              role="menuitem"
-              class={{if
-                this.feedback.isProcessingDenied
-                "au-u-background-gray-200"
-              }}
-              {{on "click" this.markAsDenied}}
-            >
-              Feedback geweigerd
-              {{#if this.feedback.isProcessingDenied}}
-                <AuIcon @size="medium" @icon="check" />
-              {{/if}}
-            </AuButton>
-          </AuDropdown>
+              <AuButton
+                @icon="circle-check"
+                @skin={{if
+                  this.feedback.isProcessingAccepted
+                  "link"
+                  "link-secondary"
+                }}
+                role="menuitem"
+                class={{if
+                  this.feedback.isProcessingAccepted
+                  "au-u-background-gray-200"
+                }}
+                {{on "click" this.markAsAccepted}}
+              >
+                Feedback verwerkt
+                {{#if this.feedback.isProcessingAccepted}}
+                  <AuIcon @size="medium" @icon="check" />
+                {{/if}}
+              </AuButton>
+              <AuButton
+                @skin={{if
+                  this.feedback.isProcessingDenied
+                  "link"
+                  "link-secondary"
+                }}
+                @icon="circle-x"
+                role="menuitem"
+                class={{if
+                  this.feedback.isProcessingDenied
+                  "au-u-background-gray-200"
+                }}
+                {{on "click" this.markAsDenied}}
+              >
+                Feedback geweigerd
+                {{#if this.feedback.isProcessingDenied}}
+                  <AuIcon @size="medium" @icon="check" />
+                {{/if}}
+              </AuButton>
+            </AuDropdown>
           {{/unless}}
         {{/if}}
       </div>
@@ -106,7 +106,7 @@
           class="au-u-margin-top-none"
         >{{moment-format
             this.question.timestamp
-            "HH:mm - DD-MM-YYYY"
+            "DD-MM-YYYY - HH:mm"
           }}</AuHelpText>
       </div>
 
@@ -142,7 +142,7 @@
             class="au-u-margin-top-none"
           >{{moment-format
               this.answer.timestamp
-              "HH:mm - DD-MM-YYYY"
+              "DD-MM-YYYY - HH:mm"
             }}</AuHelpText>
         </div>
       {{/if}}

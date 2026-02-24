@@ -319,13 +319,19 @@
                 Inclusief historiek
               </AuToggleSwitch>
             </div>
-            <p>Verwerk de gekregen feedback door je product te bewerken of door
-              de feedback te weigeren. Verzend daarna je antwoord.
+            <p class="au-u-para-small">Verwerk de gekregen feedback door je
+              product te bewerken of door de feedback te weigeren. Verzend
+              daarna je antwoord.
             </p>
           </div>
         </div>
-        {{#if this.feedbacks.length}}
-          {{#each this.feedbacks as |feedbackItem index|}}
+        {{#if this.loadFeedback.isRunning}}
+          <p class="au-u-text-center au-u-margin">Feedback aan het laden</p>
+        {{else if this.loadFeedback.lastSuccessful.value}}
+          {{#each
+            this.loadFeedback.lastSuccessful.value
+            as |feedbackItem index|
+          }}
             <Feedback @feedback={{feedbackItem}} @index={{index}} />
           {{/each}}
         {{else}}

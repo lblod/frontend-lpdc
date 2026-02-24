@@ -44,7 +44,6 @@ export default class DetailsPageComponent extends Component {
   @tracked form;
   @tracked includeFeedbackHistory = true;
   @tracked feedbackSidebarExpanded = this.feedbackAvailable;
-  @tracked feedbacks = [];
   id = guidFor(this);
   @tracked formStore;
   graphs = FORM_GRAPHS;
@@ -52,7 +51,7 @@ export default class DetailsPageComponent extends Component {
   constructor() {
     super(...arguments);
     this.loadForm.perform();
-    this.loadFeedbacks.perform();
+    this.loadFeedback.perform();
     this.sourceNode = new NamedNode(this.args.publicService.uri);
 
     if (!this.args.readOnly) {
@@ -68,7 +67,7 @@ export default class DetailsPageComponent extends Component {
   @action
   toggleIncludeFeedbackHistory() {
     this.includeFeedbackHistory = !this.includeFeedbackHistory;
-    this.loadFeedbacks.perform();
+    this.loadFeedback.perform();
   }
 
   #showToasterErrorMessage(message) {
@@ -200,24 +199,20 @@ export default class DetailsPageComponent extends Component {
     this.updateHasUnsavedChanges(false);
   });
 
-  @task
-  *loadFeedbacks() {
-    const allFeedbacks = yield this.store.query('feedback', {
+  loadFeedback = task(async () => {
+    const allFeedback = await this.store.query('feedback', {
       'filter[instance][:uri:]': this.args.publicService.uri,
       include: 'question,answer,status,processing-status',
       sort: '-created-at',
     });
 
-    const openFeedbacks = allFeedbacks.filter((feedback) => {
+    if (this.includeFeedbackHistory) return allFeedback;
+
+    return allFeedback.filter((feedback) => {
       const statusUri = feedback.belongsTo('status').value().uri;
       return statusUri !== FEEDBACK_STATUS.VERWERKT;
     });
-
-    // TODO: use the feedbackAvailable flag (could be slightly delayed) for this or check on load?
-    // this.feedbackSidebarExpanded = openFeedbacks.length > 0;
-    // this.feedbackSidebarExpanded = this.args.publicService.feedbackAvailable;
-    this.feedbacks = this.includeFeedbackHistory ? allFeedbacks : openFeedbacks;
-  }
+  });
 
   @action
   updateFormDirtyState(/* delta */) {

@@ -73,7 +73,7 @@ export default class PublicServiceModel extends Model {
     async: true,
     inverse: 'instance',
   })
-  feedbacks;
+  feedback;
 
   get isSent() {
     return (

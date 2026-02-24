@@ -35,6 +35,7 @@
       <Group>
         <AuButton
           @loading={{this.submit.isRunning}}
+          @loadingMessage='Aan het verzenden'
           {{on "click" (perform this.submit)}}
         >
           Verzend

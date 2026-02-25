@@ -29,7 +29,7 @@
           </AuButton>
         {{/if}}
         {{#if this.feedbackExpanded}}
-          {{#unless this.feedback.isVerwerkt}}
+          {{#unless this.isVerwerkt}}
             <AuDropdown
               @skin="naked"
               @icon="three-dots"
@@ -40,39 +40,28 @@
             >
               <AuButton
                 @icon="circle-check"
-                @skin={{if
-                  this.feedback.isProcessingAccepted
-                  "link"
-                  "link-secondary"
-                }}
+                @skin={{if this.isProcessingAccepted "link" "link-secondary"}}
                 role="menuitem"
                 class={{if
-                  this.feedback.isProcessingAccepted
+                  this.isProcessingAccepted
                   "au-u-background-gray-200"
                 }}
                 {{on "click" this.markAsAccepted}}
               >
                 Feedback verwerkt
-                {{#if this.feedback.isProcessingAccepted}}
+                {{#if this.isProcessingAccepted}}
                   <AuIcon @size="medium" @icon="check" />
                 {{/if}}
               </AuButton>
               <AuButton
-                @skin={{if
-                  this.feedback.isProcessingDenied
-                  "link"
-                  "link-secondary"
-                }}
+                @skin={{if this.isProcessingDenied "link" "link-secondary"}}
                 @icon="circle-x"
                 role="menuitem"
-                class={{if
-                  this.feedback.isProcessingDenied
-                  "au-u-background-gray-200"
-                }}
+                class={{if this.isProcessingDenied "au-u-background-gray-200"}}
                 {{on "click" this.markAsDenied}}
               >
                 Feedback geweigerd
-                {{#if this.feedback.isProcessingDenied}}
+                {{#if this.isProcessingDenied}}
                   <AuIcon @size="medium" @icon="check" />
                 {{/if}}
               </AuButton>
@@ -87,7 +76,7 @@
           <div
             class="au-c-textarea au-c-textarea--block feedback-text
               {{if
-                this.feedback.isVerwerkt
+                this.isVerwerkt
                 'feedback-text--closed'
                 'feedback-text--open'
               }}"
@@ -122,7 +111,7 @@
             <div
               class="au-c-textarea au-c-textarea--block feedback-text
                 {{if
-                  this.feedback.isVerwerkt
+                  this.isVerwerkt
                   'feedback-text--closed'
                   'feedback-text--open'
                 }}"

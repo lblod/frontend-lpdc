@@ -7,54 +7,35 @@ export default class FeedbackModel extends Model {
   @attr lpdcInstanceDerivedUri;
 
   @belongsTo('concept', {
-    async: true,
+    async: false,
     inverse: null,
   })
   ipdcStatus;
   @belongsTo('concept', {
-    async: true,
+    async: false,
     inverse: null,
   })
   status;
   @belongsTo('concept', {
-    async: true,
+    async: false,
     inverse: null,
   })
   processingStatus;
   @belongsTo('feedback-question', {
-    async: true,
+    async: false,
     inverse: null,
   })
   question;
   @belongsTo('feedback-answer', {
-    async: true,
+    async: false,
     inverse: null,
   })
   answer;
   @belongsTo('public-service', {
-    async: true,
+    async: false,
     inverse: 'feedback',
   })
   instance;
-
-  get isVerwerkt() {
-    return this.status?.get('uri') === FEEDBACK_STATUS.VERWERKT;
-  }
-
-  get isGeweigerd() {
-    return this.status?.get('uri') === FEEDBACK_STATUS.GEWEIGERD;
-  }
-
-  get isOpen() {
-    return this.status?.get('uri') === FEEDBACK_STATUS.OPEN;
-  }
-
-  get isProcessingAccepted() {
-    return this.processingStatus?.get('uri') === PROCESSING_STATUS.GEACCEPTEERD;
-  }
-  get isProcessingDenied() {
-    return this.processingStatus?.get('uri') === PROCESSING_STATUS.GEWEIGERD;
-  }
 }
 
 export const IPDC_STATUS = {

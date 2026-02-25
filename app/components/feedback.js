@@ -28,13 +28,13 @@ export default class FeedbackComponent extends Component {
 
   sendAnswer = task(async () => {
     await this.modals.open(ConfirmFeedbackSubmitModal, {
-      feedbackAccepted: this.feedback.isProcessingAccepted,
+      feedbackAccepted: this.isProcessingAccepted,
       submitHandler: async (value) => {
         const answer = await this.store.createRecord('feedback-answer', {
           answer: value,
           timestamp: new Date(),
           from: this.currentSession.group.uri, //using the logged in org here
-          to: this.question.get('from'),
+          to: this.question.from,
         });
         await answer.save();
 
@@ -95,18 +95,32 @@ export default class FeedbackComponent extends Component {
 
   get feedbackStatusLabel() {
     // If feedback is still getting processed, fetch and show the processingStatus (accepted/denied)
-    if (this.feedback.isVerwerkt) {
-      return this.feedback.processingStatus.get('label');
+    if (this.isVerwerkt) {
+      return this.feedback.processingStatus.label;
     } else {
-      return this.feedback.status.get('label');
+      return this.feedback.status.label;
     }
   }
 
   // Button is shown when user has selected a processingStatus (accepted/denied) and feedback is not processed
   get showSendAnswerButton() {
+    return !this.isVerwerkt && this.args.feedback.processingStatus?.uri;
+  }
+
+  get isVerwerkt() {
+    return this.args.feedback.status?.uri === FEEDBACK_STATUS.VERWERKT;
+  }
+
+  get isProcessingAccepted() {
     return (
-      this.args.feedback.processingStatus.get('uri') &&
-      !this.args.feedback.isVerwerkt
+      this.args.feedback.processingStatus?.uri ===
+      PROCESSING_STATUS.GEACCEPTEERD
+    );
+  }
+
+  get isProcessingDenied() {
+    return (
+      this.args.feedback.processingStatus?.uri === PROCESSING_STATUS.GEWEIGERD
     );
   }
 }

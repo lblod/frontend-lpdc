@@ -6,21 +6,10 @@ export default class FeedbackModel extends Model {
   @attr productnumber;
   @attr lpdcInstanceDerivedUri;
 
-  @belongsTo('concept', {
-    async: false,
-    inverse: null,
-  })
-  ipdcStatus;
-  @belongsTo('concept', {
-    async: false,
-    inverse: null,
-  })
-  status;
-  @belongsTo('concept', {
-    async: false,
-    inverse: null,
-  })
-  processingStatus;
+  @attr ipdcStatus;
+  @attr status;
+  @attr processingStatus;
+
   @belongsTo('feedback-question', {
     async: false,
     inverse: null,
@@ -57,4 +46,15 @@ export const PROCESSING_STATUS = {
     'http://lblod.data.gift/concepts/caa0b2d0-4bfa-46c8-8ee3-f77d0fdfa655',
   GEWEIGERD:
     'http://lblod.data.gift/concepts/094d76ed-59c9-45a6-9f62-f93f79675c00',
+};
+
+export const FEEDBACK_STATUS_LABELS = {
+  [FEEDBACK_STATUS.OPEN]: 'Open',
+  [FEEDBACK_STATUS.BEZIG]: 'Verwerking bezig',
+  [FEEDBACK_STATUS.VERWERKT]: 'Verwerkt',
+};
+
+export const FEEDBACK_PROCESSING_STATUS_LABELS = {
+  [PROCESSING_STATUS.GEACCEPTEERD]: 'Geaccepteerd',
+  [PROCESSING_STATUS.GEWEIGERD]: 'Geweigerd',
 };

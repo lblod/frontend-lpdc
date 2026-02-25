@@ -7,6 +7,8 @@ import { action } from '@ember/object';
 import {
   FEEDBACK_STATUS,
   PROCESSING_STATUS,
+  FEEDBACK_STATUS_LABELS,
+  FEEDBACK_PROCESSING_STATUS_LABELS,
 } from 'frontend-lpdc/models/feedback';
 
 export default class FeedbackComponent extends Component {
@@ -38,7 +40,7 @@ export default class FeedbackComponent extends Component {
         });
         await answer.save();
 
-        const verwerkt = await this.findConcept(FEEDBACK_STATUS.VERWERKT);
+        const verwerkt = FEEDBACK_STATUS.VERWERKT;
 
         this.feedback.answer = answer;
         this.feedback.status = verwerkt;
@@ -47,18 +49,10 @@ export default class FeedbackComponent extends Component {
     });
   });
 
-  async findConcept(statusUri) {
-    const status = await this.store.query('concept', {
-      'filter[:uri:]': statusUri,
-      page: { size: 1 },
-    });
-    return status.at(0);
-  }
-
   @action
   async markAsDenied() {
-    const busy = await this.findConcept(FEEDBACK_STATUS.BEZIG);
-    const denied = await this.findConcept(PROCESSING_STATUS.GEWEIGERD);
+    const busy = FEEDBACK_STATUS.BEZIG;
+    const denied = PROCESSING_STATUS.GEWEIGERD;
 
     this.feedback.status = busy;
     this.feedback.processingStatus = denied;
@@ -67,8 +61,8 @@ export default class FeedbackComponent extends Component {
 
   @action
   async markAsAccepted() {
-    const busy = await this.findConcept(FEEDBACK_STATUS.BEZIG);
-    const accepted = await this.findConcept(PROCESSING_STATUS.GEACCEPTEERD);
+    const busy = await FEEDBACK_STATUS.BEZIG;
+    const accepted = await PROCESSING_STATUS.GEACCEPTEERD;
 
     this.feedback.status = busy;
     this.feedback.processingStatus = accepted;
@@ -96,31 +90,28 @@ export default class FeedbackComponent extends Component {
   get feedbackStatusLabel() {
     // If feedback is still getting processed, fetch and show the processingStatus (accepted/denied)
     if (this.isVerwerkt) {
-      return this.feedback.processingStatus.label;
+      return FEEDBACK_PROCESSING_STATUS_LABELS[this.feedback.processingStatus];
     } else {
-      return this.feedback.status.label;
+      return FEEDBACK_STATUS_LABELS[this.feedback.status];
     }
   }
 
   // Button is shown when user has selected a processingStatus (accepted/denied) and feedback is not processed
   get showSendAnswerButton() {
-    return !this.isVerwerkt && this.args.feedback.processingStatus?.uri;
+    return !this.isVerwerkt && this.args.feedback.processingStatus;
   }
 
   get isVerwerkt() {
-    return this.args.feedback.status?.uri === FEEDBACK_STATUS.VERWERKT;
+    return this.args.feedback.status === FEEDBACK_STATUS.VERWERKT;
   }
 
   get isProcessingAccepted() {
     return (
-      this.args.feedback.processingStatus?.uri ===
-      PROCESSING_STATUS.GEACCEPTEERD
+      this.args.feedback.processingStatus === PROCESSING_STATUS.GEACCEPTEERD
     );
   }
 
   get isProcessingDenied() {
-    return (
-      this.args.feedback.processingStatus?.uri === PROCESSING_STATUS.GEWEIGERD
-    );
+    return this.args.feedback.processingStatus === PROCESSING_STATUS.GEWEIGERD;
   }
 }

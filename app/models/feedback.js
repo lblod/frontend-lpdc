@@ -6,7 +6,6 @@ export default class FeedbackModel extends Model {
   @attr productnumber;
   @attr lpdcInstanceDerivedUri;
 
-  @attr ipdcStatus;
   @attr status;
   @attr processingStatus;
 
@@ -26,13 +25,6 @@ export default class FeedbackModel extends Model {
   })
   instance;
 }
-
-export const IPDC_STATUS = {
-  AANGEMAAKT: 'https://ipdc.vlaanderen.be/ns/FeedbackStatus#AANGEMAAKT',
-  BEANTWOORD: 'https://ipdc.vlaanderen.be/ns/FeedbackStatus#BEANTWOORD',
-  GELEZEN: 'https://ipdc.vlaanderen.be/ns/FeedbackStatus#ANTWOORD_GELEZEN',
-  INGETROKKEN: 'https://ipdc.vlaanderen.be/ns/FeedbackStatus#INGETROKKEN',
-};
 
 export const FEEDBACK_STATUS = {
   OPEN: 'http://lblod.data.gift/concepts/1b3c5e7f-2a4d-4c6e-9f1b-3d5a7c9e2f4b',

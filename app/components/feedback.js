@@ -35,7 +35,7 @@ export default class FeedbackComponent extends Component {
         const answer = await this.store.createRecord('feedback-answer', {
           answer: value,
           timestamp: new Date(),
-          from: this.currentSession.group.uri, //using the logged in org here
+          from: this.question.to,
           to: this.question.from,
         });
         await answer.save();
@@ -94,6 +94,15 @@ export default class FeedbackComponent extends Component {
     } else {
       return FEEDBACK_STATUS_LABELS[this.feedback.status];
     }
+  }
+
+  get questionSenderLabel() {
+    const questionSender = this.question.from;
+    return `${questionSender.label}`;
+  }
+  get answerSenderLabel() {
+    const answerSender = this.answer.from;
+    return `${answerSender.label}`;
   }
 
   // Button is shown when user has selected a processingStatus (accepted/denied) and feedback is not processed

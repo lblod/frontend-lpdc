@@ -202,7 +202,8 @@ export default class DetailsPageComponent extends Component {
   loadFeedback = task(async () => {
     const allFeedback = await this.store.query('feedback', {
       'filter[instance][:uri:]': this.args.publicService.uri,
-      include: 'question,answer',
+      include:
+        'question,question.from,question.to,answer,answer.from,answer.to,receiver-bestuurseenheid',
       sort: '-created-at',
     });
 

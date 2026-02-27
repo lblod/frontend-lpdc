@@ -88,8 +88,7 @@
 
       {{/if}}
       <div class="au-u-flex au-u-flex--between au-u-para-small">
-        {{!-- <span>{{this.question.from}}</span> --}}
-        <span>{{this.organization}}</span>
+        <span>{{this.questionSenderLabel}}</span>
         <AuHelpText
           @skin="secondary"
           class="au-u-margin-top-none"
@@ -124,8 +123,7 @@
           <AuHelpText class="au-u-italic">Geen</AuHelpText>
         {{/if}}
         <div class="au-u-flex au-u-flex--between au-u-para-small">
-          {{!-- <span>{{this.answer.from}}</span> --}}
-          <span>{{this.organization}}</span>
+          <span>{{this.answerSenderLabel}}</span>
           <AuHelpText
             @skin="secondary"
             class="au-u-margin-top-none"

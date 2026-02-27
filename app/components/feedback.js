@@ -15,8 +15,6 @@ export default class FeedbackComponent extends Component {
   @service modals;
   @service store;
   @service currentSession;
-
-  @tracked organization = 'Gemeente Aalter';
   @tracked feedbackExpanded = true;
 
   @action
@@ -105,9 +103,18 @@ export default class FeedbackComponent extends Component {
     const questionSender = this.question.from;
     return `${questionSender.label}`;
   }
+
   get answerSenderLabel() {
     const answerSender = this.answer.from;
-    return `${answerSender.label}`;
+    const isBestuurseenheid =
+      answerSender.uri &&
+      answerSender.uri.includes('data.lblod.info/id/bestuurseenheden/');
+
+    if (isBestuurseenheid) {
+      return `${this.currentSession.group.classificatie.label} ${this.currentSession.group.naam}`;
+    } else {
+      return `${answerSender.label}`;
+    }
   }
 
   // Button is shown when user has selected a processingStatus (accepted/denied) and feedback is not processed

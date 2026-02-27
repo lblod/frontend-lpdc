@@ -90,6 +90,11 @@ export default class FeedbackComponent extends Component {
   get feedbackStatusLabel() {
     // If feedback is still getting processed, fetch and show the processingStatus (accepted/denied)
     if (this.isVerwerkt) {
+      // TODO: check if ok/needed
+      // if no processingStatus is known but it's processed, show as 'Verwerkt'
+      if (this.feedback.processingStatus === undefined)
+        return FEEDBACK_STATUS_LABELS[this.feedback.status];
+
       return FEEDBACK_PROCESSING_STATUS_LABELS[this.feedback.processingStatus];
     } else {
       return FEEDBACK_STATUS_LABELS[this.feedback.status];

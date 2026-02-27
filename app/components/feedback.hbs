@@ -92,10 +92,7 @@
         <AuHelpText
           @skin="secondary"
           class="au-u-margin-top-none au-u-margin-left-small"
-        >{{moment-format
-            this.question.timestamp
-            "DD-MM-YYYY - HH:mm"
-          }}</AuHelpText>
+        >{{format-date-time this.question.timestamp}}</AuHelpText>
       </div>
 
       {{! Answer }}
@@ -127,10 +124,7 @@
           <AuHelpText
             @skin="secondary"
             class="au-u-margin-top-none au-u-margin-left-small"
-          >{{moment-format
-              this.answer.timestamp
-              "DD-MM-YYYY - HH:mm"
-            }}</AuHelpText>
+          >{{format-date-time this.answer.timestamp}}</AuHelpText>
         </div>
       {{/if}}
     </div>

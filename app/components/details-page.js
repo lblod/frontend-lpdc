@@ -44,6 +44,7 @@ export default class DetailsPageComponent extends Component {
   @tracked form;
   @tracked includeFeedbackHistory = true;
   @tracked feedbackSidebarExpanded = this.feedbackAvailable;
+  @tracked hasFeedback = this.feedbackAvailable;
   id = guidFor(this);
   @tracked formStore;
   graphs = FORM_GRAPHS;
@@ -205,7 +206,9 @@ export default class DetailsPageComponent extends Component {
       include:
         'question,question.from,question.to,answer,answer.from,answer.to,receiver-bestuurseenheid',
       sort: '-created-at',
+      page: { size: 1000 }, //TODO: refactor to use pagination if needed
     });
+    this.hasFeedback = allFeedback.length > 0;
 
     if (this.includeFeedbackHistory) return allFeedback;
 

@@ -247,6 +247,7 @@
   @size="large"
   @collapsed={{not this.feedbackSidebarExpanded}}
   @reverse={{true}}
+  @hidden={{not this.hasFeedback}}
 >
   <:content>
     <AuBodyContainer @scroll={{true}}>

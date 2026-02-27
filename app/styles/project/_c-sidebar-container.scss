@@ -32,9 +32,13 @@
 
 .au-c-sidebar-container--collapsed {
   .au-c-sidebar-container__sidebar {
-    @include mq(medium) {
-      flex-basis: 4rem;
-    }
+    flex-basis: 4rem;
+  }
+}
+
+.au-c-sidebar-container--hidden {
+  .au-c-sidebar-container__sidebar {
+    display: none !important;
   }
 }
 

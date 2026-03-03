@@ -87,7 +87,7 @@ export default class FeedbackComponent extends Component {
 
   get feedbackStatusLabel() {
     // If feedback is still getting processed, fetch and show the processingStatus (accepted/denied)
-    if (this.isVerwerkt) {
+    if (this.isVerwerkt || this.isVerzonden) {
       // TODO: check if ok/needed
       // if no processingStatus is known but it's processed, show as 'Verwerkt'
       if (this.feedback.processingStatus === undefined)
@@ -124,6 +124,9 @@ export default class FeedbackComponent extends Component {
 
   get isVerwerkt() {
     return this.args.feedback.status === FEEDBACK_STATUS.VERWERKT;
+  }
+  get isVerzonden() {
+    return this.args.feedback.status === FEEDBACK_STATUS.VERZONDEN;
   }
 
   get isProcessingAccepted() {

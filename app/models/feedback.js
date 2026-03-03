@@ -31,6 +31,8 @@ export const FEEDBACK_STATUS = {
   BEZIG: 'http://lblod.data.gift/concepts/7c9e1a3f-5d8b-4e2c-9a1e-3f5b7d9c2e4a',
   VERWERKT:
     'http://lblod.data.gift/concepts/2e4a6c8d-9f1b-4d3e-5a7c-9e1f3b5d7a9c',
+  VERZONDEN:
+    'http://lblod.data.gift/concepts/a0575bbd-17b6-4f04-b1b2-e554e29cd428',
 };
 
 export const PROCESSING_STATUS = {

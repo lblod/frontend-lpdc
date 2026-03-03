@@ -106,12 +106,13 @@ export default class FeedbackComponent extends Component {
 
   get answerSenderLabel() {
     const answerSender = this.answer.from;
-    const isBestuurseenheid =
-      answerSender.uri &&
-      answerSender.uri.includes('data.lblod.info/id/bestuurseenheden/');
 
-    if (isBestuurseenheid) {
-      return `${this.currentSession.group.classificatie.label} ${this.currentSession.group.naam}`;
+    // Handle the difference between the labels of OVO uri and bestuurseenheid uri
+    const results = this.store.peekAll('bestuurseenheid');
+    const bestuurseenheid = results.find((b) => b.uri === answerSender.uri);
+
+    if (bestuurseenheid) {
+      return `${bestuurseenheid.classificatie.label} ${bestuurseenheid.naam}`;
     } else {
       return `${answerSender.label}`;
     }
@@ -119,7 +120,15 @@ export default class FeedbackComponent extends Component {
 
   // Button is shown when user has selected a processingStatus (accepted/denied) and feedback is not processed
   get showSendAnswerButton() {
-    return !this.isVerwerkt && this.args.feedback.processingStatus;
+    return (
+      !this.isVerwerkt &&
+      !this.isVerzonden &&
+      this.args.feedback.processingStatus
+    );
+  }
+
+  get showAnswer() {
+    return this.feedbackExpanded && this.answer;
   }
 
   get isVerwerkt() {

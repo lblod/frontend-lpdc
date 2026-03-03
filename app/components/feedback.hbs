@@ -29,7 +29,7 @@
           </AuButton>
         {{/if}}
         {{#if this.feedbackExpanded}}
-          {{#unless this.isVerwerkt}}
+          {{#unless (or this.isVerwerkt this.isVerzonden)}}
             <AuDropdown
               @skin="naked"
               @icon="three-dots"
@@ -96,7 +96,7 @@
       </div>
 
       {{! Answer }}
-      {{#if (and this.feedbackExpanded this.answer)}}
+      {{#if this.showAnswer}}
         <AuHelpText
           @skin="primary"
           @size="large"

@@ -88,11 +88,14 @@
 
       {{/if}}
       <div class="au-u-flex au-u-flex--between au-u-para-small">
-        <span>{{this.questionSenderLabel}}</span>
+        <span
+          title={{this.questionSenderLabel}}
+          class="au-u-4-5 u-truncate"
+        >{{this.questionSenderLabel}}</span>
         <AuHelpText
           @skin="secondary"
-          class="au-u-margin-top-none au-u-margin-left-small"
-        >{{format-date-time this.question.timestamp}}</AuHelpText>
+          class="au-u-margin-top-none au-u-margin-left-small au-u-1-5 au-u-text-right"
+        >{{format-date this.question.timestamp}}</AuHelpText>
       </div>
 
       {{! Answer }}
@@ -120,11 +123,14 @@
           <AuHelpText class="au-u-italic">Geen</AuHelpText>
         {{/if}}
         <div class="au-u-flex au-u-flex--between au-u-para-small">
-          <span>{{this.answerSenderLabel}}</span>
+          <span
+            class="au-u-4-5 u-truncate"
+            title={{this.answerSenderLabel}}
+          >{{this.answerSenderLabel}}</span>
           <AuHelpText
             @skin="secondary"
-            class="au-u-margin-top-none au-u-margin-left-small"
-          >{{format-date-time this.answer.timestamp}}</AuHelpText>
+            class="au-u-margin-top-none au-u-margin-left-small au-u-1-5 au-u-text-right"
+          >{{format-date this.answer.timestamp}}</AuHelpText>
         </div>
       {{/if}}
     </div>

@@ -218,3 +218,10 @@ $au-pill-border-color-feedback: #2da4aa !default;
     background-color: $au-pill-background-color-link-hover;
   }
 }
+
+// Based on https://tailwindcss.com/docs/text-overflow#truncating-text
+.u-truncate {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}

@@ -212,9 +212,12 @@ export default class DetailsPageComponent extends Component {
 
     if (this.includeFeedbackHistory) return allFeedback;
 
-    return allFeedback.filter(
-      (feedback) => feedback.status !== FEEDBACK_STATUS.VERWERKT,
-    );
+    return allFeedback.filter((feedback) => {
+      return (
+        feedback.status !== FEEDBACK_STATUS.VERWERKT &&
+        feedback.status !== FEEDBACK_STATUS.VERZONDEN
+      );
+    });
   });
 
   @action

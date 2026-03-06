@@ -103,7 +103,7 @@
       </div>
     {{/if}}
     {{#each this.errors as |error|}}
-      <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
+      <AuHelpText @error={{true}}>{{html-safe error.resultMessage}}</AuHelpText>
     {{/each}}
   </div>
 

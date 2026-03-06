@@ -59,7 +59,7 @@
     "@lblod/ember-mock-login": "^0.14.0",
     "@lblod/ember-rdfa-editor": "~13.1.1",
     "@lblod/ember-submission-form-fields": "^3.3.0",
-    "@lblod/submission-form-helpers": "^3.0.0",
+    "@lblod/submission-form-helpers": "github:lblod/submission-form-helpers#feature/add-support-for-custom-validation-result-messages",
     "@sentry/ember": "^7.54.0",
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^8.2.2",

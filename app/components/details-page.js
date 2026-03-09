@@ -22,6 +22,7 @@ import { isConceptUpdated } from 'frontend-lpdc/models/public-service';
 import FullyTakeConceptSnapshotOverModalComponent from 'frontend-lpdc/components/fully-take-concept-snapshot-over';
 import ConfirmConvertToInformalModalComponent from 'frontend-lpdc/components/confirm-convert-to-informal-modal';
 import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
+import { FEEDBACK_STATUS } from 'frontend-lpdc/models/feedback';
 
 const FORM_GRAPHS = {
   formGraph: new NamedNode('http://data.lblod.info/form'),
@@ -41,7 +42,9 @@ export default class DetailsPageComponent extends Component {
   @tracked hasUnsavedChanges = false;
   @tracked forceShowErrors = false;
   @tracked form;
-
+  @tracked includeFeedbackHistory = true;
+  @tracked feedbackSidebarExpanded = this.feedbackAvailable;
+  @tracked hasFeedback = this.feedbackAvailable;
   id = guidFor(this);
   @tracked formStore;
   graphs = FORM_GRAPHS;
@@ -49,11 +52,23 @@ export default class DetailsPageComponent extends Component {
   constructor() {
     super(...arguments);
     this.loadForm.perform();
+    this.loadFeedback.perform();
     this.sourceNode = new NamedNode(this.args.publicService.uri);
 
     if (!this.args.readOnly) {
       this.router.on('routeWillChange', this, this.showUnsavedChangesModal);
     }
+  }
+
+  @action
+  toggleFeedbackSidebar() {
+    this.feedbackSidebarExpanded = !this.feedbackSidebarExpanded;
+  }
+
+  @action
+  toggleIncludeFeedbackHistory() {
+    this.includeFeedbackHistory = !this.includeFeedbackHistory;
+    this.loadFeedback.perform();
   }
 
   #showToasterErrorMessage(message) {
@@ -150,6 +165,10 @@ export default class DetailsPageComponent extends Component {
     );
   }
 
+  get feedbackAvailable() {
+    return this.args.publicService.feedbackAvailable;
+  }
+
   loadForm = task(async () => {
     const {
       form: formTtl,
@@ -179,6 +198,26 @@ export default class DetailsPageComponent extends Component {
     this.form = form;
     this.formStore = formStore;
     this.updateHasUnsavedChanges(false);
+  });
+
+  loadFeedback = task(async () => {
+    const allFeedback = await this.store.query('feedback', {
+      'filter[instance][:uri:]': this.args.publicService.uri,
+      include:
+        'question,question.from,question.to,answer,answer.from,answer.to,receiver-bestuurseenheid',
+      sort: '-created-at',
+      page: { size: 1000 }, //TODO: refactor to use pagination if needed
+    });
+    this.hasFeedback = allFeedback.length > 0;
+
+    if (this.includeFeedbackHistory) return allFeedback;
+
+    return allFeedback.filter((feedback) => {
+      return (
+        feedback.status !== FEEDBACK_STATUS.VERWERKT &&
+        feedback.status !== FEEDBACK_STATUS.VERZONDEN
+      );
+    });
   });
 
   @action

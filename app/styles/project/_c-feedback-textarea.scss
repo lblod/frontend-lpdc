@@ -1,0 +1,15 @@
+.feedback-text {
+  overflow-y: scroll;
+  resize: vertical;
+  border-color: var(--au-gray-300);
+}
+
+.feedback-text--open {
+  background-color: var(--au-white);
+  color: var(--au-gray-900);
+}
+
+.feedback-text--closed {
+  background-color: var(--au-gray-200);
+  color: var(--au-gray-700);
+}

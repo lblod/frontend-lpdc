@@ -1,4 +1,11 @@
-<div class="au-c-sidebar-container" ...attributes>
+<div
+  class="au-c-sidebar-container
+    {{if @reverse 'au-c-sidebar-container--reverse'}}
+    {{if @collapsed 'au-c-sidebar-container--collapsed'}}
+    {{if @hidden 'au-c-sidebar-container--hidden'}}
+    {{if (eq @size 'large') 'au-c-sidebar-container--large'}}"
+  ...attributes
+>
   <div class="au-c-sidebar-container__sidebar">
     <div class="au-c-sidebar">
       <div class="au-c-sidebar__content">
@@ -6,8 +13,11 @@
       </div>
     </div>
   </div>
+
   <div class="au-c-sidebar-container__content">
-    <div class="au-c-body-container {{if @scroll "au-c-body-container--scroll"}}">
+    <div
+      class="au-c-body-container {{if @scroll 'au-c-body-container--scroll'}}"
+    >
       {{yield to="content"}}
     </div>
   </div>

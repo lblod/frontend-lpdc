@@ -1,0 +1,139 @@
+<div class="au-u-padding-right-small u-border-divider u-border-divider--bottom">
+  <div class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small">
+    <AuButton
+      @skin="link-secondary"
+      @size="large"
+      @icon={{if this.feedbackExpanded "nav-up" "nav-down"}}
+      @hideText={{true}}
+      class="au-u-flex-shrink-0"
+      {{on "click" this.toggleFeedback}}
+    />
+    <div class="au-u-1-1">
+      <div
+        class="au-u-flex au-u-flex--vertical-center au-u-margin-top-tiny au-u-margin-bottom-tiny"
+      >
+        <AuHelpText
+          @skin="primary"
+          @size="large"
+          class="au-u-margin-top-none au-u-medium"
+        >#{{this.indexNumber}}</AuHelpText>
+        {{! template-lint-disable no-inline-styles }}
+        <AuHelpText
+          @skin="secondary"
+          class="au-u-margin-top-none au-u-margin-left-tiny"
+          style="margin-right: auto;"
+        >({{this.feedbackStatusLabel}})</AuHelpText>
+        {{#if this.showSendAnswerButton}}
+          <AuButton @skin="primary" {{on "click" (perform this.sendAnswer)}}>
+            Antwoord verzenden
+          </AuButton>
+        {{/if}}
+        {{#if this.feedbackExpanded}}
+          {{#unless (or this.isVerwerkt this.isVerzonden)}}
+            <AuDropdown
+              @skin="naked"
+              @icon="three-dots"
+              @hideText={{true}}
+              @alignment="left"
+              @size="large"
+              role="menu"
+              style="overflow: hidden;"
+            >
+              <AuButton
+                @icon="circle-check"
+                @skin={{if this.isProcessingAccepted "link" "link-secondary"}}
+                role="menuitem"
+                class={{if
+                  this.isProcessingAccepted
+                  "au-u-background-gray-200"
+                }}
+                {{on "click" this.markAsAccepted}}
+              >
+                Feedback verwerkt
+                {{#if this.isProcessingAccepted}}
+                  <AuIcon @size="medium" @icon="check" />
+                {{/if}}
+              </AuButton>
+              <AuButton
+                @skin={{if this.isProcessingDenied "link" "link-secondary"}}
+                @icon="circle-x"
+                role="menuitem"
+                class={{if this.isProcessingDenied "au-u-background-gray-200"}}
+                {{on "click" this.markAsDenied}}
+              >
+                Feedback geweigerd
+                {{#if this.isProcessingDenied}}
+                  <AuIcon @size="medium" @icon="check" />
+                {{/if}}
+              </AuButton>
+            </AuDropdown>
+          {{/unless}}
+        {{/if}}
+      </div>
+
+      {{! Question }}
+      {{#if this.feedbackExpanded}}
+        <AuContent>
+          <div
+            class="au-c-textarea au-c-textarea--block feedback-text
+              {{if
+                this.isVerwerkt
+                'feedback-text--closed'
+                'feedback-text--open'
+              }}"
+          >
+            {{! template-lint-disable no-triple-curlies }}
+            {{{this.question.question}}}
+          </div>
+        </AuContent>
+
+      {{/if}}
+      <div class="au-u-flex au-u-flex--between au-u-para-small">
+        <span
+          title={{this.questionSenderLabel}}
+          class="au-u-4-5 u-truncate"
+        >{{this.questionSenderLabel}}</span>
+        <AuHelpText
+          @skin="secondary"
+          class="au-u-margin-top-none au-u-margin-left-small au-u-1-5 au-u-text-right"
+        >{{format-date this.question.timestamp}}</AuHelpText>
+      </div>
+
+      {{! Answer }}
+      {{#if this.showAnswer}}
+        <AuHelpText
+          @skin="primary"
+          @size="large"
+          class="au-u-margin-top-small au-u-medium"
+        >Antwoord</AuHelpText>
+        {{#if this.answer.answer}}
+          <AuContent>
+            <div
+              class="au-c-textarea au-c-textarea--block feedback-text
+                {{if
+                  this.isVerwerkt
+                  'feedback-text--closed'
+                  'feedback-text--open'
+                }}"
+            >
+              {{! template-lint-disable no-triple-curlies }}
+              {{{this.answer.answer}}}
+            </div>
+          </AuContent>
+        {{else}}
+          <AuHelpText class="au-u-italic">Geen</AuHelpText>
+        {{/if}}
+        <div class="au-u-flex au-u-flex--between au-u-para-small">
+          <span
+            class="au-u-4-5 u-truncate"
+            title={{this.answerSenderLabel}}
+          >{{this.answerSenderLabel}}</span>
+          <AuHelpText
+            @skin="secondary"
+            class="au-u-margin-top-none au-u-margin-left-small au-u-1-5 au-u-text-right"
+          >{{format-date this.answer.timestamp}}</AuHelpText>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

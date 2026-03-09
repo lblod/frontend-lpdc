@@ -11,6 +11,7 @@ export default class PublicServicesIndexController extends Controller {
   @tracked isReviewRequiredFilterEnabled = false;
   @tracked needsConversionFromFormalToInformalFilterEnabled = false;
   @tracked isYourEurope = false;
+  @tracked isFeedbackAvailable = false;
   @tracked forMunicipalityMerger = false;
   @tracked statusIds = [];
   @tracked producttypesIds = [];
@@ -120,6 +121,7 @@ export default class PublicServicesIndexController extends Controller {
       this.isReviewRequiredFilterEnabled === true ||
       this.needsConversionFromFormalToInformalFilterEnabled === true ||
       this.isYourEurope === true ||
+      this.isFeedbackAvailable === true ||
       this.forMunicipalityMerger === true ||
       this.statuses.length > 0 ||
       this.producttypes.length > 0 ||
@@ -137,6 +139,7 @@ export default class PublicServicesIndexController extends Controller {
     this.isReviewRequiredFilterEnabled = false;
     this.needsConversionFromFormalToInformalFilterEnabled = false;
     this.isYourEurope = false;
+    this.isFeedbackAvailable = false;
     this.forMunicipalityMerger = false;
     this.statusIds = [];
     this.producttypesIds = [];
@@ -169,6 +172,12 @@ export default class PublicServicesIndexController extends Controller {
   @action
   handleYourEuropeFilterChange(value) {
     this.isYourEurope = value;
+    this.resetPagination();
+  }
+
+  @action
+  handleFeedbackFilterChange(value) {
+    this.isFeedbackAvailable = value;
     this.resetPagination();
   }
 

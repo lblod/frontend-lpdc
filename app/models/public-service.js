@@ -13,6 +13,7 @@ export default class PublicServiceModel extends Model {
   @attr dutchLanguageVariant;
   @attr needsConversionFromFormalToInformal;
   @attr forMunicipalityMerger;
+  @attr feedbackAvailable;
 
   @belongsTo('concept', {
     async: false,
@@ -67,6 +68,12 @@ export default class PublicServiceModel extends Model {
     inverse: null,
   })
   lastModifier;
+
+  @hasMany('feedback', {
+    async: true,
+    inverse: 'instance',
+  })
+  feedback;
 
   get isSent() {
     return (

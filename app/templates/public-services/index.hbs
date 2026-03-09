@@ -29,6 +29,11 @@
           @onChange={{this.handleYourEuropeFilterChange}}>
           Your Europe
         </AuCheckbox>
+        <AuCheckbox
+          @checked={{this.isFeedbackAvailable}}
+          @onChange={{this.handleFeedbackFilterChange}}>
+          Feedback beschikbaar
+        </AuCheckbox>
         {{#if (and (is-feature-enabled "fusies") this.municipalityHasForMunicipalityMergerInstances)}}
           <AuCheckbox
             @checked={{this.forMunicipalityMerger}}
@@ -218,6 +223,11 @@
               {{#if publicService.needsConversionFromFormalToInformal}}
                 <AuPill @skin="default" @size="small" @icon="message">
                   u→je
+                </AuPill>
+              {{/if}}
+              {{#if publicService.feedbackAvailable}}
+                <AuPill @size="small" class="au-c-pill--feedback">
+                  feedback
                 </AuPill>
               {{/if}}
             </td>

@@ -28,6 +28,8 @@ import {
 } from '@lblod/ember-rdfa-editor/plugins/table';
 import { image } from '@lblod/ember-rdfa-editor/plugins/image';
 import { link, linkView } from '@lblod/ember-rdfa-editor/plugins/link';
+import { defaultLinkParser } from '@lblod/ember-rdfa-editor/plugins/link/parser';
+import { link_input_rule } from '@lblod/ember-rdfa-editor/plugins/link/input-rule';
 import { blockquote } from '@lblod/ember-rdfa-editor/plugins/blockquote';
 import { headingWithConfig } from '@lblod/ember-rdfa-editor/plugins/heading';
 import { code_block } from '@lblod/ember-rdfa-editor/plugins/code';
@@ -46,6 +48,7 @@ import SimpleInputFieldComponent from '@lblod/ember-submission-form-fields/compo
 import { modifier } from 'ember-modifier';
 import { NamedNode } from 'rdflib';
 
+export const linkParser = defaultLinkParser({ defaultCountryCode: 'BE' });
 export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFieldComponent {
   @tracked editorController;
   inputId = 'richtext-' + guidFor(this);
@@ -110,6 +113,7 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
       rules: [
         bullet_list_input_rule(this.schema.nodes.bullet_list),
         ordered_list_input_rule(this.schema.nodes.ordered_list),
+        link_input_rule({ nodeType: this.schema.nodes.link, linkParser }),
       ],
     }),
   ];
@@ -117,6 +121,7 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
   get linkOptions() {
     return {
       interactive: true,
+      linkParser,
     };
   }
 

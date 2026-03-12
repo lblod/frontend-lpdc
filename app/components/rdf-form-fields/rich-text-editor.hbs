@@ -104,9 +104,10 @@
     {{/if}}
     {{#each this.errors as |error|}}
       <AuAlert @icon="cross" @skin="error" @size="small">
-        {{html-safe error.resultMessage}}
+        <AuContent @skin="small">
+          {{html-safe error.resultMessage}}
+        </AuContent>
       </AuAlert>
-      {{!-- <AuHelpText @error={{true}}>{{html-safe error.resultMessage}}</AuHelpText> --}}
     {{/each}}
   </div>
 

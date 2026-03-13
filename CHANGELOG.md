@@ -1,3 +1,14 @@
+## v0.28.0 (2026-03-13)
+
+#### :rocket: Enhancement
+* [#46](https://github.com/lblod/frontend-lpdc/pull/46) LPDC-1367: add support for link validation in editor form fields ([@elpoelma](https://github.com/elpoelma))
+* [#42](https://github.com/lblod/frontend-lpdc/pull/42) [LPDC-1567]: introduce feedback functionality ([@wolfderechter](https://github.com/wolfderechter))
+* [#45](https://github.com/lblod/frontend-lpdc/pull/45) [LPDC-1508]: feedback model integration ([@wolfderechter](https://github.com/wolfderechter))
+
+#### Committers: 2
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+- [@wolfderechter](https://github.com/wolfderechter)
+
 ## v0.27.1 (2026-02-16)
 
 #### :rocket: Enhancement

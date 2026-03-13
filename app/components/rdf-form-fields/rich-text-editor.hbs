@@ -30,7 +30,7 @@
 {{/if}}
 
 <div class="au-o-grid au-o-grid--flush">
-  <div class="au-o-grid__item au-u-2-3 {{if @show 'au-u-flex-grow'}}">
+  <div class="au-o-grid__item au-u-2-3 au-u-flex au-u-flex--column au-u-flex--spaced-tiny {{if @show 'au-u-flex-grow'}}">
     {{#if @show}}
       <AuContent
         @skin="tiny"
@@ -103,7 +103,11 @@
       </div>
     {{/if}}
     {{#each this.errors as |error|}}
-      <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
+      <AuAlert @icon="cross" @skin="error" @size="small">
+        <AuContent @skin="small">
+          {{html-safe error.resultMessage}}
+        </AuContent>
+      </AuAlert>
     {{/each}}
   </div>
 

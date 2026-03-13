@@ -4,7 +4,9 @@ import { inject as service } from '@ember/service';
 import { registerFormFields } from '@lblod/ember-submission-form-fields';
 import { registerCustomValidation } from '@lblod/submission-form-helpers';
 import ConceptSelector from 'frontend-lpdc/components/rdf-form-fields/concept-selector';
-import RichTextEditor from 'frontend-lpdc/components/rdf-form-fields/rich-text-editor';
+import RichTextEditor, {
+  linkParser,
+} from 'frontend-lpdc/components/rdf-form-fields/rich-text-editor';
 import TagSelector from 'frontend-lpdc/components/rdf-form-fields/tag-selector';
 import SelectWithCreate from 'frontend-lpdc/components/rdf-form-fields/select-with-create';
 import AddressSelector from 'frontend-lpdc/components/rdf-form-fields/address-selector';
@@ -110,6 +112,46 @@ export default class PublicServicesRoute extends Route {
           require_protocol: true,
           require_valid_protocol: true,
         }),
+    );
+    registerCustomValidation(
+      'http://lblod.data.gift/vocabularies/forms/RichTextLinkValidator',
+      (values) => {
+        const editorContent = values[0];
+        const parsed = new DOMParser().parseFromString(
+          editorContent,
+          'text/html',
+        );
+        const anchorElements = [...parsed.querySelectorAll('a')];
+        const linkParserResultsWithErrors = anchorElements
+          .map((element) => ({
+            element,
+            ...linkParser(element.getAttribute('href')),
+          }))
+          .filter((result) => !result.isSuccessful);
+        if (linkParserResultsWithErrors.length >= 1) {
+          const message = `
+          <strong>Dit veld bevat de volgende incorrecte links:</strong>\n
+          <ul>
+            ${linkParserResultsWithErrors
+              .map(
+                (result) =>
+                  `<li>
+                    De link met label "${result.element.textContent}" en URL "${result.element.getAttribute('href')}": ${result.errors[0]}
+                  </li>`,
+              )
+              .join('\n')}
+          </ul>
+          `;
+          return {
+            valid: false,
+            resultMessage: message,
+          };
+        } else {
+          return {
+            valid: true,
+          };
+        }
+      },
     );
   }
 

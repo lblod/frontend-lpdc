@@ -1,3 +1,11 @@
+## v0.28.1 (2026-03-19)
+
+#### :rocket: Enhancement
+* [#47](https://github.com/lblod/frontend-lpdc/pull/47) LPDC-1614: update editor to version 13.4.0 ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
 ## v0.28.0 (2026-03-13)
 
 #### :rocket: Enhancement

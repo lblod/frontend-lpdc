@@ -8,6 +8,7 @@ export default class FeedbackModel extends Model {
 
   @attr status;
   @attr processingStatus;
+  @attr ipdcStatus;
 
   @belongsTo('feedback-question', {
     async: false,

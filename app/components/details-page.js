@@ -201,13 +201,19 @@ export default class DetailsPageComponent extends Component {
   });
 
   loadFeedback = task(async () => {
-    const allFeedback = await this.store.query('feedback', {
+    const result = await this.store.query('feedback', {
       'filter[instance][:uri:]': this.args.publicService.uri,
       include:
         'question,question.from,question.to,answer,answer.from,answer.to,receiver-bestuurseenheid',
       sort: '-created-at',
       page: { size: 1000 }, //TODO: refactor to use pagination if needed
     });
+    // Filter out feedback that are 'ingetrokken' from IPDC
+    const allFeedback = result.filter(
+      (f) =>
+        f.ipdcStatus !==
+        'https://ipdc.vlaanderen.be/ns/FeedbackStatus#INGETROKKEN',
+    );
     this.hasFeedback = allFeedback.length > 0;
 
     if (this.includeFeedbackHistory) return allFeedback;

@@ -1,3 +1,12 @@
+## v0.28.2 (2026-03-20)
+
+#### :rocket: Enhancement
+* [#50](https://github.com/lblod/frontend-lpdc/pull/50) [LPDC-1615]: Add the feedbackStatus in the answertext ([@wolfderechter](https://github.com/wolfderechter))
+* [#49](https://github.com/lblod/frontend-lpdc/pull/49) [LPDC-1602]: hide ingetrokken feedback from the user ([@wolfderechter](https://github.com/wolfderechter))
+
+#### Committers: 1
+- ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.28.1 (2026-03-19)
 
 #### :rocket: Enhancement

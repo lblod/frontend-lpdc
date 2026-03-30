@@ -90,9 +90,9 @@ export default class FeedbackComponent extends Component {
   }
 
   get feedbackStatusLabel() {
-    // If feedback is still getting processed, fetch and show the processingStatus (accepted/denied)
-    if (this.isVerwerkt || this.isVerzonden) {
-      // if no processingStatus is known but it's processed, show as 'Verwerkt'
+    // if feedback has been processed (or verzonden), show the specific processingStatus (accepted/denied)
+    if (this.isVerwerktOrVerzonden) {
+      // handle edge case: if no processingStatus is known but it's processed, show as 'Verwerkt'
       if (this.feedback.processingStatus === undefined)
         return FEEDBACK_STATUS_LABELS[this.feedback.status];
 
@@ -123,22 +123,18 @@ export default class FeedbackComponent extends Component {
 
   // Button is shown when user has selected a processingStatus (accepted/denied) and feedback is not processed
   get showSendAnswerButton() {
-    return (
-      !this.isVerwerkt &&
-      !this.isVerzonden &&
-      this.args.feedback.processingStatus
-    );
+    return !this.isVerwerktOrVerzonden && this.args.feedback.processingStatus;
   }
 
   get showAnswer() {
     return this.feedbackExpanded && this.answer;
   }
 
-  get isVerwerkt() {
-    return this.args.feedback.status === FEEDBACK_STATUS.VERWERKT;
-  }
-  get isVerzonden() {
-    return this.args.feedback.status === FEEDBACK_STATUS.VERZONDEN;
+  get isVerwerktOrVerzonden() {
+    return (
+      this.args.feedback.status === FEEDBACK_STATUS.VERWERKT ||
+      this.args.feedback.status === FEEDBACK_STATUS.VERZONDEN
+    );
   }
 
   get isProcessingAccepted() {

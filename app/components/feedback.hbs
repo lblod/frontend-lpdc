@@ -29,7 +29,7 @@
           </AuButton>
         {{/if}}
         {{#if this.feedbackExpanded}}
-          {{#unless (or this.isVerwerkt this.isVerzonden)}}
+          {{#unless this.isVerwerktOrVerzonden}}
             <AuDropdown
               @skin="naked"
               @icon="three-dots"
@@ -77,7 +77,7 @@
           <div
             class="au-c-textarea au-c-textarea--block feedback-text
               {{if
-                this.isVerwerkt
+                this.isVerwerktOrVerzonden
                 'feedback-text--closed'
                 'feedback-text--open'
               }}"
@@ -111,7 +111,7 @@
             <div
               class="au-c-textarea au-c-textarea--block feedback-text
                 {{if
-                  this.isVerwerkt
+                  this.isVerwerktOrVerzonden
                   'feedback-text--closed'
                   'feedback-text--open'
                 }}"

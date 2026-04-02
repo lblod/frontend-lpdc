@@ -15,7 +15,7 @@ export default class FeedbackComponent extends Component {
   @service modals;
   @service store;
   @service currentSession;
-  @tracked feedbackExpanded = true;
+  @tracked feedbackExpanded = !this.isVerwerktOrVerzonden;
 
   @action
   toggleFeedback() {

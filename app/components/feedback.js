@@ -85,6 +85,17 @@ export default class FeedbackComponent extends Component {
   get answer() {
     return this.feedback.answer;
   }
+  get answerWithoutDefaultText() {
+    const fullAnswer = this.answer.answer;
+    const firstNewlineIndex = fullAnswer.indexOf('\n');
+
+    if (fullAnswer.startsWith('De feedback is ') && firstNewlineIndex !== -1) {
+      return fullAnswer.substring(firstNewlineIndex + 1);
+    }
+
+    // Fallback: return the full answer if no match was found
+    return fullAnswer;
+  }
   get indexNumber() {
     return this.args.index + 1;
   }

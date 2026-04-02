@@ -1,3 +1,14 @@
+## v0.29.0 (2026-04-02)
+
+#### :rocket: Enhancement
+* [#52](https://github.com/lblod/frontend-lpdc/pull/52) [LPDC-1622]: feedback extra changes ([@wolfderechter](https://github.com/wolfderechter))
+
+#### :bug: Bug Fix
+* [#51](https://github.com/lblod/frontend-lpdc/pull/51) [LPDC-1623]: mark published textareas closed ([@wolfderechter](https://github.com/wolfderechter))
+
+#### Committers: 1
+- [@wolfderechter](https://github.com/wolfderechter)
+
 ## v0.28.2 (2026-03-20)
 
 #### :rocket: Enhancement

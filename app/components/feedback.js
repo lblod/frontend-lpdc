@@ -15,7 +15,7 @@ export default class FeedbackComponent extends Component {
   @service modals;
   @service store;
   @service currentSession;
-  @tracked feedbackExpanded = true;
+  @tracked feedbackExpanded = !this.isVerwerktOrVerzonden;
 
   @action
   toggleFeedback() {
@@ -30,12 +30,8 @@ export default class FeedbackComponent extends Component {
     await this.modals.open(ConfirmFeedbackSubmitModal, {
       feedbackAccepted: this.isProcessingAccepted,
       submitHandler: async (value) => {
-        const answerText =
-          `De feedback is ${FEEDBACK_PROCESSING_STATUS_LABELS[this.feedback.processingStatus].toLowerCase()}.\n` +
-          value;
-
         const answer = await this.store.createRecord('feedback-answer', {
-          answer: answerText,
+          answer: value,
           timestamp: new Date(),
           from: this.question.to,
           to: this.question.from,

@@ -3,24 +3,27 @@
   <:body>
     {{#if @data.feedbackAccepted}}
       <p>Hiermee bevestig je dat de feedback is verwerkt in je instantie.</p>
+      <p>Indien gewenst kan je je antwoord motiveren in onderstaand veld.</p>
     {{else}}
-      <p>Je hebt de feedback geweigerd.</p>
+      <p>Je hebt de feedback geweigerd. Motiveer je keuze in onderstaand veld.</p>
     {{/if}}
-    <p>Indien gewenst kan je je antwoord motiveren in onderstaand veld.</p>
+
     <div class="au-u-margin-top-small">
-      <AuLabel>Antwoord
-        <AuHelpText
-          @skin="secondary"
-          @size="small"
-          class="au-u-regular au-u-margin-left-small au-u-margin-top-none"
-        >Optioneel</AuHelpText>
+      <AuLabel @required={{not @data.feedbackAccepted}}>
+        Antwoord
+        {{#if @data.feedbackAccepted}}
+          <AuHelpText
+            @skin="secondary"
+            @size="small"
+            class="au-u-regular au-u-margin-left-small au-u-margin-top-none"
+          >Optioneel</AuHelpText>
+        {{/if}}
       </AuLabel>
       {{! template-lint-disable no-inline-styles }}
       <AuTextarea
-        value={{this.antwoord}}
         @width="block"
         style="min-height: 100px;"
-        {{on "change" this.handleAntwoordChange}}
+        {{on "input" this.handleAntwoordChange}}
       />
     </div>
   </:body>
@@ -35,7 +38,8 @@
       <Group>
         <AuButton
           @loading={{this.submit.isRunning}}
-          @loadingMessage='Aan het verzenden'
+          @loadingMessage="Aan het verzenden"
+          @disabled={{this.isSubmitDisabled}}
           {{on "click" (perform this.submit)}}
         >
           Verzend

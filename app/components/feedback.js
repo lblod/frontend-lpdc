@@ -85,6 +85,12 @@ export default class FeedbackComponent extends Component {
   get answer() {
     return this.feedback.answer;
   }
+
+  /*
+    Since IDPC needs the processingStatus (accepted/denied) in the answerText and
+    doesn't support it in their statuses we inject 'De feedback is geaccepteerd/geweigerd'
+    We don't want to show the user this default text, so we filter it out
+  */
   get answerWithoutDefaultText() {
     const fullAnswer = this.answer.answer;
     const firstNewlineIndex = fullAnswer.indexOf('\n');

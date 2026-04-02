@@ -30,12 +30,8 @@ export default class FeedbackComponent extends Component {
     await this.modals.open(ConfirmFeedbackSubmitModal, {
       feedbackAccepted: this.isProcessingAccepted,
       submitHandler: async (value) => {
-        const answerText =
-          `De feedback is ${FEEDBACK_PROCESSING_STATUS_LABELS[this.feedback.processingStatus].toLowerCase()}.\n` +
-          value;
-
         const answer = await this.store.createRecord('feedback-answer', {
-          answer: answerText,
+          answer: value,
           timestamp: new Date(),
           from: this.question.to,
           to: this.question.from,
@@ -84,23 +80,6 @@ export default class FeedbackComponent extends Component {
   }
   get answer() {
     return this.feedback.answer;
-  }
-
-  /*
-    Since IDPC needs the processingStatus (accepted/denied) in the answerText and
-    doesn't support it in their statuses we inject 'De feedback is geaccepteerd/geweigerd'
-    We don't want to show the user this default text, so we filter it out
-  */
-  get answerWithoutDefaultText() {
-    const fullAnswer = this.answer.answer;
-    const firstNewlineIndex = fullAnswer.indexOf('\n');
-
-    if (fullAnswer.startsWith('De feedback is ') && firstNewlineIndex !== -1) {
-      return fullAnswer.substring(firstNewlineIndex + 1);
-    }
-
-    // Fallback: return the full answer if no match was found
-    return fullAnswer;
   }
   get indexNumber() {
     return this.args.index + 1;

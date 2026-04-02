@@ -106,7 +106,7 @@
           @size="large"
           class="au-u-margin-top-small au-u-medium"
         >Antwoord</AuHelpText>
-        {{#if this.answerWithoutDefaultText}}
+        {{#if this.answer.answer}}
           <AuContent>
             <div
               class="au-c-textarea au-c-textarea--block feedback-text
@@ -117,7 +117,7 @@
                 }}"
             >
               {{! template-lint-disable no-triple-curlies }}
-              {{{this.answerWithoutDefaultText}}}
+              {{{this.answer.answer}}}
             </div>
           </AuContent>
         {{else}}

@@ -6,6 +6,12 @@ import { tracked } from '@glimmer/tracking';
 export default class ConfirmFeedbackSubmitModalComponent extends Component {
   @tracked antwoordText = '';
 
+  get isSubmitDisabled() {
+    if (!this.args.data.feedbackAccepted) {
+      return !this.antwoordText || this.antwoordText.trim() === '';
+    }
+    return false;
+  }
   @dropTask
   *submit() {
     yield this.args.data.submitHandler(this.antwoordText);

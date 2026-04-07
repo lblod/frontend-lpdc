@@ -159,8 +159,19 @@ export default class PublicServicesRoute extends Route {
       (value, options) => {
         const { constraintUri, store } = options;
 
-        const min = Number(store.any(constraintUri, namedNode('http://lblod.data.gift/vocabularies/forms/min'), undefined)?.value) || 0;
-        const resultMessage = store.any(constraintUri, namedNode('http://www.w3.org/ns/shacl#resultMessage'), undefined)?.value;
+        const min =
+          Number(
+            store.any(
+              constraintUri,
+              namedNode('http://lblod.data.gift/vocabularies/forms/min'),
+              undefined,
+            )?.value,
+          ) || 0;
+        const resultMessage = store.any(
+          constraintUri,
+          namedNode('http://www.w3.org/ns/shacl#resultMessage'),
+          undefined,
+        )?.value;
 
         if (!value?.value) {
           return { valid: true };

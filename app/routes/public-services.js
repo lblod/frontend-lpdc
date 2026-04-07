@@ -16,6 +16,7 @@ import LpdcRdfInputFieldsConceptSchemeMultiSelectorComponent from 'frontend-lpdc
 import LpdcRdfHeadingComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-heading';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
 import isURL from 'validator/lib/isURL.js';
+import { namedNode } from 'rdflib';
 
 export default class PublicServicesRoute extends Route {
   @service currentSession;
@@ -151,6 +152,22 @@ export default class PublicServicesRoute extends Route {
             valid: true,
           };
         }
+      },
+    );
+    registerCustomValidation(
+      'http://lblod.data.gift/vocabularies/forms/MinLength',
+      (value, options) => {
+        const { constraintUri, store } = options;
+
+        const min = Number(store.any(constraintUri, namedNode('http://lblod.data.gift/vocabularies/forms/min'), undefined)?.value) || 0;
+        const resultMessage = store.any(constraintUri, namedNode('http://www.w3.org/ns/shacl#resultMessage'), undefined)?.value;
+
+        if (!value?.value) {
+          return { valid: true };
+        }
+        const isValid = (value?.value || '').length > min;
+
+        return isValid ? { valid: true } : { valid: false, resultMessage };
       },
     );
   }

@@ -1,3 +1,11 @@
+## v0.29.1 (2026-04-07)
+
+#### :bug: Bug Fix
+* [#53](https://github.com/lblod/frontend-lpdc/pull/53) LPDC-1612: update editor to version 13.5.0 ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
 ## v0.29.0 (2026-04-02)
 
 #### :rocket: Enhancement

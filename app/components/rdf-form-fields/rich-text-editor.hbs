@@ -109,6 +109,13 @@
         </AuContent>
       </AuAlert>
     {{/each}}
+    {{#each this.warnings as |warning|}}
+      <AuAlert @icon="alert-triangle" @skin="warning" @size="small">
+        <AuContent @skin="small">
+          {{html-safe warning.resultMessage}}
+        </AuContent>
+      </AuAlert>
+    {{/each}}
   </div>
 
   {{#if (and this.helpText (not @show))}}

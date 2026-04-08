@@ -176,7 +176,17 @@ export default class PublicServicesRoute extends Route {
         if (!value?.value) {
           return { valid: true };
         }
-        const isValid = (value?.value || '').length > min;
+
+        const parsed = new DOMParser().parseFromString(
+          value.value,
+          'text/html',
+        );
+        const textContent = parsed.body.textContent || '';
+
+        if (!textContent.trim()) {
+          return { valid: true };
+        }
+        const isValid = textContent.trim().length > min;
 
         return isValid ? { valid: true } : { valid: false, resultMessage };
       },

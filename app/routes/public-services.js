@@ -183,7 +183,7 @@ export default class PublicServicesRoute extends Route {
         );
         const textContent = parsed.body.textContent || '';
 
-        if (!textContent.trim()) {
+        if (textContent.length === 0) {
           return { valid: true };
         }
         const isValid = textContent.trim().length > min;

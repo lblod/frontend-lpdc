@@ -2,7 +2,11 @@ import { warn } from '@ember/debug';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { registerFormFields } from '@lblod/ember-submission-form-fields';
-import { registerCustomValidation } from '@lblod/submission-form-helpers';
+import {
+  registerCustomValidation,
+  FORM,
+  SHACL,
+} from '@lblod/submission-form-helpers';
 import ConceptSelector from 'frontend-lpdc/components/rdf-form-fields/concept-selector';
 import RichTextEditor, {
   linkParser,
@@ -16,7 +20,6 @@ import LpdcRdfInputFieldsConceptSchemeMultiSelectorComponent from 'frontend-lpdc
 import LpdcRdfHeadingComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-heading';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
 import isURL from 'validator/lib/isURL.js';
-import { namedNode } from 'rdflib';
 
 export default class PublicServicesRoute extends Route {
   @service currentSession;
@@ -159,23 +162,17 @@ export default class PublicServicesRoute extends Route {
       (value, options) => {
         const { constraintUri, store } = options;
 
-        const min =
-          Number(
-            store.any(
-              constraintUri,
-              namedNode('http://lblod.data.gift/vocabularies/forms/min'),
-              undefined,
-            )?.value,
-          ) || 0;
-        const resultMessage = store.any(
-          constraintUri,
-          namedNode('http://www.w3.org/ns/shacl#resultMessage'),
-          undefined,
-        )?.value;
-
         if (!value?.value) {
           return { valid: true };
         }
+
+        const min =
+          Number(store.any(constraintUri, FORM('min'), undefined)?.value) || 0;
+        const resultMessage = store.any(
+          constraintUri,
+          SHACL('resultMessage'),
+          undefined,
+        )?.value;
 
         const parsed = new DOMParser().parseFromString(
           value.value,

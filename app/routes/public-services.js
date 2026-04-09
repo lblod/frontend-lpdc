@@ -183,7 +183,7 @@ export default class PublicServicesRoute extends Route {
         if (textContent.length === 0) {
           return { valid: true };
         }
-        const isValid = textContent.trim().length > min;
+        const isValid = textContent.trim().length >= min;
 
         return isValid ? { valid: true } : { valid: false, resultMessage };
       },

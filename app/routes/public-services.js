@@ -155,7 +155,7 @@ export default class PublicServicesRoute extends Route {
       },
     );
     registerCustomValidation(
-      'http://lblod.data.gift/vocabularies/forms/MinLength',
+      'http://lblod.data.gift/vocabularies/forms/TextMinLength',
       (value, options) => {
         const { constraintUri, store } = options;
 

@@ -166,8 +166,14 @@ export default class PublicServicesRoute extends Route {
           return { valid: true };
         }
 
-        const min =
-          Number(store.any(constraintUri, FORM('min'), undefined)?.value) || 0;
+        const min = Number(
+          store.any(constraintUri, FORM('min'), undefined)?.value,
+        );
+        if (!min) {
+          console.warn(`MinLength validator: form:min is missing or invalid`);
+          return { valid: true };
+        }
+
         const resultMessage = store.any(
           constraintUri,
           SHACL('resultMessage'),

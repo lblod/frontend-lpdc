@@ -1,3 +1,8 @@
+## v0.30.0 (2026-04-10)
+
+#### :rocket: Enhancement
+* [#54](https://github.com/lblod/frontend-lpdc/pull/54) LPDC-1619 - Add TextMinLength validation to LPDC ([@kikef98](https://github.com/kikef98))
+
 ## v0.29.1 (2026-04-07)
 
 #### :bug: Bug Fix

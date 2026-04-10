@@ -2,7 +2,11 @@ import { warn } from '@ember/debug';
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { registerFormFields } from '@lblod/ember-submission-form-fields';
-import { registerCustomValidation } from '@lblod/submission-form-helpers';
+import {
+  registerCustomValidation,
+  FORM,
+  SHACL,
+} from '@lblod/submission-form-helpers';
 import ConceptSelector from 'frontend-lpdc/components/rdf-form-fields/concept-selector';
 import RichTextEditor, {
   linkParser,
@@ -151,6 +155,43 @@ export default class PublicServicesRoute extends Route {
             valid: true,
           };
         }
+      },
+    );
+    registerCustomValidation(
+      'http://lblod.data.gift/vocabularies/forms/TextMinLength',
+      (value, options) => {
+        const { constraintUri, store } = options;
+
+        if (!value?.value) {
+          return { valid: true };
+        }
+
+        const min = Number(
+          store.any(constraintUri, FORM('min'), undefined)?.value,
+        );
+        if (!min) {
+          console.warn(`MinLength validator: form:min is missing or invalid`);
+          return { valid: true };
+        }
+
+        const resultMessage = store.any(
+          constraintUri,
+          SHACL('resultMessage'),
+          undefined,
+        )?.value;
+
+        const parsed = new DOMParser().parseFromString(
+          value.value,
+          'text/html',
+        );
+        const textContent = parsed.body.textContent || '';
+
+        if (textContent.length === 0) {
+          return { valid: true };
+        }
+        const isValid = textContent.trim().length >= min;
+
+        return isValid ? { valid: true } : { valid: false, resultMessage };
       },
     );
   }

@@ -16,4 +16,8 @@ export default class Bestuurseenheid extends Model {
     class: 'http://data.vlaanderen.be/ns/besluit#Bestuurseenheid',
     classificatie: 'http://data.vlaanderen.be/ns/besluit#classificatie',
   };
+
+  get organizationName() {
+    return `${this.classificatie.label} ${this.naam}`;
+  }
 }

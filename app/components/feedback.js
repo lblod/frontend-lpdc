@@ -110,9 +110,9 @@ export default class FeedbackComponent extends Component {
     const bestuurseenheid = results.find((b) => b.uri === answerSender.uri);
 
     if (bestuurseenheid) {
-      return `${bestuurseenheid.classificatie.label} ${bestuurseenheid.naam}`;
+      return bestuurseenheid.organizationName;
     } else {
-      return `${answerSender.label}`;
+      return answerSender.label;
     }
   }
 

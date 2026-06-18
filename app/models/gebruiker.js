@@ -5,6 +5,7 @@ export default class GebruikerModel extends Model {
   @attr voornaam;
   @attr achternaam;
   @attr rijksregisterNummer;
+  @attr email;
   @hasMany('account', {
     async: true,
     inverse: null,

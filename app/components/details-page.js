@@ -36,6 +36,7 @@ export default class DetailsPageComponent extends Component {
   @service store;
   @service toaster;
   @service('public-service') publicServiceService;
+  @service('notification') notificationService;
   @service contextService;
 
   @tracked hasValidationErrors = false;
@@ -45,6 +46,7 @@ export default class DetailsPageComponent extends Component {
   @tracked includeFeedbackHistory = true;
   @tracked feedbackSidebarExpanded = this.feedbackAvailable;
   @tracked hasFeedback = this.feedbackAvailable;
+  @tracked hasNotificationEnabled = false;
   id = guidFor(this);
   @tracked formStore;
   graphs = FORM_GRAPHS;
@@ -53,6 +55,7 @@ export default class DetailsPageComponent extends Component {
     super(...arguments);
     this.loadForm.perform();
     this.loadFeedback.perform();
+    this.loadNotificationEnabled();
     this.sourceNode = new NamedNode(this.args.publicService.uri);
 
     if (!this.args.readOnly) {
@@ -225,6 +228,33 @@ export default class DetailsPageComponent extends Component {
       );
     });
   });
+
+  async loadNotificationEnabled() {
+    const preference =
+      await this.notificationService.getNotificationPreference();
+    if (preference) {
+      const instances = await preference.instances;
+      this.hasNotificationEnabled = instances
+        .map((i) => i.id)
+        .includes(this.args.publicService.id);
+    }
+  }
+
+  @action
+  async toggleReceiveNotifications(isChecked) {
+    const preference =
+      await this.notificationService.getNotificationPreference();
+    const instances = await preference.instances;
+
+    if (isChecked) {
+      preference.instances = [...instances, this.args.publicService];
+    } else {
+      preference.instances = instances.filter(
+        (instance) => instance !== this.args.publicService,
+      );
+    }
+    await preference.save();
+  }
 
   @action
   updateFormDirtyState(/* delta */) {

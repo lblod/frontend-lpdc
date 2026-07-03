@@ -1,0 +1,115 @@
+<AuModal @modalOpen={{true}} @closeModal={{this.close}} @size="small">
+  <:title>E-mail notificaties</:title>
+  <:body>
+    {{#if (eq this.currentStep 1)}}
+      <p>Je kan er vanaf nu voor kiezen om notificaties via email te krijgen voor instanties die een actie vereisen (bv. Herziening nodig, feedback, ...)</p>
+
+      <AuRadioGroup
+        class="au-u-margin-top-small"
+        @selected={{this.selectedNotificationChoice}}
+        @onChange={{this.handleNotificationChange}}
+        as |Group|>
+        <Group.Radio @value={{true}}>Ja, ik wil notificaties ontvangen</Group.Radio>
+        <Group.Radio @value={{false}}>Nee, ik wil geen notificaties ontvangen</Group.Radio>
+      </AuRadioGroup>
+      <p class="au-u-margin-top">Je kan je keuze steeds wijzigen via de notificatie-instellingen (<AuIcon @icon={{this.AlarmIcon}} />) rechts bovenaan de overzichtspagina van instanties van jouw bestuur.</p>
+
+    {{else if (eq this.currentStep 2)}}
+      <AuButton
+        @skin="link"
+        @icon="nav-left"
+        {{on "click" this.goToPreviousStep}}
+      >
+        Terug naar E-mail notificaties
+      </AuButton>
+
+      <div class="au-u-margin-top-small">
+        <AuLabel @required={{true}}>
+          Emailadres
+        </AuLabel>
+        <AuHelpText
+          @skin="secondary"
+          @size="small"
+          class="au-u-margin-bottom-tiny"
+        >Dit emailadres is overgenomen van je toegekende gebruikersrecht. Pas aan indien nodig.</AuHelpText>
+        <AuInput @width="block" value={{this.emailAddress}} {{on "input" this.updateEmailAddress}}/>
+
+        <AuLabel @required={{true}} class="au-u-margin-top">
+          Vereiste actie
+        </AuLabel>
+        <AuCheckboxGroup
+          @selected={{this.selectedNotificationActions}}
+          @onChange={{this.handleNotificationActionsChange}} as |Group|>
+
+          <Group.Checkbox @value={{this.NOTIFICATION_ACTIONS.REVIEW_STATUS}}>Herziening</Group.Checkbox>
+          <Group.Checkbox @value={{this.NOTIFICATION_ACTIONS.FEEDBACK}}>Feedback</Group.Checkbox>
+          <Group.Checkbox @value={{this.NOTIFICATION_ACTIONS.FORMAL_INFORMAL}}>U/je</Group.Checkbox>
+        </AuCheckboxGroup>
+        <AuLabel @required={{true}} class="au-u-margin-top">
+          Frequentie
+        </AuLabel>
+        <AuRadioGroup
+          @selected={{this.selectedNotificationFrequency}}
+          @onChange={{this.handleNotificationFrequencyChange}}
+          as |Group|>
+          <Group.Radio @value="adhoc">Zodra een instantie een actie vereist ("instant")</Group.Radio>
+          <Group.Radio @value="weekly">1x per week in een overzicht</Group.Radio>
+          <Group.Radio @value="monthly">1x per maand in een overzicht</Group.Radio>
+        </AuRadioGroup>
+
+        <AuLabel @required={{true}} class="au-u-margin-top">
+          Ik ben geïnteresseerd om 2x per jaar een LPDC statusrapport van {{this.currentSession.group.organizationName}} te ontvangen
+        </AuLabel>
+        <AuRadioGroup
+          @selected={{this.wantsStatusReports}}
+          @onChange={{this.handleWantsStatusReportsChange}}
+          as |Group|>
+          <Group.Radio @value={{true}}>Ja</Group.Radio>
+          <Group.Radio @value={{false}}>Nee</Group.Radio>
+        </AuRadioGroup>
+      </div>
+    {{/if}}
+  </:body>
+  <:footer>
+    <AuToolbar @reverse={{true}} @border="none" @size="medium" as |Group|>
+      <Group>
+        {{#if (eq this.currentStep 1)}}
+          <AuButton
+            @skin="secondary"
+            {{on "click" this.makeChoiceLater}}
+          >
+            Later kiezen
+          </AuButton>
+
+          {{#if (eq this.selectedNotificationChoice true)}}
+            <AuButton
+              {{on 'click' this.goToNextStep }}
+            >
+              Volgende
+            </AuButton>
+          {{else}}
+            <AuButton
+              @disabled={{not this.isChoiceMade}}
+              {{on 'click' this.save}}
+            >
+              Bewaren
+            </AuButton>
+          {{/if}}
+        {{else if (eq this.currentStep 2)}}
+          <AuButton
+            @skin="secondary"
+            {{on "click" this.close}}
+          >
+            Annuleren
+          </AuButton>
+          <AuButton
+            @disabled={{this.emptyFormFields}}
+            {{on "click" this.save}}
+          >
+            Bewaren
+          </AuButton>
+        {{/if}}
+      </Group>
+    </AuToolbar>
+  </:footer>
+</AuModal>

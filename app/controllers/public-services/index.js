@@ -3,6 +3,9 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { serviceNeedsReview } from 'frontend-lpdc/models/public-service';
+import NotificationModal from 'frontend-lpdc/components/notification-modal';
+import { inject as service } from '@ember/service';
+import AlarmIcon from 'frontend-lpdc/components/icons/alarm';
 
 export default class PublicServicesIndexController extends Controller {
   @tracked search = '';
@@ -12,6 +15,7 @@ export default class PublicServicesIndexController extends Controller {
   @tracked needsConversionFromFormalToInformalFilterEnabled = false;
   @tracked isYourEurope = false;
   @tracked isFeedbackAvailable = false;
+  @tracked isNotificationEnabled = false;
   @tracked forMunicipalityMerger = false;
   @tracked statusIds = [];
   @tracked producttypesIds = [];
@@ -20,6 +24,12 @@ export default class PublicServicesIndexController extends Controller {
   @tracked creatorIds = [];
   @tracked lastModifierIds = [];
   serviceNeedsReview = serviceNeedsReview;
+  @service modals;
+  @service notification;
+  @service currentSession;
+  @service store;
+  @tracked notificationInstances = [];
+  AlarmIcon = AlarmIcon;
 
   get statuses() {
     return this.statusIds.map((statusId) =>
@@ -122,6 +132,7 @@ export default class PublicServicesIndexController extends Controller {
       this.needsConversionFromFormalToInformalFilterEnabled === true ||
       this.isYourEurope === true ||
       this.isFeedbackAvailable === true ||
+      this.isNotificationEnabled === true ||
       this.forMunicipalityMerger === true ||
       this.statuses.length > 0 ||
       this.producttypes.length > 0 ||
@@ -140,6 +151,7 @@ export default class PublicServicesIndexController extends Controller {
     this.needsConversionFromFormalToInformalFilterEnabled = false;
     this.isYourEurope = false;
     this.isFeedbackAvailable = false;
+    this.isNotificationEnabled = false;
     this.forMunicipalityMerger = false;
     this.statusIds = [];
     this.producttypesIds = [];
@@ -178,6 +190,12 @@ export default class PublicServicesIndexController extends Controller {
   @action
   handleFeedbackFilterChange(value) {
     this.isFeedbackAvailable = value;
+    this.resetPagination();
+  }
+
+  @action
+  handleNotificationFilterChange(value) {
+    this.isNotificationEnabled = value;
     this.resetPagination();
   }
 
@@ -233,6 +251,60 @@ export default class PublicServicesIndexController extends Controller {
 
   resetPagination() {
     this.page = 0;
+  }
+
+  async loadNotificationInstances() {
+    const preference = await this.notification.getNotificationPreference();
+    if (preference) {
+      const instances = await preference.instances;
+      this.notificationInstances = Object.fromEntries(
+        instances.map((service) => [service.id, true]),
+      );
+    }
+  }
+
+  @action
+  async handleNotificationChange(publicService, isChecked) {
+    const preference = await this.notification.getNotificationPreference();
+    const instances = await preference.instances;
+
+    if (isChecked) {
+      preference.instances = [...instances, publicService];
+    } else {
+      preference.instances = instances.filter(
+        (instance) => instance !== publicService,
+      );
+    }
+    await preference.save();
+  }
+
+  @action
+  async openNotificationModal() {
+    const preferences = await this.store.query('notification-preference', {
+      'filter[gebruiker][:id:]': this.currentSession.user.id,
+    });
+    const preference = preferences[0];
+    this.modals.open(NotificationModal, {
+      notificationPreference: preference,
+      makeChoiceLaterHandler: () => {
+        this.notification.makeChoiceLater();
+      },
+      submitHandler: async (
+        selectedNotificationChoice,
+        emailAddress,
+        selectedNotificationActions,
+        selectedNotificationFrequency,
+        wantsStatusReports,
+      ) => {
+        await this.notification.updateNotificationPreference(
+          selectedNotificationChoice,
+          emailAddress,
+          selectedNotificationActions,
+          selectedNotificationFrequency,
+          wantsStatusReports,
+        );
+      },
+    });
   }
 }
 

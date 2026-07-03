@@ -49,6 +49,36 @@ import { modifier } from 'ember-modifier';
 import { NamedNode } from 'rdflib';
 
 export const linkParser = defaultLinkParser({ defaultCountryCode: 'BE' });
+
+// Custom regex used by the link prosemirror input-rule.
+// The input-rule will trigger when the regex is matched.
+// Compared to the default regex defined in the editor package, this regex also triggers when punctuation marks are entered after a link.
+const LINK_INPUT_RULE_REGEX = new RegExp(
+  String.raw`
+  (^|\s)
+  (
+    (?: ${/* parse email */ ''}
+      (?:mailto:)? ${/* optional mailto: protocol */ ''}
+      [A-Za-z0-9._%+-]+ ${/* local-part */ ''}
+      @
+      [A-Za-z0-9.-]+ ${/* domain */ ''}
+      \.
+      [A-Za-z]{2,} ${/* extension */ ''}
+    )
+    |
+    (?: ${/* parse weblinks */ ''}
+      (?:https?:\/\/)? ${/* optional http(s): protocol */ ''}
+      (?:www\.)? ${/* optional www */ ''}
+      [A-Za-z0-9.-]+ ${/* domain */ ''}
+      \.
+      [A-Za-z]{2,} ${/* extension */ ''}
+    )
+  )
+  ([.;:,]?[ \n])$ ${/* optional punctuation mark + single space or newline/enter after url/email */ ''}
+  `
+    .replace(/^\s+|\s+$/gm, '') // remove white space before and at the end of lines (trimming)
+    .replace(/\n/g, ''), // remove newlines
+);
 export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFieldComponent {
   @tracked editorController;
   inputId = 'richtext-' + guidFor(this);
@@ -113,7 +143,11 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
       rules: [
         bullet_list_input_rule(this.schema.nodes.bullet_list),
         ordered_list_input_rule(this.schema.nodes.ordered_list),
-        link_input_rule({ nodeType: this.schema.nodes.link, linkParser }),
+        link_input_rule({
+          nodeType: this.schema.nodes.link,
+          linkParser,
+          regex: LINK_INPUT_RULE_REGEX,
+        }),
       ],
     }),
   ];

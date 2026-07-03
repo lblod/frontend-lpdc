@@ -4,8 +4,7 @@ import Model, { attr, hasMany } from '@ember-data/model';
 export default class GebruikerModel extends Model {
   @attr voornaam;
   @attr achternaam;
-  @attr rijksregisterNummer;
-  @attr email;
+  @attr mailAdres;
   @hasMany('account', {
     async: true,
     inverse: null,

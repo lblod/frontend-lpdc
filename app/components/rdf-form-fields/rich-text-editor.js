@@ -122,6 +122,7 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
     return {
       interactive: true,
       linkParser,
+      target: '_blank',
     };
   }
 
@@ -202,6 +203,7 @@ function stripNbspEntities(htmlContent) {
 
 // Modifier that forces the link children of a certain element to open in a new tab, regardless of the _blank attribute on the elements.
 // We use this to always open user provided links in a new tab.
+// Needed for links created in a older version of the editor.
 const forceOpenLinksInNewTab = modifier(
   function forceOpenLinksInNewTab(contentElement) {
     const links = contentElement.querySelectorAll('a');

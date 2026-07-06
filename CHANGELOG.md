@@ -1,3 +1,13 @@
+## v0.31.0 (2026-07-06)
+
+#### :rocket: Enhancement
+* [#56](https://github.com/lblod/frontend-lpdc/pull/56) Update `ember-rdfa-editor` to version `13.4.0` ([@elpoelma](https://github.com/elpoelma))
+  - LPDC-1479
+  - LPDC-1636
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
 ## v0.30.0 (2026-04-10)
 
 #### :rocket: Enhancement

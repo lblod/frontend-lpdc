@@ -237,7 +237,7 @@ function stripNbspEntities(htmlContent) {
 
 // Modifier that forces the link children of a certain element to open in a new tab, regardless of the _blank attribute on the elements.
 // We use this to always open user provided links in a new tab.
-// Needed for links created in a older version of the editor.
+// Needed for links created in a older version of the editor; or for links included in external html.
 const forceOpenLinksInNewTab = modifier(
   function forceOpenLinksInNewTab(contentElement) {
     const links = contentElement.querySelectorAll('a');

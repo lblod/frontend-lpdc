@@ -265,17 +265,11 @@ export default class PublicServicesIndexController extends Controller {
 
   @action
   async handleNotificationChange(publicService, isChecked) {
-    const preference = await this.notification.getNotificationPreference();
-    const instances = await preference.instances;
-
     if (isChecked) {
-      preference.instances = [...instances, publicService];
+      await this.notification.addInstance(publicService);
     } else {
-      preference.instances = instances.filter(
-        (instance) => instance !== publicService,
-      );
+      await this.notification.removeInstance(publicService);
     }
-    await preference.save();
   }
 
   @action

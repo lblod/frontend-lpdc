@@ -5,7 +5,7 @@
       {{{@publicService.nameNl}}}
     </AuHeading>
   </Group>
-  <Group class="au-u-flex au-u-flex--column">
+  <Group class="au-u-flex au-u-flex--column au-u-flex--vertical-end">
     <AuButtonGroup class="au-u-flex--no-wrap">
       {{#if @readOnly}}
         <AuButton {{on "click" this.requestReopeningConfirmation}}>
@@ -88,8 +88,7 @@
         </AuTooltip>
       </AuDropdown>
     </AuButtonGroup>
-    {{!-- template-lint-disable no-inline-styles --}}
-    <div class="au-u-margin-top-tiny au-u-margin-right-tiny" style="margin-left: auto;">
+    <div class="au-u-margin-top-tiny au-u-margin-right-tiny">
       <AuToggleSwitch
         @checked={{this.hasNotificationEnabled}}
         @onChange={{this.toggleReceiveNotifications}}

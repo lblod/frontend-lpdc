@@ -37,6 +37,22 @@ export default class NotificationService extends Service {
     localStorage.removeItem('makeNotificationPreferenceLater');
   }
 
+  async addInstance(instance) {
+    const preference = await this.getNotificationPreference();
+    const instances = await preference.instances;
+
+    preference.instances = [...instances, instance];
+    await preference.save();
+  }
+
+  async removeInstance(instance) {
+    const preference = await this.getNotificationPreference();
+    const instances = await preference.instances;
+
+    preference.instances = instances.filter((i) => i !== instance);
+    await preference.save();
+  }
+
   async updateNotificationPreference(
     wantsNotifications,
     emailAddress,
@@ -44,7 +60,7 @@ export default class NotificationService extends Service {
     frequency,
     wantsStatusReports,
   ) {
-    let preference = await this.currentSession.user.notificationPreference;
+    let preference = await this.getNotificationPreference();
     if (!preference) {
       preference = this.store.createRecord('notification-preference', {
         gebruiker: this.currentSession.user,

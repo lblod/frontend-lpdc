@@ -67,7 +67,10 @@ export default class NotificationService extends Service {
       });
     } else {
       // clear out whatever rule-configs already exist before rebuilding
-      preference.notificationRuleConfigs = [];
+      const oldRuleConfigs = Array.from(
+        await preference.notificationRuleConfigs,
+      );
+      await Promise.all(oldRuleConfigs.map((config) => config.destroyRecord()));
     }
 
     preference.notificationsEnabled = wantsNotifications;
@@ -80,7 +83,6 @@ export default class NotificationService extends Service {
         frequency,
         wantsStatusReports,
       );
-      await preference.hasMany('notificationRuleConfigs').reload();
     }
     return preference;
   }

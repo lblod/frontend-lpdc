@@ -12,7 +12,7 @@ export default class NotificationPreferenceModel extends Model {
 
   @hasMany('notification-rule-config', {
     async: true,
-    inverse: null,
+    inverse: 'notificationPreference',
   })
   notificationRuleConfigs;
 

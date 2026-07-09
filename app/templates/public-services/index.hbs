@@ -14,37 +14,57 @@
         <AuLabel>Toon enkel</AuLabel>
         <AuCheckbox
           @checked={{this.isReviewRequiredFilterEnabled}}
-          @onChange={{this.toggleReviewRequiredFilter}}>
+          @onChange={{this.toggleReviewRequiredFilter}}
+        >
           Herziening nodig
         </AuCheckbox>
         {{#if this.isChosenFormInformal}}
-            <AuCheckbox
+          <AuCheckbox
             @checked={{this.needsConversionFromFormalToInformalFilterEnabled}}
-            @onChange={{this.toggleNeedsConversionFromFormalToInformalFilter}}>
+            @onChange={{this.toggleNeedsConversionFromFormalToInformalFilter}}
+          >
             u→je omzetting nodig
           </AuCheckbox>
         {{/if}}
         <AuCheckbox
           @checked={{this.isYourEurope}}
-          @onChange={{this.handleYourEuropeFilterChange}}>
+          @onChange={{this.handleYourEuropeFilterChange}}
+        >
           Your Europe
         </AuCheckbox>
         <AuCheckbox
           @checked={{this.isFeedbackAvailable}}
-          @onChange={{this.handleFeedbackFilterChange}}>
+          @onChange={{this.handleFeedbackFilterChange}}
+        >
           Feedback beschikbaar
         </AuCheckbox>
-        {{#if (and (is-feature-enabled "fusies") this.municipalityHasForMunicipalityMergerInstances)}}
+        {{#if this.notificationService.isNotificationsEnabled}}
+          <AuCheckbox
+            @checked={{this.isNotification}}
+            @onChange={{this.handleNotificationFilterChange}}
+          >
+            Notificaties
+          </AuCheckbox>
+        {{/if}}
+        {{#if
+          (and
+            (is-feature-enabled "fusies")
+            this.municipalityHasForMunicipalityMergerInstances
+          )
+        }}
           <AuCheckbox
             @checked={{this.forMunicipalityMerger}}
-            @onChange={{this.handleForMunicipalityMergerFilterChange}}>
+            @onChange={{this.handleForMunicipalityMergerFilterChange}}
+          >
             Bestemd voor fusie
           </AuCheckbox>
         {{/if}}
       </div>
       <div>
         <AuLabel>Filter op eigenschappen</AuLabel>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Status
         </label>
         <PowerSelectMultiple
@@ -52,10 +72,13 @@
           @selected={{this.statuses}}
           @onChange={{this.handleStatusesFilterChange}}
           @searchField="label"
-          as |status|>
+          as |status|
+        >
           {{status.label}}
         </PowerSelectMultiple>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Producttype
         </label>
         <PowerSelectMultiple
@@ -63,10 +86,13 @@
           @selected={{this.producttypes}}
           @onChange={{this.handleProducttypesFilterChange}}
           @searchField="label"
-          as |producttype|>
+          as |producttype|
+        >
           {{producttype.label}}
         </PowerSelectMultiple>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Doelgroepen
         </label>
         <PowerSelectMultiple
@@ -74,10 +100,13 @@
           @selected={{this.doelgroepen}}
           @onChange={{this.handleDoelgroepenFilterChange}}
           @searchField="label"
-          as |doelgroep|>
+          as |doelgroep|
+        >
           {{doelgroep.label}}
         </PowerSelectMultiple>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Thema's
         </label>
         <PowerSelectMultiple
@@ -85,10 +114,13 @@
           @selected={{this.themas}}
           @onChange={{this.handleThemasFilterChange}}
           @searchField="label"
-          as |thema|>
+          as |thema|
+        >
           {{thema.label}}
         </PowerSelectMultiple>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Aangemaakt door
         </label>
         <PowerSelectMultiple
@@ -97,10 +129,13 @@
           @onChange={{this.handleCreatorsFilterChange}}
           @searchEnabled={{true}}
           @searchField="fullName"
-          as |creator|>
+          as |creator|
+        >
           {{creator.fullName}}
         </PowerSelectMultiple>
-        <label class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light">
+        <label
+          class="au-u-margin-top-small au-u-margin-bottom-tiny au-c-label au-u-light"
+        >
           Laatst bewerkt door
         </label>
         <PowerSelectMultiple
@@ -109,13 +144,18 @@
           @onChange={{this.handleLastModifiersFilterChange}}
           @searchEnabled={{true}}
           @searchField="fullName"
-          as |lastModifier|>
+          as |lastModifier|
+        >
           {{lastModifier.fullName}}
         </PowerSelectMultiple>
       </div>
       {{#if this.hasActiveFilters}}
         <div class="au-u-text-left@medium">
-          <AuButton @icon="cross" @skin="secondary" {{on "click" this.resetFilters}}>
+          <AuButton
+            @icon="cross"
+            @skin="secondary"
+            {{on "click" this.resetFilters}}
+          >
             Wis filters
           </AuButton>
         </div>
@@ -138,6 +178,13 @@
         >
           Product of dienst toevoegen
         </AuLink>
+        <AuButton
+          @icon={{this.AlarmIcon}}
+          @skin="secondary"
+          @hideText={{true}}
+          @text="Notificaties"
+          {{on "click" this.openNotificationModal}}
+        />
       </Group>
     </AuToolbar>
     <AuDataTable
@@ -149,6 +196,11 @@
     >
       <Table.content as |Content|>
         <Content.header>
+          {{#if this.notificationService.isNotificationsEnabled}}
+            <th>
+              <AuIcon @icon={{this.AlarmIcon}} />
+            </th>
+          {{/if}}
           <th>
             Productnaam
           </th>
@@ -181,11 +233,11 @@
 
         {{#if this.showTableLoader}}
           <tbody>
-          <tr>
-            <td colspan="100%" class="au-c-data-table__message">
-              <AuLoader @padding="small" />
-            </td>
-          </tr>
+            <tr>
+              <td colspan="100%" class="au-c-data-table__message">
+                <AuLoader @padding="small" />
+              </td>
+            </tr>
           </tbody>
         {{else if this.hasErrored}}
           <tr>
@@ -201,6 +253,14 @@
           </tr>
         {{else if this.hasResults}}
           <Content.body as |publicService|>
+            {{#if this.notificationService.isNotificationsEnabled}}
+              <td>
+                <AuCheckbox
+                  @checked={{get this.notificationInstances publicService.id}}
+                  @onChange={{fn this.handleNotificationChange publicService}}
+                />
+              </td>
+            {{/if}}
             <td>
               {{! template-lint-disable no-triple-curlies~}}
               <AuLink
@@ -210,8 +270,17 @@
               >
                 {{publicService.nameNlOrGeenTitel}}
               </AuLink>
-              {{#if (and (is-feature-enabled "fusies") publicService.forMunicipalityMerger)}}
-                <AuPill @skin="success" @size="small" @icon="users-four-of-four">
+              {{#if
+                (and
+                  (is-feature-enabled "fusies")
+                  publicService.forMunicipalityMerger
+                )
+              }}
+                <AuPill
+                  @skin="success"
+                  @size="small"
+                  @icon="users-four-of-four"
+                >
                   fusie
                 </AuPill>
               {{/if}}
@@ -236,21 +305,30 @@
             </td>
             <td>{{publicService.type.label}}</td>
             <td>
-              <PillList @list={{await publicService.targetAudiencesOrderedOnLabel}} as |targetAudience|>
+              <PillList
+                @list={{await publicService.targetAudiencesOrderedOnLabel}}
+                as |targetAudience|
+              >
                 <AuPill>
                   {{targetAudience.label}}
                 </AuPill>
               </PillList>
             </td>
             <td>
-              <PillList @list={{await publicService.thematicAreasOrderedOnLabel}} as |thematicArea|>
+              <PillList
+                @list={{await publicService.thematicAreasOrderedOnLabel}}
+                as |thematicArea|
+              >
                 <AuPill>
                   {{thematicArea.label}}
                 </AuPill>
               </PillList>
             </td>
             <td>
-              <PillList @list={{await publicService.publicationMediaOrderedOnLabel}} as |publicationMedium|>
+              <PillList
+                @list={{await publicService.publicationMediaOrderedOnLabel}}
+                as |publicationMedium|
+              >
                 <AuPill>
                   {{publicationMedium.label}}
                 </AuPill>
@@ -277,8 +355,8 @@
                 @icon="info-circle"
                 @skin="info"
                 @size="small"
-                class="au-u-margin-bottom-none">
-              </AuAlert>
+                class="au-u-margin-bottom-none"
+              />
             </td>
           </tr>
         {{/if}}

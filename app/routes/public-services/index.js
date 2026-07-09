@@ -2,6 +2,7 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import SelectUOrJeModal from 'frontend-lpdc/components/select-u-or-je-modal';
+import NotificationModal from 'frontend-lpdc/components/notification-modal';
 
 export default class PublicServicesIndexRoute extends Route {
   @service store;
@@ -9,6 +10,7 @@ export default class PublicServicesIndexRoute extends Route {
   @service modals;
   @service formalInformalChoice;
   @service('public-service') publicServiceService;
+  @service('notification') notificationService;
 
   queryParams = {
     search: {
@@ -31,6 +33,9 @@ export default class PublicServicesIndexRoute extends Route {
       refreshModel: true,
     },
     isFeedbackAvailable: {
+      refreshModel: true,
+    },
+    isNotificationEnabled: {
       refreshModel: true,
     },
     forMunicipalityMerger: {
@@ -70,6 +75,28 @@ export default class PublicServicesIndexRoute extends Route {
         },
       });
     }
+    if (!(await this.notificationService.isChoiceMade())) {
+      this.modals.open(NotificationModal, {
+        makeChoiceLaterHandler: () => {
+          this.notificationService.makeChoiceLater();
+        },
+        submitHandler: async (
+          selectedNotificationChoice,
+          emailAddress,
+          selectedNotificationActions,
+          selectedNotificationFrequency,
+          wantsStatusReports,
+        ) => {
+          await this.notificationService.updateNotificationPreference(
+            selectedNotificationChoice,
+            emailAddress,
+            selectedNotificationActions,
+            selectedNotificationFrequency,
+            wantsStatusReports,
+          );
+        },
+      });
+    }
   }
 
   async model(params) {
@@ -79,6 +106,11 @@ export default class PublicServicesIndexRoute extends Route {
       loadPublicServices: this.loadPublicServicesTask.perform(params),
       loadedPublicServices: this.loadPublicServicesTask.lastSuccessful?.value,
     };
+  }
+
+  setupController(controller, model) {
+    super.setupController(controller, model);
+    controller.loadNotificationInstances();
   }
 
   loadPublicServicesTask = restartableTask(
@@ -91,6 +123,7 @@ export default class PublicServicesIndexRoute extends Route {
       isYourEurope,
       forMunicipalityMerger,
       isFeedbackAvailable,
+      isNotificationEnabled,
       doelgroepenIds,
       producttypesIds,
       themaIds,
@@ -130,6 +163,11 @@ export default class PublicServicesIndexRoute extends Route {
 
       if (isFeedbackAvailable) {
         query['filter[feedback-available]'] = true;
+      }
+
+      if (isNotificationEnabled) {
+        query['filter[notification-preferences][gebruiker][:id:]'] =
+          this.currentSession.user.id;
       }
 
       if (forMunicipalityMerger) {

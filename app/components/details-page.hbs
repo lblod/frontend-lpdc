@@ -88,15 +88,16 @@
         </AuTooltip>
       </AuDropdown>
     </AuButtonGroup>
-    <div class="au-u-margin-top-tiny au-u-margin-right-tiny">
-      <AuToggleSwitch
-        @checked={{this.hasNotificationEnabled}}
-        @onChange={{this.toggleReceiveNotifications}}
-      >
-        Notificaties ontvangen over deze instantie
-      </AuToggleSwitch>
-    </div>
-
+    {{#if this.notificationService.isNotificationsEnabled}}
+      <div class="au-u-margin-top-tiny au-u-margin-right-tiny">
+        <AuToggleSwitch
+          @checked={{this.hasNotificationEnabled}}
+          @onChange={{this.toggleReceiveNotifications}}
+        >
+          Notificaties ontvangen over deze instantie
+        </AuToggleSwitch>
+      </div>
+    {{/if}}
   </Group>
 </AuToolbar>
 <AuToolbar

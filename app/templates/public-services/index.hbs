@@ -38,12 +38,14 @@
         >
           Feedback beschikbaar
         </AuCheckbox>
-        <AuCheckbox
-          @checked={{this.isNotification}}
-          @onChange={{this.handleNotificationFilterChange}}
-        >
-          Notificaties
-        </AuCheckbox>
+        {{#if this.notificationService.isNotificationsEnabled}}
+          <AuCheckbox
+            @checked={{this.isNotification}}
+            @onChange={{this.handleNotificationFilterChange}}
+          >
+            Notificaties
+          </AuCheckbox>
+        {{/if}}
         {{#if
           (and
             (is-feature-enabled "fusies")
@@ -194,9 +196,11 @@
     >
       <Table.content as |Content|>
         <Content.header>
-          <th>
-            <AuIcon @icon={{this.AlarmIcon}} />
-          </th>
+          {{#if this.notificationService.isNotificationsEnabled}}
+            <th>
+              <AuIcon @icon={{this.AlarmIcon}} />
+            </th>
+          {{/if}}
           <th>
             Productnaam
           </th>
@@ -249,12 +253,14 @@
           </tr>
         {{else if this.hasResults}}
           <Content.body as |publicService|>
-            <td>
-              <AuCheckbox
-                @checked={{get this.notificationInstances publicService.id}}
-                @onChange={{fn this.handleNotificationChange publicService}}
-              />
-            </td>
+            {{#if this.notificationService.isNotificationsEnabled}}
+              <td>
+                <AuCheckbox
+                  @checked={{get this.notificationInstances publicService.id}}
+                  @onChange={{fn this.handleNotificationChange publicService}}
+                />
+              </td>
+            {{/if}}
             <td>
               {{! template-lint-disable no-triple-curlies~}}
               <AuLink

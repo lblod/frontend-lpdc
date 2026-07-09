@@ -76,12 +76,7 @@ export default class PublicServicesIndexRoute extends Route {
       });
     }
     if (!(await this.notificationService.isChoiceMade())) {
-      const preferences = await this.store.query('notification-preference', {
-        'filter[gebruiker][:id:]': this.currentSession.user.id,
-      });
-      const preference = preferences[0];
       this.modals.open(NotificationModal, {
-        notificationPreference: preference,
         makeChoiceLaterHandler: () => {
           this.notificationService.makeChoiceLater();
         },

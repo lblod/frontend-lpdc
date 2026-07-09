@@ -15,6 +15,10 @@ export default class NotificationService extends Service {
     );
   }
 
+  get isNotificationsEnabled() {
+    return this.notificationPreference?.notificationsEnabled === true;
+  }
+
   async getNotificationPreference() {
     if (this.notificationPreference) {
       return this.notificationPreference;
@@ -84,6 +88,7 @@ export default class NotificationService extends Service {
         wantsStatusReports,
       );
     }
+    this.notificationPreference = preference;
     return preference;
   }
 

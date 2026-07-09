@@ -244,16 +244,18 @@ export default class DetailsPageComponent extends Component {
   async toggleReceiveNotifications(isChecked) {
     const preference =
       await this.notificationService.getNotificationPreference();
-    const instances = await preference.instances;
+    if (preference) {
+      const instances = await preference.instances;
 
-    if (isChecked) {
-      preference.instances = [...instances, this.args.publicService];
-    } else {
-      preference.instances = instances.filter(
-        (instance) => instance !== this.args.publicService,
-      );
+      if (isChecked) {
+        preference.instances = [...instances, this.args.publicService];
+      } else {
+        preference.instances = instances.filter(
+          (instance) => instance !== this.args.publicService,
+        );
+      }
+      await preference.save();
     }
-    await preference.save();
   }
 
   @action

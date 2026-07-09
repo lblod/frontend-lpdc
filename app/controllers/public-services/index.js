@@ -25,7 +25,7 @@ export default class PublicServicesIndexController extends Controller {
   @tracked lastModifierIds = [];
   serviceNeedsReview = serviceNeedsReview;
   @service modals;
-  @service notification;
+  @service('notification') notificationService;
   @service currentSession;
   @service store;
   @tracked notificationInstances = [];
@@ -254,7 +254,8 @@ export default class PublicServicesIndexController extends Controller {
   }
 
   async loadNotificationInstances() {
-    const preference = await this.notification.getNotificationPreference();
+    const preference =
+      await this.notificationService.getNotificationPreference();
     if (preference) {
       const instances = await preference.instances;
       this.notificationInstances = Object.fromEntries(
@@ -266,22 +267,20 @@ export default class PublicServicesIndexController extends Controller {
   @action
   async handleNotificationChange(publicService, isChecked) {
     if (isChecked) {
-      await this.notification.addInstance(publicService);
+      await this.notificationService.addInstance(publicService);
     } else {
-      await this.notification.removeInstance(publicService);
+      await this.notificationService.removeInstance(publicService);
     }
   }
 
   @action
   async openNotificationModal() {
-    const preferences = await this.store.query('notification-preference', {
-      'filter[gebruiker][:id:]': this.currentSession.user.id,
-    });
-    const preference = preferences[0];
+    const preference =
+      await this.notificationService.getNotificationPreference();
     this.modals.open(NotificationModal, {
       notificationPreference: preference,
       makeChoiceLaterHandler: () => {
-        this.notification.makeChoiceLater();
+        this.notificationService.makeChoiceLater();
       },
       submitHandler: async (
         selectedNotificationChoice,
@@ -290,13 +289,14 @@ export default class PublicServicesIndexController extends Controller {
         selectedNotificationFrequency,
         wantsStatusReports,
       ) => {
-        await this.notification.updateNotificationPreference(
+        await this.notificationService.updateNotificationPreference(
           selectedNotificationChoice,
           emailAddress,
           selectedNotificationActions,
           selectedNotificationFrequency,
           wantsStatusReports,
         );
+        await this.loadNotificationInstances();
       },
     });
   }

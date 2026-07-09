@@ -10,6 +10,7 @@ import {
   FEEDBACK_STATUS_LABELS,
   FEEDBACK_PROCESSING_STATUS_LABELS,
 } from 'frontend-lpdc/models/feedback';
+import { organizationName } from 'frontend-lpdc/helpers/organization-name';
 
 export default class FeedbackComponent extends Component {
   @service modals;
@@ -110,7 +111,7 @@ export default class FeedbackComponent extends Component {
     const bestuurseenheid = results.find((b) => b.uri === answerSender.uri);
 
     if (bestuurseenheid) {
-      return bestuurseenheid.organizationName;
+      return organizationName([bestuurseenheid]);
     } else {
       return answerSender.label;
     }

@@ -91,13 +91,19 @@ export default class NotificationModalComponent extends Component {
       this.selectedNotificationFrequency,
       this.wantsStatusReports,
     );
-    this.close();
+
+    if (this.currentStep === 2) {
+      this.goToNextStep();
+    } else {
+      this.close();
+    }
   }
 
   @action
   goToNextStep() {
-    this.currentStep = 2;
+    this.currentStep++;
   }
+
   @action
   goToPreviousStep() {
     this.currentStep = 1;

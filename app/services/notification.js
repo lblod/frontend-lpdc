@@ -1,6 +1,7 @@
 import Service, { inject as service } from '@ember/service';
 import { STATUS_REPORT } from 'frontend-lpdc/models/notification-preference';
 import { tracked } from '@glimmer/tracking';
+import { assert } from '@ember/debug';
 
 export default class NotificationService extends Service {
   @service store;
@@ -24,7 +25,10 @@ export default class NotificationService extends Service {
       return this.notificationPreference;
     }
 
-    if (!this.currentSession.user) return null;
+    assert(
+      'Expected currentSession.user to be loaded before fetching notification preferences.',
+      this.currentSession.user,
+    );
 
     const preferences = await this.store.query('notification-preference', {
       'filter[gebruiker][:id:]': this.currentSession.user.id,

@@ -72,6 +72,7 @@ const LINK_INPUT_RULE_REGEX = new RegExp(
       [A-Za-z0-9.-]+ ${/* domain */ ''}
       \.
       [A-Za-z]{2,} ${/* extension */ ''}
+      (?:[\/?#](?:[^\s]*[^\s.;:,])?)? ${/* optional path, query string, or fragment */ ''}
     )
   )
   ([.;:,]?[ \n])$ ${/* optional punctuation mark + single space or newline/enter after url/email */ ''}

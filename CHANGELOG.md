@@ -1,3 +1,11 @@
+## v0.32.0 (2026-07-30)
+
+#### :rocket: Enhancement
+* [#57](https://github.com/lblod/frontend-lpdc/pull/57) LPDC-1688: editor links - url suffix detection ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
 ## v0.31.0 (2026-07-06)
 
 #### :rocket: Enhancement

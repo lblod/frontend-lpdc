@@ -1,0 +1,63 @@
+diff --git a/node_modules/linkifyjs/dist/linkify.cjs b/node_modules/linkifyjs/dist/linkify.cjs
+index 08c05e5..7c3f805 100644
+--- a/node_modules/linkifyjs/dist/linkify.cjs
++++ b/node_modules/linkifyjs/dist/linkify.cjs
+@@ -1465,6 +1465,16 @@ function init$1({
+   tt(DomainDotTld, SLASH, Url$1);
+   tt(DomainDotTldColonPort, SLASH, Url$1);
+ 
++  // Based on https://github.com/nfrasser/linkifyjs/pull/557
++  // A query string or fragment may also follow the domain (or port) directly,
++	// without a path slash (e.g. `example.com?q=1`, `example.com#frag`). Mirror
++	// how the `Url` state treats these tokens: `?` is non-accepting (a trailing
++	// `?` is trimmed), `#` is accepting.
++	tt(DomainDotTld, QUERY, UrlNonaccept);
++	tt(DomainDotTld, POUND, Url$1);
++	tt(DomainDotTldColonPort, QUERY, UrlNonaccept);
++	tt(DomainDotTldColonPort, POUND, Url$1);
++
+   // Note that domains that begin with schemes are treated slighly differently
+   const SchemeColon = tt(Scheme, COLON); // e.g., 'mailto:'
+   const SlashSchemeColon = tt(SlashScheme, COLON); // e.g., 'http:'
+diff --git a/node_modules/linkifyjs/dist/linkify.js b/node_modules/linkifyjs/dist/linkify.js
+index 7d5f0c7..87b2ffd 100644
+--- a/node_modules/linkifyjs/dist/linkify.js
++++ b/node_modules/linkifyjs/dist/linkify.js
+@@ -1466,6 +1466,16 @@ var linkify = (function (exports) {
+ 	  tt(DomainDotTld, SLASH, Url$1);
+ 	  tt(DomainDotTldColonPort, SLASH, Url$1);
+ 
++		// Based on https://github.com/nfrasser/linkifyjs/pull/557
++		// A query string or fragment may also follow the domain (or port) directly,
++		// without a path slash (e.g. `example.com?q=1`, `example.com#frag`). Mirror
++		// how the `Url` state treats these tokens: `?` is non-accepting (a trailing
++		// `?` is trimmed), `#` is accepting.
++		tt(DomainDotTld, QUERY, UrlNonaccept);
++		tt(DomainDotTld, POUND, Url$1);
++		tt(DomainDotTldColonPort, QUERY, UrlNonaccept);
++		tt(DomainDotTldColonPort, POUND, Url$1);
++
+ 	  // Note that domains that begin with schemes are treated slighly differently
+ 	  const SchemeColon = tt(Scheme, COLON); // e.g., 'mailto:'
+ 	  const SlashSchemeColon = tt(SlashScheme, COLON); // e.g., 'http:'
+diff --git a/node_modules/linkifyjs/dist/linkify.mjs b/node_modules/linkifyjs/dist/linkify.mjs
+index 28edf48..18514e0 100644
+--- a/node_modules/linkifyjs/dist/linkify.mjs
++++ b/node_modules/linkifyjs/dist/linkify.mjs
+@@ -1463,6 +1463,16 @@ function init$1({
+   tt(DomainDotTld, SLASH, Url$1);
+   tt(DomainDotTldColonPort, SLASH, Url$1);
+ 
++  // Based on https://github.com/nfrasser/linkifyjs/pull/557
++  // A query string or fragment may also follow the domain (or port) directly,
++	// without a path slash (e.g. `example.com?q=1`, `example.com#frag`). Mirror
++	// how the `Url` state treats these tokens: `?` is non-accepting (a trailing
++	// `?` is trimmed), `#` is accepting.
++	tt(DomainDotTld, QUERY, UrlNonaccept);
++	tt(DomainDotTld, POUND, Url$1);
++	tt(DomainDotTldColonPort, QUERY, UrlNonaccept);
++	tt(DomainDotTldColonPort, POUND, Url$1);
++
+   // Note that domains that begin with schemes are treated slighly differently
+   const SchemeColon = tt(Scheme, COLON); // e.g., 'mailto:'
+   const SlashSchemeColon = tt(SlashScheme, COLON); // e.g., 'http:'

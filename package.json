@@ -18,6 +18,7 @@
   },
   "scripts": {
     "build": "ember build --environment=production",
+    "postinstall": "patch-package",
     "lint": "concurrently \"npm:lint:*(!fix)\" --names \"lint:\"",
     "lint:css": "stylelint --allow-empty-input \"**/*.scss\"",
     "lint:css:fix": "concurrently \"npm:lint:css -- --fix\"",
@@ -109,6 +110,7 @@
     "loader.js": "^4.7.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.32",
+    "patch-package": "^8.0.1",
     "prettier": "^3.3.3",
     "qunit": "^2.22.0",
     "qunit-dom": "^3.2.1",

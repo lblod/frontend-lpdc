@@ -10,6 +10,12 @@ export default class NotificationPreferenceModel extends Model {
   })
   gebruiker;
 
+  @belongsTo('bestuurseenheid', {
+    async: true,
+    inverse: null,
+  })
+  bestuurseenheid;
+
   @hasMany('notification-rule-config', {
     async: true,
     inverse: 'notificationPreference',

@@ -72,6 +72,7 @@ export default class NotificationService extends Service {
     if (!preference) {
       preference = this.store.createRecord('notification-preference', {
         gebruiker: this.currentSession.user,
+        bestuurseenheid: this.currentSession.group,
       });
     } else {
       // clear out whatever rule-configs already exist before rebuilding

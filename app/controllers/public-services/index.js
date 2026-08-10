@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { serviceNeedsReview } from 'frontend-lpdc/models/public-service';
 import NotificationModal from 'frontend-lpdc/components/notification-modal';
+import { buildPublicServiceFilters } from 'frontend-lpdc/utils/public-service-query';
 import { inject as service } from '@ember/service';
 import AlarmIcon from 'frontend-lpdc/components/icons/alarm';
 
@@ -318,64 +319,10 @@ export default class PublicServicesIndexController extends Controller {
   @action
   async subscribeAllInstances() {
     const query = {
+      ...buildPublicServiceFilters(this, this.currentSession),
       'fields[public-services]': 'id',
-      'filter[created-by][:uri:]': this.currentSession.group.uri,
       'page[size]': 9999,
     };
-
-    if (this.search) {
-      query['filter'] = this.search.trim();
-    }
-
-    if (this.isReviewRequiredFilterEnabled) {
-      query['filter[:has:review-status]'] = true;
-    }
-
-    if (this.needsConversionFromFormalToInformalFilterEnabled) {
-      query['filter[needs-conversion-from-formal-to-informal]'] = true;
-    }
-
-    if (this.isYourEurope) {
-      query['filter[publication-media][:uri:]'] =
-        'https://productencatalogus.data.vlaanderen.be/id/concept/PublicatieKanaal/YourEurope';
-    }
-
-    if (this.isFeedbackAvailable) {
-      query['filter[feedback-available]'] = true;
-    }
-
-    if (this.isNotificationEnabled) {
-      query['filter[notification-preferences][gebruiker][:id:]'] =
-        this.currentSession.user.id;
-    }
-
-    if (this.forMunicipalityMerger) {
-      query['filter[for-municipality-merger]'] = true;
-    }
-
-    if (this.statusIds?.length > 0) {
-      query['filter[status][:id:]'] = this.statusIds.join(',');
-    }
-
-    if (this.producttypesIds?.length > 0) {
-      query['filter[type][:id:]'] = this.producttypesIds.join(',');
-    }
-
-    if (this.doelgroepenIds?.length > 0) {
-      query['filter[target-audiences][:id:]'] = this.doelgroepenIds.join(',');
-    }
-
-    if (this.themaIds?.length > 0) {
-      query['filter[thematic-areas][:id:]'] = this.themaIds.join(',');
-    }
-
-    if (this.creatorIds?.length > 0) {
-      query['filter[creator][:id:]'] = this.creatorIds.join(',');
-    }
-
-    if (this.lastModifierIds?.length > 0) {
-      query['filter[last-modifier][:id:]'] = this.lastModifierIds.join(',');
-    }
 
     const allServices = await this.store.query('public-service', query);
 

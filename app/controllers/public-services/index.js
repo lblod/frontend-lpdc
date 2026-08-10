@@ -28,7 +28,7 @@ export default class PublicServicesIndexController extends Controller {
   @service('notification') notificationService;
   @service currentSession;
   @service store;
-  @tracked notificationInstances = [];
+  @tracked notificationInstances = {};
   AlarmIcon = AlarmIcon;
 
   get statuses() {
@@ -266,6 +266,11 @@ export default class PublicServicesIndexController extends Controller {
 
   @action
   async handleNotificationChange(publicService, isChecked) {
+    this.notificationInstances = {
+      ...this.notificationInstances,
+      [publicService.id]: isChecked,
+    };
+
     if (isChecked) {
       await this.notificationService.addInstance(publicService);
     } else {
@@ -299,6 +304,99 @@ export default class PublicServicesIndexController extends Controller {
         await this.loadNotificationInstances();
       },
     });
+  }
+
+  get allVisibleInstancesSubscribed() {
+    return (
+      this.publicServices.length > 0 &&
+      this.publicServices.every(
+        (instance) => this.notificationInstances[instance.id],
+      )
+    );
+  }
+
+  @action
+  async subscribeAllInstances() {
+    const query = {
+      'fields[public-services]': 'id',
+      'filter[created-by][:uri:]': this.currentSession.group.uri,
+      'page[size]': 9999,
+    };
+
+    if (this.search) {
+      query['filter'] = this.search.trim();
+    }
+
+    if (this.isReviewRequiredFilterEnabled) {
+      query['filter[:has:review-status]'] = true;
+    }
+
+    if (this.needsConversionFromFormalToInformalFilterEnabled) {
+      query['filter[needs-conversion-from-formal-to-informal]'] = true;
+    }
+
+    if (this.isYourEurope) {
+      query['filter[publication-media][:uri:]'] =
+        'https://productencatalogus.data.vlaanderen.be/id/concept/PublicatieKanaal/YourEurope';
+    }
+
+    if (this.isFeedbackAvailable) {
+      query['filter[feedback-available]'] = true;
+    }
+
+    if (this.isNotificationEnabled) {
+      query['filter[notification-preferences][gebruiker][:id:]'] =
+        this.currentSession.user.id;
+    }
+
+    if (this.forMunicipalityMerger) {
+      query['filter[for-municipality-merger]'] = true;
+    }
+
+    if (this.statusIds?.length > 0) {
+      query['filter[status][:id:]'] = this.statusIds.join(',');
+    }
+
+    if (this.producttypesIds?.length > 0) {
+      query['filter[type][:id:]'] = this.producttypesIds.join(',');
+    }
+
+    if (this.doelgroepenIds?.length > 0) {
+      query['filter[target-audiences][:id:]'] = this.doelgroepenIds.join(',');
+    }
+
+    if (this.themaIds?.length > 0) {
+      query['filter[thematic-areas][:id:]'] = this.themaIds.join(',');
+    }
+
+    if (this.creatorIds?.length > 0) {
+      query['filter[creator][:id:]'] = this.creatorIds.join(',');
+    }
+
+    if (this.lastModifierIds?.length > 0) {
+      query['filter[last-modifier][:id:]'] = this.lastModifierIds.join(',');
+    }
+
+    const allServices = await this.store.query('public-service', query);
+
+    // if everything (visible) was subscribed we then unsubscribe
+    if (this.allVisibleInstancesSubscribed) {
+      const updated = { ...this.notificationInstances };
+      for (const instance of this.publicServices) {
+        updated[instance.id] = false;
+      }
+      this.notificationInstances = updated;
+
+      await this.notificationService.removeInstances(allServices);
+    } else {
+      const updated = { ...this.notificationInstances };
+      for (const instance of this.publicServices) {
+        updated[instance.id] = true;
+      }
+      this.notificationInstances = updated;
+
+      await this.notificationService.addInstances(allServices);
+    }
   }
 }
 

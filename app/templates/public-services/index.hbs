@@ -198,7 +198,22 @@
         <Content.header>
           {{#if this.notificationService.isNotificationsEnabled}}
             <th>
-              <AuIcon @icon={{this.AlarmIcon}} />
+              {{! template-lint-disable no-inline-styles }}
+              <AuButton
+                @skin="naked"
+                style="padding: 0"
+                {{on "click" this.subscribeAllInstances}}
+              >
+                <AuIcon
+                  @size="large"
+                  @icon={{if
+                    this.allVisibleInstancesSubscribed
+                    "checkbox-indeterminate"
+                    "checkbox-checked"
+                  }}
+                />
+              </AuButton>
+              <AuIcon @size="large" @icon={{this.AlarmIcon}} />
             </th>
           {{/if}}
           <th>

@@ -197,22 +197,12 @@
       <Table.content as |Content|>
         <Content.header>
           {{#if this.notificationService.isNotificationsEnabled}}
-            <th>
-              {{! template-lint-disable no-inline-styles }}
-              <AuButton
-                @skin="naked"
-                style="padding: 0"
-                {{on "click" this.subscribeAllInstances}}
+            <th class="au-u-padding-left-small">
+              <AuCheckbox
+                @checked={{this.allVisibleInstancesSubscribed}}
+                @onChange={{this.subscribeAllInstances}}
               >
-                <AuIcon
-                  @size="large"
-                  @icon={{if
-                    this.allVisibleInstancesSubscribed
-                    "checkbox-checked"
-                    "checkbox-unchecked"
-                  }}
-                />
-              </AuButton>
+              </AuCheckbox>
               <AuIcon @size="large" @icon={{this.AlarmIcon}} />
             </th>
           {{/if}}

@@ -5,6 +5,7 @@ import moment from 'moment';
 export default class PublicServiceService extends Service {
   @service store;
   @service('concept') conceptService;
+  @service('notification') notificationService;
   @service toaster;
 
   httpRequest = new HttpRequest(this.toaster);
@@ -151,6 +152,7 @@ export default class PublicServiceService extends Service {
       '/lpdc-management/public-services',
       conceptId ? { conceptId: conceptId } : {},
     );
+    await this.notificationService.getNotificationPreference(true);
     return responseBody.data.id;
   }
 

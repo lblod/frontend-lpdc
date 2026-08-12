@@ -20,8 +20,8 @@ export default class NotificationService extends Service {
     return this.notificationPreference?.notificationsEnabled === true;
   }
 
-  async getNotificationPreference() {
-    if (this.notificationPreference) {
+  async getNotificationPreference(reloadNotificationPreference = false) {
+    if (this.notificationPreference && !reloadNotificationPreference) {
       return this.notificationPreference;
     }
 

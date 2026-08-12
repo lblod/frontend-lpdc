@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { serviceNeedsReview } from 'frontend-lpdc/models/public-service';
 import NotificationModal from 'frontend-lpdc/components/notification-modal';
+import { buildPublicServiceFilters } from 'frontend-lpdc/utils/public-service-query';
 import { inject as service } from '@ember/service';
 import AlarmIcon from 'frontend-lpdc/components/icons/alarm';
 
@@ -28,7 +29,7 @@ export default class PublicServicesIndexController extends Controller {
   @service('notification') notificationService;
   @service currentSession;
   @service store;
-  @tracked notificationInstances = [];
+  @tracked notificationInstances = {};
   AlarmIcon = AlarmIcon;
 
   get statuses() {
@@ -266,6 +267,11 @@ export default class PublicServicesIndexController extends Controller {
 
   @action
   async handleNotificationChange(publicService, isChecked) {
+    this.notificationInstances = {
+      ...this.notificationInstances,
+      [publicService.id]: isChecked,
+    };
+
     if (isChecked) {
       await this.notificationService.addInstance(publicService);
     } else {
@@ -299,6 +305,45 @@ export default class PublicServicesIndexController extends Controller {
         await this.loadNotificationInstances();
       },
     });
+  }
+
+  get allVisibleInstancesSubscribed() {
+    return (
+      this.publicServices.length > 0 &&
+      this.publicServices.every(
+        (instance) => this.notificationInstances[instance.id],
+      )
+    );
+  }
+
+  @action
+  async subscribeAllInstances() {
+    const query = {
+      ...buildPublicServiceFilters(this, this.currentSession),
+      'fields[public-services]': 'id',
+      'page[size]': 9999,
+    };
+
+    const allServices = await this.store.query('public-service', query);
+
+    // if everything (visible) was subscribed we then unsubscribe
+    if (this.allVisibleInstancesSubscribed) {
+      const updated = { ...this.notificationInstances };
+      for (const instance of this.publicServices) {
+        updated[instance.id] = false;
+      }
+      this.notificationInstances = updated;
+
+      await this.notificationService.removeInstances(allServices);
+    } else {
+      const updated = { ...this.notificationInstances };
+      for (const instance of this.publicServices) {
+        updated[instance.id] = true;
+      }
+      this.notificationInstances = updated;
+
+      await this.notificationService.addInstances(allServices);
+    }
   }
 }
 

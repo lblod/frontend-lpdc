@@ -32,6 +32,7 @@ export default class NotificationService extends Service {
 
     const preferences = await this.store.query('notification-preference', {
       'filter[gebruiker][:id:]': this.currentSession.user.id,
+      include: 'gebruiker,instances',
     });
     this.notificationPreference = preferences[0];
     return this.notificationPreference;
@@ -53,11 +54,26 @@ export default class NotificationService extends Service {
     await preference.save();
   }
 
+  async addInstances(newInstances) {
+    const preference = await this.getNotificationPreference();
+    const instances = await preference.instances;
+    preference.instances = [...new Set([...instances, ...newInstances])];
+    await preference.save();
+  }
+
   async removeInstance(instance) {
     const preference = await this.getNotificationPreference();
     const instances = await preference.instances;
 
     preference.instances = instances.filter((i) => i !== instance);
+    await preference.save();
+  }
+
+  async removeInstances(instancesToRemove) {
+    const preference = await this.getNotificationPreference();
+    const instances = await preference.instances;
+    const removeIds = new Set(instancesToRemove.map((i) => i.id));
+    preference.instances = instances.filter((i) => !removeIds.has(i.id));
     await preference.save();
   }
 

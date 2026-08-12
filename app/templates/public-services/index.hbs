@@ -197,8 +197,13 @@
       <Table.content as |Content|>
         <Content.header>
           {{#if this.notificationService.isNotificationsEnabled}}
-            <th>
-              <AuIcon @icon={{this.AlarmIcon}} />
+            <th class="au-u-padding-left-small">
+              <AuCheckbox
+                @checked={{this.allVisibleInstancesSubscribed}}
+                @onChange={{this.subscribeAllInstances}}
+              >
+              </AuCheckbox>
+              <AuIcon @size="large" @icon={{this.AlarmIcon}} />
             </th>
           {{/if}}
           <th>

@@ -309,7 +309,7 @@ export default class PublicServicesIndexController extends Controller {
 
   get allVisibleInstancesSubscribed() {
     return (
-      this.publicServices.length > 0 &&
+      this.publicServices?.length > 0 &&
       this.publicServices.every(
         (instance) => this.notificationInstances[instance.id],
       )

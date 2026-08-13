@@ -2,6 +2,8 @@ import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency';
 import SelectUOrJeModal from 'frontend-lpdc/components/select-u-or-je-modal';
+import NotificationModal from 'frontend-lpdc/components/notification-modal';
+import { buildPublicServiceFilters } from 'frontend-lpdc/utils/public-service-query';
 
 export default class PublicServicesIndexRoute extends Route {
   @service store;
@@ -9,6 +11,7 @@ export default class PublicServicesIndexRoute extends Route {
   @service modals;
   @service formalInformalChoice;
   @service('public-service') publicServiceService;
+  @service('notification') notificationService;
 
   queryParams = {
     search: {
@@ -31,6 +34,9 @@ export default class PublicServicesIndexRoute extends Route {
       refreshModel: true,
     },
     isFeedbackAvailable: {
+      refreshModel: true,
+    },
+    isNotificationEnabled: {
       refreshModel: true,
     },
     forMunicipalityMerger: {
@@ -70,6 +76,28 @@ export default class PublicServicesIndexRoute extends Route {
         },
       });
     }
+    if (!(await this.notificationService.isChoiceMade())) {
+      this.modals.open(NotificationModal, {
+        makeChoiceLaterHandler: () => {
+          this.notificationService.makeChoiceLater();
+        },
+        submitHandler: async (
+          selectedNotificationChoice,
+          emailAddress,
+          selectedNotificationActions,
+          selectedNotificationFrequency,
+          wantsStatusReports,
+        ) => {
+          await this.notificationService.updateNotificationPreference(
+            selectedNotificationChoice,
+            emailAddress,
+            selectedNotificationActions,
+            selectedNotificationFrequency,
+            wantsStatusReports,
+          );
+        },
+      });
+    }
   }
 
   async model(params) {
@@ -81,86 +109,25 @@ export default class PublicServicesIndexRoute extends Route {
     };
   }
 
-  loadPublicServicesTask = restartableTask(
-    async ({
-      search,
-      page,
-      sort,
-      isReviewRequiredFilterEnabled,
-      needsConversionFromFormalToInformalFilterEnabled,
-      isYourEurope,
-      forMunicipalityMerger,
-      isFeedbackAvailable,
-      doelgroepenIds,
-      producttypesIds,
-      themaIds,
-      creatorIds,
-      lastModifierIds,
-      statusIds,
-    }) => {
-      const query = {
-        'filter[created-by][:uri:]': this.currentSession.group.uri,
-        'page[number]': page,
-        'fields[public-services]':
-          'name,product-id,type,target-audiences,thematic-areas,publication-media,date-created,date-modified,status,needs-conversion-from-formal-to-informal,review-status,for-municipality-merger,feedback-available',
-        include:
-          'type,target-audiences,thematic-areas,publication-media,status,review-status,creator,last-modifier',
-      };
+  setupController(controller, model) {
+    super.setupController(controller, model);
+    controller.loadNotificationInstances();
+  }
 
-      if (search) {
-        query['filter'] = search.trim();
-      }
+  loadPublicServicesTask = restartableTask(async (params) => {
+    const query = {
+      ...buildPublicServiceFilters(params, this.currentSession),
+      'page[number]': params.page,
+      'fields[public-services]':
+        'name,product-id,type,target-audiences,thematic-areas,publication-media,date-created,date-modified,status,needs-conversion-from-formal-to-informal,review-status,for-municipality-merger,feedback-available',
+      include:
+        'type,target-audiences,thematic-areas,publication-media,status,review-status,creator,last-modifier',
+    };
 
-      if (sort) {
-        query.sort = sort;
-      }
+    if (params.sort) {
+      query.sort = params.sort;
+    }
 
-      if (isReviewRequiredFilterEnabled) {
-        query['filter[:has:review-status]'] = true;
-      }
-
-      if (needsConversionFromFormalToInformalFilterEnabled) {
-        query['filter[needs-conversion-from-formal-to-informal]'] = true;
-      }
-
-      if (isYourEurope) {
-        query['filter[publication-media][:uri:]'] =
-          'https://productencatalogus.data.vlaanderen.be/id/concept/PublicatieKanaal/YourEurope';
-      }
-
-      if (isFeedbackAvailable) {
-        query['filter[feedback-available]'] = true;
-      }
-
-      if (forMunicipalityMerger) {
-        query['filter[for-municipality-merger]'] = true;
-      }
-
-      if (statusIds?.length > 0) {
-        query['filter[status][:id:]'] = statusIds.join(',');
-      }
-
-      if (producttypesIds?.length > 0) {
-        query['filter[type][:id:]'] = producttypesIds.join(',');
-      }
-
-      if (doelgroepenIds?.length > 0) {
-        query['filter[target-audiences][:id:]'] = doelgroepenIds.join(',');
-      }
-
-      if (themaIds?.length > 0) {
-        query['filter[thematic-areas][:id:]'] = themaIds.join(',');
-      }
-
-      if (creatorIds?.length > 0) {
-        query['filter[creator][:id:]'] = creatorIds.join(',');
-      }
-
-      if (lastModifierIds?.length > 0) {
-        query['filter[last-modifier][:id:]'] = lastModifierIds.join(',');
-      }
-
-      return await this.store.query('public-service', query);
-    },
-  );
+    return await this.store.query('public-service', query);
+  });
 }

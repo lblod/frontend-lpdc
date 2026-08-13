@@ -1,10 +1,10 @@
 /* eslint-disable ember/no-get, ember/classic-decorator-no-classic-methods */
-import Model, { attr, hasMany } from '@ember-data/model';
+import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 
 export default class GebruikerModel extends Model {
   @attr voornaam;
   @attr achternaam;
-  @attr rijksregisterNummer;
+  @attr mailAdres;
   @hasMany('account', {
     async: true,
     inverse: null,
@@ -15,6 +15,11 @@ export default class GebruikerModel extends Model {
     inverse: null,
   })
   bestuurseenheden;
+  @belongsTo('notification-preference', {
+    async: true,
+    inverse: 'gebruiker',
+  })
+  notificationPreference;
 
   get group() {
     return this.hasMany('bestuurseenheden').value()?.[0];

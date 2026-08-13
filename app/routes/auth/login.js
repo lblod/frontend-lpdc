@@ -6,10 +6,12 @@ export default class AuthLoginRoute extends Route {
   @service router;
   @service session;
   @service formalInformalChoice;
+  @service notification;
 
   beforeModel() {
     if (this.session.prohibitAuthentication('public-services')) {
       this.formalInformalChoice.enableChoiceIfNotPreviouslyConfirmed();
+      this.notification.enableChoiceIfNotPreviouslyConfirmed();
       if (isValidAcmidmConfig(ENV.acmidm)) {
         window.location.replace(buildLoginUrl(ENV.acmidm));
       } else {

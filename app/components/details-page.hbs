@@ -5,7 +5,7 @@
       {{{@publicService.nameNl}}}
     </AuHeading>
   </Group>
-  <Group>
+  <Group class="au-u-flex au-u-flex--column au-u-flex--vertical-end">
     <AuButtonGroup class="au-u-flex--no-wrap">
       {{#if @readOnly}}
         <AuButton {{on "click" this.requestReopeningConfirmation}}>
@@ -29,66 +29,75 @@
           Wijzigingen bewaren
         </AuButton>
       {{/if}}
-    </AuButtonGroup>
-
-    <AuDropdown
-      @title="Acties"
-      @skin="naked"
-      @alignment="right"
-      @icon="chevron-down"
-      @iconAlignment="right"
-      role="menu"
-    >
-      {{#if this.shouldDisplayEnLinkToIpdc}}
-        <AuLinkExternal
-          href={{this.ipdcEnLink}}
-          @skin="link"
-          @icon="eye"
-          role="menuitem"
-          target="blank"
-        >
-          Bekijk Engelse vertaling
-        </AuLinkExternal>
-      {{/if}}
-      {{#if this.shouldDisplayReadonlyEnLinkToIpdc}}
-        <AuButton
-          @icon="not-visible"
-          @skin="link"
-          role="menuitem"
-          @disabled={{true}}
-          target="blank"
-        >
-          Engelse vertaling na publicatie
-        </AuButton>
-      {{/if}}
-      <AuButton
-        @skin="link"
-        @icon="copy"
-        role="menuitem"
-        @disabled={{false}}
-        {{on "click" this.copyPublicService}}
+      <AuDropdown
+        @title="Acties"
+        @skin="naked"
+        @alignment="right"
+        @icon="chevron-down"
+        @iconAlignment="right"
+        role="menu"
       >
-        Product kopiëren
-      </AuButton>
-      <AuTooltip @placement="left" as |tooltip|>
-        {{! template-lint-disable require-context-role }}
+        {{#if this.shouldDisplayEnLinkToIpdc}}
+          <AuLinkExternal
+            href={{this.ipdcEnLink}}
+            @skin="link"
+            @icon="eye"
+            role="menuitem"
+            target="blank"
+          >
+            Bekijk Engelse vertaling
+          </AuLinkExternal>
+        {{/if}}
+        {{#if this.shouldDisplayReadonlyEnLinkToIpdc}}
+          <AuButton
+            @icon="not-visible"
+            @skin="link"
+            role="menuitem"
+            @disabled={{true}}
+            target="blank"
+          >
+            Engelse vertaling na publicatie
+          </AuButton>
+        {{/if}}
         <AuButton
           @skin="link"
-          @icon="bin"
+          @icon="copy"
           role="menuitem"
-          @alert={{true}}
-          @disabled={{this.shouldDisplayProductVerwijderenButton}}
-          {{(if this.shouldDisplayProductVerwijderenButton tooltip.target)}}
-          {{on "click" this.removePublicService}}
+          @disabled={{false}}
+          {{on "click" this.copyPublicService}}
         >
-          Product verwijderen
+          Product kopiëren
         </AuButton>
-        <tooltip.Content>
-          Klik eerst op de blauwe knop "Product opnieuw bewerken" om je
-          productfiche te verwijderen
-        </tooltip.Content>
-      </AuTooltip>
-    </AuDropdown>
+        <AuTooltip @placement="left" as |tooltip|>
+          {{! template-lint-disable require-context-role }}
+          <AuButton
+            @skin="link"
+            @icon="bin"
+            role="menuitem"
+            @alert={{true}}
+            @disabled={{this.shouldDisplayProductVerwijderenButton}}
+            {{(if this.shouldDisplayProductVerwijderenButton tooltip.target)}}
+            {{on "click" this.removePublicService}}
+          >
+            Product verwijderen
+          </AuButton>
+          <tooltip.Content>
+            Klik eerst op de blauwe knop "Product opnieuw bewerken" om je
+            productfiche te verwijderen
+          </tooltip.Content>
+        </AuTooltip>
+      </AuDropdown>
+    </AuButtonGroup>
+    {{#if this.notificationService.isNotificationsEnabled}}
+      <div class="au-u-margin-top-tiny au-u-margin-right-tiny">
+        <AuToggleSwitch
+          @checked={{this.hasNotificationEnabled}}
+          @onChange={{this.toggleReceiveNotifications}}
+        >
+          Notificaties ontvangen over deze instantie
+        </AuToggleSwitch>
+      </div>
+    {{/if}}
   </Group>
 </AuToolbar>
 <AuToolbar

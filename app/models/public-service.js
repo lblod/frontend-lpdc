@@ -75,6 +75,12 @@ export default class PublicServiceModel extends Model {
   })
   feedback;
 
+  @hasMany('notification-preference', {
+    async: true,
+    inverse: 'instances',
+  })
+  notificationPreferences;
+
   get isSent() {
     return (
       this.status?.uri ===

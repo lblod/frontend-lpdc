@@ -3,6 +3,10 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { serviceNeedsReview } from 'frontend-lpdc/models/public-service';
+import NotificationModal from 'frontend-lpdc/components/notification-modal';
+import { buildPublicServiceFilters } from 'frontend-lpdc/utils/public-service-query';
+import { inject as service } from '@ember/service';
+import AlarmIcon from 'frontend-lpdc/components/icons/alarm';
 
 export default class PublicServicesIndexController extends Controller {
   @tracked search = '';
@@ -12,6 +16,7 @@ export default class PublicServicesIndexController extends Controller {
   @tracked needsConversionFromFormalToInformalFilterEnabled = false;
   @tracked isYourEurope = false;
   @tracked isFeedbackAvailable = false;
+  @tracked isNotificationEnabled = false;
   @tracked forMunicipalityMerger = false;
   @tracked statusIds = [];
   @tracked producttypesIds = [];
@@ -20,6 +25,12 @@ export default class PublicServicesIndexController extends Controller {
   @tracked creatorIds = [];
   @tracked lastModifierIds = [];
   serviceNeedsReview = serviceNeedsReview;
+  @service modals;
+  @service('notification') notificationService;
+  @service currentSession;
+  @service store;
+  @tracked notificationInstances = {};
+  AlarmIcon = AlarmIcon;
 
   get statuses() {
     return this.statusIds.map((statusId) =>
@@ -122,6 +133,7 @@ export default class PublicServicesIndexController extends Controller {
       this.needsConversionFromFormalToInformalFilterEnabled === true ||
       this.isYourEurope === true ||
       this.isFeedbackAvailable === true ||
+      this.isNotificationEnabled === true ||
       this.forMunicipalityMerger === true ||
       this.statuses.length > 0 ||
       this.producttypes.length > 0 ||
@@ -140,6 +152,7 @@ export default class PublicServicesIndexController extends Controller {
     this.needsConversionFromFormalToInformalFilterEnabled = false;
     this.isYourEurope = false;
     this.isFeedbackAvailable = false;
+    this.isNotificationEnabled = false;
     this.forMunicipalityMerger = false;
     this.statusIds = [];
     this.producttypesIds = [];
@@ -178,6 +191,12 @@ export default class PublicServicesIndexController extends Controller {
   @action
   handleFeedbackFilterChange(value) {
     this.isFeedbackAvailable = value;
+    this.resetPagination();
+  }
+
+  @action
+  handleNotificationFilterChange(value) {
+    this.isNotificationEnabled = value;
     this.resetPagination();
   }
 
@@ -233,6 +252,98 @@ export default class PublicServicesIndexController extends Controller {
 
   resetPagination() {
     this.page = 0;
+  }
+
+  async loadNotificationInstances() {
+    const preference =
+      await this.notificationService.getNotificationPreference();
+    if (preference) {
+      const instances = await preference.instances;
+      this.notificationInstances = Object.fromEntries(
+        instances.map((service) => [service.id, true]),
+      );
+    }
+  }
+
+  @action
+  async handleNotificationChange(publicService, isChecked) {
+    this.notificationInstances = {
+      ...this.notificationInstances,
+      [publicService.id]: isChecked,
+    };
+
+    if (isChecked) {
+      await this.notificationService.addInstance(publicService);
+    } else {
+      await this.notificationService.removeInstance(publicService);
+    }
+  }
+
+  @action
+  async openNotificationModal() {
+    const preference =
+      await this.notificationService.getNotificationPreference();
+    this.modals.open(NotificationModal, {
+      notificationPreference: preference,
+      makeChoiceLaterHandler: () => {
+        this.notificationService.makeChoiceLater();
+      },
+      submitHandler: async (
+        selectedNotificationChoice,
+        emailAddress,
+        selectedNotificationActions,
+        selectedNotificationFrequency,
+        wantsStatusReports,
+      ) => {
+        await this.notificationService.updateNotificationPreference(
+          selectedNotificationChoice,
+          emailAddress,
+          selectedNotificationActions,
+          selectedNotificationFrequency,
+          wantsStatusReports,
+        );
+        await this.loadNotificationInstances();
+      },
+    });
+  }
+
+  get allVisibleInstancesSubscribed() {
+    return (
+      this.publicServices?.length > 0 &&
+      this.publicServices.every(
+        (instance) => this.notificationInstances[instance.id],
+      )
+    );
+  }
+
+  @action
+  async subscribeAllInstances() {
+    const query = {
+      ...buildPublicServiceFilters(this, this.currentSession),
+      'fields[public-services]': 'id',
+      'page[size]': 9999,
+    };
+
+    const allServices = await this.store.query('public-service', query);
+
+    // if everything (visible) was subscribed we then unsubscribe
+    if (this.allVisibleInstancesSubscribed) {
+      const updated = { ...this.notificationInstances };
+      for (const instance of this.publicServices) {
+        updated[instance.id] = false;
+      }
+      this.notificationInstances = updated;
+
+      await this.notificationService.removeInstances(allServices);
+    } else {
+      const updated = { ...this.notificationInstances };
+      for (const instance of this.publicServices) {
+        updated[instance.id] = true;
+      }
+      this.notificationInstances = updated;
+
+      await this.notificationService.addInstances(allServices);
+    }
   }
 }
 

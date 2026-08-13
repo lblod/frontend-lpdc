@@ -1,3 +1,8 @@
+## v0.33.0 (2026-08-13)
+
+#### :rocket: Enhancement
+* [#55](https://github.com/lblod/frontend-lpdc/pull/57) [LPDC-1668]: notifications integration ([@wolfderechter](https://github.com/wolfderechter))
+
 ## v0.32.0 (2026-07-30)
 
 #### :rocket: Enhancement

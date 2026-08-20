@@ -23,6 +23,7 @@ import FullyTakeConceptSnapshotOverModalComponent from 'frontend-lpdc/components
 import ConfirmConvertToInformalModalComponent from 'frontend-lpdc/components/confirm-convert-to-informal-modal';
 import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
 import { FEEDBACK_STATUS } from 'frontend-lpdc/models/feedback';
+import AlertCircle from 'frontend-lpdc/components/icons/alert-circle';
 
 const FORM_GRAPHS = {
   formGraph: new NamedNode('http://data.lblod.info/form'),
@@ -50,6 +51,7 @@ export default class DetailsPageComponent extends Component {
   id = guidFor(this);
   @tracked formStore;
   graphs = FORM_GRAPHS;
+  AlertCircle = AlertCircle;
 
   constructor() {
     super(...arguments);
@@ -472,6 +474,11 @@ export default class DetailsPageComponent extends Component {
     await this.publicServiceService.confirmUpToDateTillLatestFunctionalChange(
       publicService,
     );
+  });
+
+  confirmAsCurrent = dropTask(async () => {
+    let { publicService } = this.args;
+    await this.publicServiceService.confirmAsCurrent(publicService);
   });
 
   async showUnsavedChangesModal(transition) {

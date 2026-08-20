@@ -46,6 +46,12 @@
             Notificaties
           </AuCheckbox>
         {{/if}}
+        <AuCheckbox
+          @checked={{this.isYearOld}}
+          @onChange={{this.handleIsYearOldFilterChange}}
+        >
+          >1 jaar
+        </AuCheckbox>
         {{#if
           (and
             (is-feature-enabled "fusies")
@@ -201,8 +207,7 @@
               <AuCheckbox
                 @checked={{this.allVisibleInstancesSubscribed}}
                 @onChange={{this.subscribeAllInstances}}
-              >
-              </AuCheckbox>
+              />
               <AuIcon @size="large" @icon={{this.AlarmIcon}} />
             </th>
           {{/if}}
@@ -302,6 +307,17 @@
               {{#if publicService.feedbackAvailable}}
                 <AuPill @size="small" class="au-c-pill--feedback">
                   feedback
+                </AuPill>
+              {{/if}}
+              {{#if
+                (and
+                  publicService.isYearOld
+                  (not publicService.feedbackAvailable)
+                  (not publicService.needsReview)
+                )
+              }}
+                <AuPill @skin="ongoing" @icon={{this.AlertCircle}} @size="small">
+                  >1 jaar
                 </AuPill>
               {{/if}}
             </td>

@@ -7,6 +7,7 @@ import NotificationModal from 'frontend-lpdc/components/notification-modal';
 import { buildPublicServiceFilters } from 'frontend-lpdc/utils/public-service-query';
 import { inject as service } from '@ember/service';
 import AlarmIcon from 'frontend-lpdc/components/icons/alarm';
+import AlertCircle from 'frontend-lpdc/components/icons/alert-circle';
 
 export default class PublicServicesIndexController extends Controller {
   @tracked search = '';
@@ -18,6 +19,7 @@ export default class PublicServicesIndexController extends Controller {
   @tracked isFeedbackAvailable = false;
   @tracked isNotificationEnabled = false;
   @tracked forMunicipalityMerger = false;
+  @tracked isYearOld = false;
   @tracked statusIds = [];
   @tracked producttypesIds = [];
   @tracked doelgroepenIds = [];
@@ -31,6 +33,7 @@ export default class PublicServicesIndexController extends Controller {
   @service store;
   @tracked notificationInstances = {};
   AlarmIcon = AlarmIcon;
+  AlertCircle = AlertCircle;
 
   get statuses() {
     return this.statusIds.map((statusId) =>
@@ -134,6 +137,7 @@ export default class PublicServicesIndexController extends Controller {
       this.isYourEurope === true ||
       this.isFeedbackAvailable === true ||
       this.isNotificationEnabled === true ||
+      this.isYearOld === true ||
       this.forMunicipalityMerger === true ||
       this.statuses.length > 0 ||
       this.producttypes.length > 0 ||
@@ -153,6 +157,7 @@ export default class PublicServicesIndexController extends Controller {
     this.isYourEurope = false;
     this.isFeedbackAvailable = false;
     this.isNotificationEnabled = false;
+    this.isYearOld = false;
     this.forMunicipalityMerger = false;
     this.statusIds = [];
     this.producttypesIds = [];
@@ -197,6 +202,12 @@ export default class PublicServicesIndexController extends Controller {
   @action
   handleNotificationFilterChange(value) {
     this.isNotificationEnabled = value;
+    this.resetPagination();
+  }
+
+  @action
+  handleIsYearOldFilterChange(value) {
+    this.isYearOld = value;
     this.resetPagination();
   }
 

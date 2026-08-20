@@ -223,6 +223,58 @@
         </p>
       </AuAlert>
     {{/if}}
+    {{#if @publicService.isYearOld}}
+      {{#if @publicService.isSent}}
+        <AuAlert
+          @skin="info"
+          @icon={{this.AlertCircle}}
+          @size="small"
+          class="au-u-margin-bottom-none au-u-1-2"
+        >
+          <p>
+            Dit product is langer dan een jaar niet bewerkt. Is de informatie
+            nog actueel, of zijn er aanpassingen nodig?
+          </p>
+          <div class="au-u-margin-top-small">
+            <AuButtonGroup>
+              <AuButton
+                @skin="primary"
+                @icon="pencil"
+                {{on "click" this.requestReopeningConfirmation}}
+              >
+                Product bewerken
+              </AuButton>
+              <AuButton
+                @skin="secondary"
+                @icon="check"
+                @disabled={{or
+                  this.confirmAsCurrent.isRunning
+                  this.hasUnsavedChanges
+                }}
+                @loading={{this.confirmAsCurrent.isRunning}}
+                @loadingMessage="Aan het verwerken"
+                {{on "click" (perform this.confirmAsCurrent)}}
+              >
+                Product is actueel
+              </AuButton>
+            </AuButtonGroup>
+          </div>
+        </AuAlert>
+      {{else}}
+        <AuAlert
+          @skin="info"
+          @icon={{this.AlertCircle}}
+          @size="small"
+          class="au-u-margin-bottom-none au-u-1-2"
+        >
+          <p>
+            Dit product is langer dan een jaar niet bewerkt. Is het product nog
+            relevant? Werk het verder af en verzend het naar de Vlaamse
+            Overheid. Is het product niet langer relevant, verwijder het.
+          </p>
+        </AuAlert>
+      {{/if}}
+    {{/if}}
   </Group>
 </AuToolbar>
 <AuTabs as |Tab|>

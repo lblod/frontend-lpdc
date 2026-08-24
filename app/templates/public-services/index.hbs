@@ -179,7 +179,7 @@
           Product of dienst toevoegen
         </AuLink>
         <AuButton
-          @icon={{this.AlarmIcon}}
+          @icon="alarm"
           @skin="secondary"
           @hideText={{true}}
           @text="Notificaties"
@@ -203,7 +203,7 @@
                 @onChange={{this.subscribeAllInstances}}
               >
               </AuCheckbox>
-              <AuIcon @size="large" @icon={{this.AlarmIcon}} />
+              <AuIcon @size="large" @icon="alarm" />
             </th>
           {{/if}}
           <th>

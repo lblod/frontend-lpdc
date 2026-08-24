@@ -5,7 +5,10 @@
     data-test-alert
     ...attributes
   >
-    <AuLoader/>
+    <AuLoader @inline={{true}} @centered={{false}} @hideMessage={{true}} class="au-u-margin-right-small">
+      {{! The loader component is not intended to be used without a loading message, so we use this as a workaround }}
+      &nbsp;
+    </AuLoader>
     <div class="au-c-alert__content">
       {{#if @title}}
         <p class="au-c-alert__title" data-test-alert-title>{{@title}}</p>
@@ -20,7 +23,7 @@
         {{on "click" this.closeAlert}}
       >
         <AuIcon @icon="cross" @size="large" />
-        {{!-- template-lint-disable no-bare-strings --}}
+        {{! template-lint-disable no-bare-strings }}
         <span class="au-u-hidden-visually">Sluit alert</span>
       </button>
     {{/if}}

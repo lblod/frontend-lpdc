@@ -14,6 +14,7 @@
         @icon="pencil"
         @disabled={{this.reopen.isRunning}}
         @loading={{this.reopen.isRunning}}
+        @loadingMessage="Aan het heropenen"
         {{on "click" (perform this.reopen)}}
         data-test-confirm-reopening-modal="confirm-button"
       >

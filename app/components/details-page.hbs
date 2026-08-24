@@ -23,6 +23,7 @@
           @skin="secondary"
           @disabled={{not this.canSave}}
           @loading={{this.handleFormSubmit.isRunning}}
+          @loadingMessage="Aan het bewaren"
           form={{this.id}}
           type="submit"
         >

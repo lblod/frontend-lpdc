@@ -8,7 +8,7 @@ import {
   validateForm,
 } from '@lblod/ember-submission-form-fields';
 import { NamedNode } from 'rdflib';
-import { dropTask, dropTaskGroup, task } from 'ember-concurrency';
+import { dropTask, task } from 'ember-concurrency';
 import ConfirmCopyModal from 'frontend-lpdc/components/confirm-copy-modal';
 import ConfirmDeletionModal from 'frontend-lpdc/components/confirm-deletion-modal';
 import ConfirmReopeningModal from 'frontend-lpdc/components/confirm-reopening-modal';
@@ -94,15 +94,21 @@ export default class DetailsPageComponent extends Component {
     return this.loadForm.last.isSuccessful;
   }
 
+  get isPublicServiceActionRunning() {
+    return (
+      this.publishPublicService.isRunning || this.handleFormSubmit.isRunning
+    );
+  }
+
   get canSubmit() {
-    return this.isInitialized && this.publicServiceAction.isIdle;
+    return this.isInitialized && !this.isPublicServiceActionRunning;
   }
 
   get canSave() {
     return (
       this.isInitialized &&
       this.hasUnsavedChanges &&
-      this.publicServiceAction.isIdle
+      !this.isPublicServiceActionRunning
     );
   }
 
@@ -141,8 +147,8 @@ export default class DetailsPageComponent extends Component {
     return `${ENV.ipdcUrl}/${languageVersion}/concept/${productId}/revisie/vergelijk?revisie1=${publicServiceSnapshot}&revisie2=${latestSnapshot}`;
   }
 
-  get shouldDisplayProductVerwijderenButton() {
-    return this.publicServiceAction.isRunning || this.args.readOnly;
+  get shouldDisableProductVerwijderenButton() {
+    return this.isPublicServiceActionRunning || this.args.readOnly;
   }
 
   get shouldShowConversionAlertPublishedInstance() {
@@ -271,9 +277,7 @@ export default class DetailsPageComponent extends Component {
       ?.hasUnsavedChangesObserver(this.hasUnsavedChanges);
   }
 
-  @dropTaskGroup publicServiceAction;
-
-  publishPublicService = task({ group: 'publicServiceAction' }, async () => {
+  publishPublicService = task(async () => {
     // NOTE (10/04/2025): Before calling this the `publicService` should have
     // been validated using `this.publicServiceService.validateInstance`,
     // otherwise incorrect product instances can be published.
@@ -283,7 +287,7 @@ export default class DetailsPageComponent extends Component {
     this.router.transitionTo('public-services');
   });
 
-  handleFormSubmit = task({ group: 'publicServiceAction' }, async (event) => {
+  handleFormSubmit = task(async (event) => {
     event?.preventDefault?.();
     await this.saveSemanticForm.unlinked().perform();
 

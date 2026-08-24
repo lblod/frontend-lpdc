@@ -76,8 +76,8 @@
             @icon="bin"
             role="menuitem"
             @alert={{true}}
-            @disabled={{this.shouldDisplayProductVerwijderenButton}}
-            {{(if this.shouldDisplayProductVerwijderenButton tooltip.target)}}
+            @disabled={{this.shouldDisableProductVerwijderenButton}}
+            {{(if this.shouldDisableProductVerwijderenButton tooltip.target)}}
             {{on "click" this.removePublicService}}
           >
             Product verwijderen

@@ -1,3 +1,8 @@
+## v0.33.1 (2026-08-25)
+
+#### :house: Internal
+* [#61](https://github.com/lblod/frontend-lpdc/pull/61) Use the semtech/static-file-service as the base image ([@Windvis](https://github.com/Windvis))
+
 ## v0.33.0 (2026-08-13)
 
 #### :rocket: Enhancement

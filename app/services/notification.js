@@ -85,22 +85,28 @@ export default class NotificationService extends Service {
     wantsStatusReports,
   ) {
     let preference = await this.getNotificationPreference();
+
+    const now = new Date();
+
     if (!preference) {
       preference = this.store.createRecord('notification-preference', {
         gebruiker: this.currentSession.user,
         bestuurseenheid: this.currentSession.group,
+        dateCreated: now,
       });
     } else {
-      // clear out whatever rule-configs already exist before rebuilding
       const oldRuleConfigs = Array.from(
         await preference.notificationRuleConfigs,
       );
       await Promise.all(oldRuleConfigs.map((config) => config.destroyRecord()));
     }
 
+    preference.dateModified = now;
     preference.notificationsEnabled = wantsNotifications;
     preference.emailAddress = emailAddress;
+
     await preference.save();
+
     if (wantsNotifications) {
       await this.createRuleConfigs(
         preference,
@@ -109,6 +115,7 @@ export default class NotificationService extends Service {
         wantsStatusReports,
       );
     }
+
     this.notificationPreference = preference;
     return preference;
   }

@@ -51,6 +51,7 @@ export default class NotificationService extends Service {
     const instances = await preference.instances;
 
     preference.instances = [...instances, instance];
+    preference.dateModified = new Date();
     await preference.save();
   }
 
@@ -58,6 +59,7 @@ export default class NotificationService extends Service {
     const preference = await this.getNotificationPreference();
     const instances = await preference.instances;
     preference.instances = [...new Set([...instances, ...newInstances])];
+    preference.dateModified = new Date();
     await preference.save();
   }
 
@@ -66,6 +68,7 @@ export default class NotificationService extends Service {
     const instances = await preference.instances;
 
     preference.instances = instances.filter((i) => i !== instance);
+    preference.dateModified = new Date();
     await preference.save();
   }
 
@@ -74,6 +77,7 @@ export default class NotificationService extends Service {
     const instances = await preference.instances;
     const removeIds = new Set(instancesToRemove.map((i) => i.id));
     preference.instances = instances.filter((i) => !removeIds.has(i.id));
+    preference.dateModified = new Date();
     await preference.save();
   }
 
@@ -85,10 +89,14 @@ export default class NotificationService extends Service {
     wantsStatusReports,
   ) {
     let preference = await this.getNotificationPreference();
+
+    const now = new Date();
+
     if (!preference) {
       preference = this.store.createRecord('notification-preference', {
         gebruiker: this.currentSession.user,
         bestuurseenheid: this.currentSession.group,
+        dateCreated: now,
       });
     } else {
       // clear out whatever rule-configs already exist before rebuilding
@@ -98,9 +106,12 @@ export default class NotificationService extends Service {
       await Promise.all(oldRuleConfigs.map((config) => config.destroyRecord()));
     }
 
+    preference.dateModified = now;
     preference.notificationsEnabled = wantsNotifications;
     preference.emailAddress = emailAddress;
+
     await preference.save();
+
     if (wantsNotifications) {
       await this.createRuleConfigs(
         preference,
@@ -109,6 +120,7 @@ export default class NotificationService extends Service {
         wantsStatusReports,
       );
     }
+
     this.notificationPreference = preference;
     return preference;
   }

@@ -2,6 +2,8 @@ import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
 
 export default class NotificationPreferenceModel extends Model {
   @attr('boolean') notificationsEnabled;
+  @attr('datetime') dateCreated;
+  @attr('datetime') dateModified;
   @attr emailAddress;
 
   @belongsTo('gebruiker', {

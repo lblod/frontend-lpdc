@@ -51,6 +51,7 @@ export default class NotificationService extends Service {
     const instances = await preference.instances;
 
     preference.instances = [...instances, instance];
+    preference.dateModified = new Date();
     await preference.save();
   }
 
@@ -58,6 +59,7 @@ export default class NotificationService extends Service {
     const preference = await this.getNotificationPreference();
     const instances = await preference.instances;
     preference.instances = [...new Set([...instances, ...newInstances])];
+    preference.dateModified = new Date();
     await preference.save();
   }
 
@@ -66,6 +68,7 @@ export default class NotificationService extends Service {
     const instances = await preference.instances;
 
     preference.instances = instances.filter((i) => i !== instance);
+    preference.dateModified = new Date();
     await preference.save();
   }
 
@@ -74,6 +77,7 @@ export default class NotificationService extends Service {
     const instances = await preference.instances;
     const removeIds = new Set(instancesToRemove.map((i) => i.id));
     preference.instances = instances.filter((i) => !removeIds.has(i.id));
+    preference.dateModified = new Date();
     await preference.save();
   }
 
@@ -95,6 +99,7 @@ export default class NotificationService extends Service {
         dateCreated: now,
       });
     } else {
+      // clear out whatever rule-configs already exist before rebuilding
       const oldRuleConfigs = Array.from(
         await preference.notificationRuleConfigs,
       );

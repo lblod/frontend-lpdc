@@ -36,16 +36,7 @@
     "test:ember": "ember test"
   },
   "overrides": {
-    "@embroider/addon-shim": "~1.9.0",
-    "@embroider/macros": "~1.16.0",
-    "@embroider/util": "^1.0.0",
-    "@ember/test-waiters": "^4.1.0",
-    "@lblod/ember-mock-login": {
-      "ember-concurrency": "$ember-concurrency"
-    }
-  },
-  "overridesNotes": {
-    "addon-shim and macros": "there is an issue with the latest release that requires us to pin to the previous version: https://github.com/embroider-build/embroider/issues/2440."
+    "@ember/test-waiters": "^4.1.0"
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^4.3.1",

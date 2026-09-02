@@ -6,8 +6,6 @@ import { serviceNeedsReview } from 'frontend-lpdc/models/public-service';
 import NotificationModal from 'frontend-lpdc/components/notification-modal';
 import { buildPublicServiceFilters } from 'frontend-lpdc/utils/public-service-query';
 import { inject as service } from '@ember/service';
-import AlarmIcon from 'frontend-lpdc/components/icons/alarm';
-import AlertCircle from 'frontend-lpdc/components/icons/alert-circle';
 
 export default class PublicServicesIndexController extends Controller {
   @tracked search = '';
@@ -32,8 +30,6 @@ export default class PublicServicesIndexController extends Controller {
   @service currentSession;
   @service store;
   @tracked notificationInstances = {};
-  AlarmIcon = AlarmIcon;
-  AlertCircle = AlertCircle;
 
   get statuses() {
     return this.statusIds.map((statusId) =>

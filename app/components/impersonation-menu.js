@@ -1,11 +1,11 @@
 import { service } from '@ember/service';
 import Component from '@glimmer/component';
-import PauseIcon from './icons/pause';
-import PlayIcon from './icons/play';
 import { LogoutIcon } from '@appuniversum/ember-appuniversum/components/icons/logout';
 import { LoginIcon } from '@appuniversum/ember-appuniversum/components/icons/login';
 import { SwitchIcon } from '@appuniversum/ember-appuniversum/components/icons/switch';
 import { UserIcon } from '@appuniversum/ember-appuniversum/components/icons/user';
+import { PauseIcon } from '@appuniversum/ember-appuniversum/components/icons/pause';
+import { PlayIcon } from '@appuniversum/ember-appuniversum/components/icons/play';
 
 export default class ImpersonationMenu extends Component {
   @service currentSession;

@@ -6,7 +6,6 @@ import {
   NOTIFICATION_ACTIONS,
   STATUS_REPORT,
 } from 'frontend-lpdc/models/notification-preference';
-import AlarmIcon from './icons/alarm';
 
 export default class NotificationModalComponent extends Component {
   @service currentSession;
@@ -17,7 +16,6 @@ export default class NotificationModalComponent extends Component {
   @tracked wantsStatusReports = null;
   @tracked emailAddress = '';
   NOTIFICATION_ACTIONS = NOTIFICATION_ACTIONS;
-  AlarmIcon = AlarmIcon;
 
   constructor() {
     super(...arguments);

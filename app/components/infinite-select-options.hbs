@@ -15,11 +15,13 @@
   </PowerSelect::Options>
 
   {{#if @canLoadMore}}
-    <div
-      class="au-o-box au-o-box--tiny au-u-padding-left"
+    <AuLoader
+      @centered={{false}}
+      @hideMessage={{true}}
+      class="au-u-margin-left au-u-margin-top-small"
       {{is-visible @loadMore}}
     >
-      <AuLoader @padding="small" />
-    </div>
+      Aan het laden
+    </AuLoader>
   {{/if}}
 </div>

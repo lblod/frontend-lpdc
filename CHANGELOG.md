@@ -1,3 +1,24 @@
+## v0.33.2 (2026-09-02)
+
+#### :rocket: Enhancement
+* [#62](https://github.com/lblod/frontend-lpdc/pull/62) [LPDC 1710] - store the datetime of the notification subscription ([@kikef98](https://github.com/kikef98))
+
+#### :bug: Bug Fix
+* [#63](https://github.com/lblod/frontend-lpdc/pull/63) [LPDC-1713]: notification modal cookie clearing ([@wolfderechter](https://github.com/wolfderechter))
+
+#### :house: Internal
+* [#60](https://github.com/lblod/frontend-lpdc/pull/60) [LPDC-1672] Update to Appuniversum v4 ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 3
+- Kike Franssen ([@kikef98](https://github.com/kikef98))
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+- [@wolfderechter](https://github.com/wolfderechter)
+
+## v0.33.1 (2026-08-25)
+
+#### :house: Internal
+* [#61](https://github.com/lblod/frontend-lpdc/pull/61) Use the semtech/static-file-service as the base image ([@Windvis](https://github.com/Windvis))
+
 ## v0.33.0 (2026-08-13)
 
 #### :rocket: Enhancement

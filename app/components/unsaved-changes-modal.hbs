@@ -13,6 +13,7 @@
           <AuButton
             @disabled={{this.save.isRunning}}
             @loading={{this.save.isRunning}}
+            @loadingMessage="Aan het bewaren"
             {{on "click" (perform this.save)}}
           >
             Bewaar

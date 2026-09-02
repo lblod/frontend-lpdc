@@ -185,7 +185,7 @@
           Product of dienst toevoegen
         </AuLink>
         <AuButton
-          @icon={{this.AlarmIcon}}
+          @icon="alarm"
           @skin="secondary"
           @hideText={{true}}
           @text="Notificaties"
@@ -207,8 +207,9 @@
               <AuCheckbox
                 @checked={{this.allVisibleInstancesSubscribed}}
                 @onChange={{this.subscribeAllInstances}}
-              />
-              <AuIcon @size="large" @icon={{this.AlarmIcon}} />
+              >
+              </AuCheckbox>
+              <AuIcon @size="large" @icon="alarm" />
             </th>
           {{/if}}
           <th>
@@ -242,13 +243,7 @@
         </Content.header>
 
         {{#if this.showTableLoader}}
-          <tbody>
-            <tr>
-              <td colspan="100%" class="au-c-data-table__message">
-                <AuLoader @padding="small" />
-              </td>
-            </tr>
-          </tbody>
+          <TableLoader />
         {{else if this.hasErrored}}
           <tr>
             <td colspan="100%" class="au-c-data-table__message">

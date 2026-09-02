@@ -6,6 +6,7 @@ export default class AuthLogoutRoute extends Route {
   @service router;
   @service session;
   @service formalInformalChoice;
+  @service notification;
 
   async beforeModel(transition) {
     if (this.session.requireAuthentication(transition, 'login')) {
@@ -13,6 +14,7 @@ export default class AuthLogoutRoute extends Route {
         let wasMockLoginSession = this.session.isMockLoginSession;
         await this.session.invalidate();
         this.formalInformalChoice.enableChoiceIfNotPreviouslyConfirmed();
+        this.notification.enableChoiceIfNotPreviouslyConfirmed();
         let logoutUrl = wasMockLoginSession
           ? this.router.urlFor('mock-login')
           : ENV.acmidm.logoutUrl;

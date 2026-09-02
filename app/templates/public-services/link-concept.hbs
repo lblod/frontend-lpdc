@@ -159,13 +159,7 @@
         </Content.header>
 
         {{#if this.showTableLoader}}
-          <tbody>
-            <tr>
-              <td colspan="100%" class="au-c-data-table__message">
-                <AuLoader @padding="small" />
-              </td>
-            </tr>
-          </tbody>
+          <TableLoader />
         {{else if this.hasErrored}}
           <tr>
             <td colspan="100%" class="au-c-data-table__message">

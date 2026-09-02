@@ -13,6 +13,7 @@
       <AuButton
         @disabled={{this.submit.isRunning}}
         @loading={{this.submit.isRunning}}
+        @loadingMessage="Aan het verzenden"
         {{on "click" (perform this.submit)}}
       >
         Verzend naar Vlaamse overheid

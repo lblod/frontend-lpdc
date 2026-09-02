@@ -23,6 +23,7 @@
           @skin="secondary"
           @disabled={{not this.canSave}}
           @loading={{this.handleFormSubmit.isRunning}}
+          @loadingMessage="Aan het bewaren"
           form={{this.id}}
           type="submit"
         >
@@ -75,8 +76,8 @@
             @icon="bin"
             role="menuitem"
             @alert={{true}}
-            @disabled={{this.shouldDisplayProductVerwijderenButton}}
-            {{(if this.shouldDisplayProductVerwijderenButton tooltip.target)}}
+            @disabled={{this.shouldDisableProductVerwijderenButton}}
+            {{(if this.shouldDisableProductVerwijderenButton tooltip.target)}}
             {{on "click" this.removePublicService}}
           >
             Product verwijderen
@@ -261,12 +262,9 @@
   <:content>
     <AuBodyContainer @scroll={{true}}>
       {{#if this.loadForm.isRunning}}
-        <div class="au-o-box">
-          <p class="au-u-h4 au-u-medium" aria-hidden="true">
-            Formulier aan het laden
-          </p>
-          <AuLoader @padding="small" />
-        </div>
+        <PageLoader>
+          Formulier aan het laden
+        </PageLoader>
       {{else if this.loadForm.last.isError}}
         <div class="au-o-box">
           <AuAlert

@@ -14,6 +14,7 @@ export default class PublicServiceModel extends Model {
   @attr needsConversionFromFormalToInformal;
   @attr forMunicipalityMerger;
   @attr feedbackAvailable;
+  @attr isYearOld;
 
   @belongsTo('concept', {
     async: false,

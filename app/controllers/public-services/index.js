@@ -17,6 +17,7 @@ export default class PublicServicesIndexController extends Controller {
   @tracked isFeedbackAvailable = false;
   @tracked isNotificationEnabled = false;
   @tracked forMunicipalityMerger = false;
+  @tracked isYearOld = false;
   @tracked statusIds = [];
   @tracked producttypesIds = [];
   @tracked doelgroepenIds = [];
@@ -132,6 +133,7 @@ export default class PublicServicesIndexController extends Controller {
       this.isYourEurope === true ||
       this.isFeedbackAvailable === true ||
       this.isNotificationEnabled === true ||
+      this.isYearOld === true ||
       this.forMunicipalityMerger === true ||
       this.statuses.length > 0 ||
       this.producttypes.length > 0 ||
@@ -151,6 +153,7 @@ export default class PublicServicesIndexController extends Controller {
     this.isYourEurope = false;
     this.isFeedbackAvailable = false;
     this.isNotificationEnabled = false;
+    this.isYearOld = false;
     this.forMunicipalityMerger = false;
     this.statusIds = [];
     this.producttypesIds = [];
@@ -195,6 +198,12 @@ export default class PublicServicesIndexController extends Controller {
   @action
   handleNotificationFilterChange(value) {
     this.isNotificationEnabled = value;
+    this.resetPagination();
+  }
+
+  @action
+  handleIsYearOldFilterChange(value) {
+    this.isYearOld = value;
     this.resetPagination();
   }
 

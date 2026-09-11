@@ -39,6 +39,9 @@ export default class PublicServicesIndexRoute extends Route {
     isNotificationEnabled: {
       refreshModel: true,
     },
+    isYearOld: {
+      refreshModel: true,
+    },
     forMunicipalityMerger: {
       refreshModel: true,
     },
@@ -119,7 +122,7 @@ export default class PublicServicesIndexRoute extends Route {
       ...buildPublicServiceFilters(params, this.currentSession),
       'page[number]': params.page,
       'fields[public-services]':
-        'name,product-id,type,target-audiences,thematic-areas,publication-media,date-created,date-modified,status,needs-conversion-from-formal-to-informal,review-status,for-municipality-merger,feedback-available',
+        'name,product-id,type,target-audiences,thematic-areas,publication-media,date-created,date-modified,status,needs-conversion-from-formal-to-informal,review-status,for-municipality-merger,feedback-available,is-year-old',
       include:
         'type,target-audiences,thematic-areas,publication-media,status,review-status,creator,last-modifier',
     };

@@ -478,6 +478,11 @@ export default class DetailsPageComponent extends Component {
     );
   });
 
+  confirmAsCurrent = dropTask(async () => {
+    let { publicService } = this.args;
+    await this.publicServiceService.confirmAsCurrent(publicService);
+  });
+
   async showUnsavedChangesModal(transition) {
     if (transition.isAborted) {
       return;

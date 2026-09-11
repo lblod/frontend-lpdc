@@ -24,6 +24,10 @@ export function buildPublicServiceFilters(params, currentSession) {
     query['filter[feedback-available]'] = true;
   }
 
+  if (params.isYearOld) {
+    query['filter[is-year-old]'] = true;
+  }
+
   if (params.isNotificationEnabled) {
     query['filter[notification-preferences][gebruiker][:id:]'] =
       currentSession.user.id;

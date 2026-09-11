@@ -38,6 +38,8 @@ export const NOTIFICATION_ACTIONS = {
     'http://lblod.data.gift/concepts/83d7bade-9b45-4d28-9348-3edcdcf99edc',
   FORMAL_INFORMAL:
     'http://lblod.data.gift/concepts/906311f3-f9f0-4b02-80de-d339df39a4ad',
+  YEAR_OLD:
+    'http://lblod.data.gift/concepts/8c9ecd0f-509a-4d01-8fb1-fce4acd0dd62',
 };
 
 export const STATUS_REPORT =

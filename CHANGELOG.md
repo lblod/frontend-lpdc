@@ -1,3 +1,11 @@
+## v0.34.0 (2026-09-11)
+
+#### :rocket: Enhancement
+* [#59](https://github.com/lblod/frontend-lpdc/pull/59) [LPDC-1655]: add new isYearOld flag ([@wolfderechter](https://github.com/wolfderechter))
+
+#### Committers: 1
+- [@wolfderechter](https://github.com/wolfderechter)
+
 ## v0.33.2 (2026-09-02)
 
 #### :rocket: Enhancement

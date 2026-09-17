@@ -38,7 +38,8 @@
     "test:ember": "ember test"
   },
   "overrides": {
-    "@ember/test-waiters": "^4.1.0"
+    "@ember/test-waiters": "^4.1.0",
+    "ember-cli-htmlbars": "^7.0.1"
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^4.4.1",

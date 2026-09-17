@@ -60,7 +60,7 @@ export default [
     },
     rules: {
       'ember/routes-segments-snake-case': 'off', // TODO: remove this once we update to eslint-config-ember v14+
-    }
+    },
   },
   {
     files: ['**/*.{js,gjs}'],

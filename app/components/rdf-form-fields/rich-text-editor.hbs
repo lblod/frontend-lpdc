@@ -30,7 +30,10 @@
 {{/if}}
 
 <div class="au-o-grid au-o-grid--flush">
-  <div class="au-o-grid__item au-u-2-3 au-u-flex au-u-flex--column au-u-flex--spaced-tiny {{if @show 'au-u-flex-grow'}}">
+  <div
+    class="au-o-grid__item au-u-2-3 au-u-flex au-u-flex--column au-u-flex--spaced-tiny
+      {{if @show 'au-u-flex-grow'}}"
+  >
     {{#if @show}}
       <AuContent
         @skin="tiny"
@@ -79,10 +82,10 @@
                   <Plugins::Table::TableMenu
                     @controller={{this.editorController}}
                   />
-                  <Plugins::Table::Color 
+                  <Plugins::Table::Color
                     @controller={{this.editorController}}
                   />
-                  <Plugins::Table::VerticalAlign 
+                  <Plugins::Table::VerticalAlign
                     @controller={{this.editorController}}
                   />
                 </Tb.Group>
@@ -90,7 +93,7 @@
             </ResponsiveToolbar>
           </:top>
           <:default>
-            <div {{on 'focusout' this.updateValue}}>
+            <div {{on "focusout" this.updateValue}}>
               <Editor
                 @schema={{this.schema}}
                 @rdfaEditorInit={{this.handleRdfaEditorInit}}

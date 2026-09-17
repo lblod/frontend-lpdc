@@ -25,8 +25,8 @@
         <Group.Radio @value={{false}}>Nee, ik wil geen notificaties ontvangen</Group.Radio>
       </AuRadioGroup>
       <p class="au-u-margin-top">Je kan je keuze steeds wijzigen via de
-        notificatie-instellingen (<AuIcon @icon="alarm" />) rechts
-        bovenaan de overzichtspagina van instanties van jouw bestuur.</p>
+        notificatie-instellingen (<AuIcon @icon="alarm" />) rechts bovenaan de
+        overzichtspagina van instanties van jouw bestuur.</p>
 
     {{else if (eq this.currentStep 2)}}
       <AuButton
@@ -71,9 +71,8 @@
           <Group.Checkbox
             @value={{this.NOTIFICATION_ACTIONS.FORMAL_INFORMAL}}
           >U/je</Group.Checkbox>
-          <Group.Checkbox
-            @value={{this.NOTIFICATION_ACTIONS.YEAR_OLD}}
-          >&gt;1 jaar</Group.Checkbox>
+          <Group.Checkbox @value={{this.NOTIFICATION_ACTIONS.YEAR_OLD}}>&gt;1
+            jaar</Group.Checkbox>
         </AuCheckboxGroup>
         <AuLabel @required={{true}} class="au-u-margin-top">
           Frequentie

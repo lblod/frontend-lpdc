@@ -179,7 +179,10 @@
               <AuLink
                 @route="public-services.concept-details"
                 @model={{concept.id}}
-                @query={{hash publicServiceId=@model.publicService.id preview=null}}
+                @query={{hash
+                  publicServiceId=@model.publicService.id
+                  preview=null
+                }}
               >
                 {{! template-lint-disable no-triple-curlies~}}
                 {{{concept.nameNl}}}

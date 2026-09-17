@@ -1,33 +1,41 @@
-<AuModal @modalOpen={{true}} @closeModal={{this.makeChoiceLater}} data-test-select-u-or-je-modal="modal">
+<AuModal
+  @modalOpen={{true}}
+  @closeModal={{this.makeChoiceLater}}
+  data-test-select-u-or-je-modal="modal"
+>
   <:title>Kiest jouw lokaal bestuur voor "je" of voor "u"?</:title>
   <:body>
     {{#if @data.newLpdcUser}}
       <p class="au-u-margin-bottom">
-        Concepten kunnen zowel in de u-vorm als in de je-vorm worden aangeboden. Op basis van jouw keuze krijg je de
-        concepten te zien in de vorm die de voorkeur geniet van jouw lokaal bestuur. Zo kan je je eigen, nieuwe
+        Concepten kunnen zowel in de u-vorm als in de je-vorm worden aangeboden.
+        Op basis van jouw keuze krijg je de concepten te zien in de vorm die de
+        voorkeur geniet van jouw lokaal bestuur. Zo kan je je eigen, nieuwe
         instanties makkelijk in de gewenste vorm aanmaken.
       </p>
       <p class="au-u-margin-bottom">
-        Deze keuze is eenmalig, definitief en geldt meteen voor iedereen van jouw lokaal bestuur en voor alle nieuwe
-        instanties die jullie maken. Weet je nog niet welke keuze jullie gaan maken? Stel ze dan nog even uit, je kunt
-        later nog steeds kiezen.
+        Deze keuze is eenmalig, definitief en geldt meteen voor iedereen van
+        jouw lokaal bestuur en voor alle nieuwe instanties die jullie maken.
+        Weet je nog niet welke keuze jullie gaan maken? Stel ze dan nog even
+        uit, je kunt later nog steeds kiezen.
       </p>
       <p class="au-u-margin-bottom">
-        Als er (nog) geen keuze is gemaakt, worden de concepten in de u-vorm aangeboden.
+        Als er (nog) geen keuze is gemaakt, worden de concepten in de u-vorm
+        aangeboden.
       </p>
       <p class="au-u-margin-bottom">
         Reeds gemaakte instanties worden niet automatisch aangepast.
       </p>
     {{else}}
       <p class="au-u-margin-bottom">
-        Tot nu toe werden concepten steeds aangeboden in de u-vorm. Je kan nu ook kiezen voor de je-vorm:
-        dan krijg je alle concepten in de je-vorm en kun je ook je eigen, nieuwe instanties makkelijk in de
-        je-vorm maken.
+        Tot nu toe werden concepten steeds aangeboden in de u-vorm. Je kan nu
+        ook kiezen voor de je-vorm: dan krijg je alle concepten in de je-vorm en
+        kun je ook je eigen, nieuwe instanties makkelijk in de je-vorm maken.
       </p>
       <p class="au-u-margin-bottom">
-        Deze keuze is eenmalig, definitief en geldt meteen voor iedereen van jouw lokaal bestuur en voor alle
-        nieuwe instanties die jullie maken. Weet je nog niet welke keuze jullie gaan maken? Stel ze dan nog
-        even uit, je kunt later nog steeds kiezen.
+        Deze keuze is eenmalig, definitief en geldt meteen voor iedereen van
+        jouw lokaal bestuur en voor alle nieuwe instanties die jullie maken.
+        Weet je nog niet welke keuze jullie gaan maken? Stel ze dan nog even
+        uit, je kunt later nog steeds kiezen.
       </p>
       <p class="au-u-margin-bottom">
         De reeds gemaakte instanties worden niet automatisch aangepast.
@@ -37,12 +45,15 @@
       @selected={{this.selectedVorm}}
       @onChange={{this.handleChangedVorm}}
       data-test-select-u-or-je-modal="select"
-      as |Group|>
-      <Group.Radio name='informal' @value="informal">Mijn bestuur kiest voor de "je"-vorm</Group.Radio>
-      <Group.Radio name='formal' @value="formal">Mijn bestuur kiest voor de "u"-vorm</Group.Radio>
+      as |Group|
+    >
+      <Group.Radio name="informal" @value="informal">Mijn bestuur kiest voor de
+        "je"-vorm</Group.Radio>
+      <Group.Radio name="formal" @value="formal">Mijn bestuur kiest voor de
+        "u"-vorm</Group.Radio>
     </AuRadioGroup>
 
-    {{#if this.showFormError }}
+    {{#if this.showFormError}}
       <AuHelpText
         @error={{true}}
         data-test-select-u-or-je-modal="error-message"
@@ -57,7 +68,8 @@
       <Group>
         <AuLinkExternal
           href="https://abb-vlaanderen.gitbook.io/informatie-lpdc/handleiding-lpdc-module-in-loket-lokale-besturen/concepten-u-of-je"
-          @skin="primary">
+          @skin="primary"
+        >
           Meer informatie vind je in de handleiding
         </AuLinkExternal>
       </Group>
@@ -70,7 +82,7 @@
           Later kiezen
         </AuButton>
         <AuButton
-          {{on 'click' (perform this.confirm) }}
+          {{on "click" (perform this.confirm)}}
           data-test-select-u-or-je-modal="submit-button"
         >
           Bevestigen

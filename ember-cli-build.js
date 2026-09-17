@@ -13,10 +13,6 @@ module.exports = function (defaults) {
         DEPRECATE_STORE_EXTENDS_EMBER_OBJECT: false,
       },
     },
-    // Add options here
-    'ember-simple-auth': {
-      useSessionSetupMethod: true,
-    },
     babel: {
       plugins: [
         require.resolve('ember-concurrency/async-arrow-task-transform'),

@@ -4,7 +4,7 @@ import SimpleInputFieldComponent from '@lblod/ember-submission-form-fields/compo
 import { guidFor } from '@ember/object/internals';
 import { task } from 'ember-concurrency';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { NamedNode } from 'rdflib';
 
 export default class SelectWithCreateComponent extends SimpleInputFieldComponent {

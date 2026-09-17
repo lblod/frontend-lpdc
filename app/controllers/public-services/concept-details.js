@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { dropTask } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 const ARCHIVED_STATUS =
   'http://lblod.data.gift/concepts/concept-status/gearchiveerd';

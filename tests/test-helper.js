@@ -1,3 +1,4 @@
+import '@warp-drive/ember/install';
 import Application from 'frontend-lpdc/app';
 import config from 'frontend-lpdc/config/environment';
 import * as QUnit from 'qunit';

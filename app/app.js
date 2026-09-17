@@ -5,11 +5,13 @@ import loadInitializers from 'ember-load-initializers';
 import config from 'frontend-lpdc/config/environment';
 import './config/custom-inflector-rules';
 import { setupSentry } from 'frontend-lpdc/utils/sentry';
+import { silenceEmptySyncRelationshipWarnings } from 'frontend-lpdc/utils/ember-data';
 
 setupSentry();
 
 if (macroCondition(isDevelopingApp())) {
   importSync('./deprecation-workflow');
+  silenceEmptySyncRelationshipWarnings();
 }
 
 export default class App extends Application {

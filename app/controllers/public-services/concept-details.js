@@ -33,7 +33,7 @@ export default class PublicServicesConceptDetailsController extends Controller {
         this.model.concept.displayConfiguration,
       );
       await this.conceptService.loadConceptDetails(this.model.concept.id);
-    } catch (error) {
+    } catch {
       // TODO: Something went wrong while saving, but a fully fledged error state seems overkill. We should send a message to GlitchTip.
     }
   }

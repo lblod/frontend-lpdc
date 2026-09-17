@@ -71,7 +71,7 @@ export class HttpRequest {
   async getResponseBody(response) {
     try {
       return await response.json();
-    } catch (e) {
+    } catch {
       return {};
     }
   }

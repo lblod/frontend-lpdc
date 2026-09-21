@@ -1,8 +1,6 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 import ENV from 'frontend-lpdc/config/environment';
-import 'moment';
-import 'moment-timezone';
 import { action } from '@ember/object';
 import { warn } from '@ember/debug';
 
@@ -23,7 +21,7 @@ export default class ApplicationRoute extends Route {
     const moment = this.moment;
     moment.setLocale('nl-be');
     moment.setTimeZone('Europe/Brussels');
-    moment.set('defaultFormat', 'DD MMM YYYY, HH:mm');
+    moment.defaultFormat = 'DD-MM-YYYY - HH:mm';
 
     this.startAnalytics();
 

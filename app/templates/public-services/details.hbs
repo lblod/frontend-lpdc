@@ -99,7 +99,7 @@
                         @value={{@model.publicService.dateCreated}}
                       >
                         <:value as |value|>
-                          {{moment-format value "DD-MM-YYYY - HH:mm"}}
+                          {{moment-format value}}
                         </:value>
                       </ValueWithPlaceholder>
                     </span>
@@ -125,7 +125,7 @@
                         @value={{@model.publicService.dateModified}}
                       >
                         <:value as |value|>
-                          {{moment-format value "DD-MM-YYYY - HH:mm"}}
+                          {{moment-format value}}
                         </:value>
                       </ValueWithPlaceholder>
                     </span>

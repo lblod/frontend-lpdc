@@ -109,7 +109,7 @@
           {{{instance.nameNlOrGeenTitel}}}
         </AuLink>
       </td>
-      <td>{{moment-format instance.dateCreated "DD-MM-YYYY - HH:mm"}}</td>
+      <td>{{moment-format instance.dateCreated}}</td>
       <td>
         {{#if instance.creator}}
           {{instance.creator.fullName}}
@@ -117,7 +117,7 @@
           –
         {{/if}}
       </td>
-      <td>{{moment-format instance.dateModified "DD-MM-YYYY - HH:mm"}}</td>
+      <td>{{moment-format instance.dateModified}}</td>
       <td>
         {{#if instance.lastModifier}}
           {{instance.lastModifier.fullName}}

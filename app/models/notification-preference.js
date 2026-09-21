@@ -1,7 +1,7 @@
 import Model, { attr, hasMany, belongsTo } from '@warp-drive/legacy/model';
 
 export default class NotificationPreferenceModel extends Model {
-  @attr('boolean') notificationsEnabled;
+  @attr notificationsEnabled;
   @attr('datetime') dateCreated;
   @attr('datetime') dateModified;
   @attr emailAddress;

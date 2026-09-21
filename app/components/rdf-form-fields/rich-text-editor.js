@@ -58,7 +58,7 @@ const LINK_INPUT_RULE_REGEX = new RegExp(
   (^|\s)
   (
     (?: ${/* parse email */ ''}
-      (?:mailto:)? ${/* optional mailto: protocol */ ''}
+      (?i:mailto:)? ${/* optional mailto: protocol */ ''}
       [A-Za-z0-9._%+-]+ ${/* local-part */ ''}
       @
       [A-Za-z0-9.-]+ ${/* domain */ ''}
@@ -67,8 +67,8 @@ const LINK_INPUT_RULE_REGEX = new RegExp(
     )
     |
     (?: ${/* parse weblinks */ ''}
-      (?:https?:\/\/)? ${/* optional http(s): protocol */ ''}
-      (?:www\.)? ${/* optional www */ ''}
+      (?i:https?:\/\/)? ${/* optional http(s): protocol */ ''}
+      (?i:www\.)? ${/* optional www */ ''}
       [A-Za-z0-9.-]+ ${/* domain */ ''}
       \.
       [A-Za-z]{2,} ${/* extension */ ''}

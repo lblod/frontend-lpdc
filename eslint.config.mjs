@@ -62,6 +62,8 @@ export default [
     },
     rules: {
       'ember/routes-segments-snake-case': 'off', // TODO: remove this once we update to eslint-config-ember v14+
+      'warp-drive/no-external-request-patterns': 'off', // We think it's fine to use fetch instead of a RequestManager instance..
+      'warp-drive/no-legacy-request-patterns': 'warn', // TODO: remove this once we resolved all issues.
     },
   },
   {

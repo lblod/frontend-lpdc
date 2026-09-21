@@ -1,3 +1,11 @@
+## v0.34.2 (2026-09-21)
+
+#### :rocket: Enhancement
+* [#66](https://github.com/lblod/frontend-lpdc/pull/66) [LPDC-1740]: update editor to version 13.19.1 and update link-input-rule regex to ignore casing ([@elpoelma](https://github.com/elpoelma))
+
+#### Committers: 1
+- Elena Poelman ([@elpoelma](https://github.com/elpoelma))
+
 ## v0.34.0 (2026-09-11)
 
 #### :rocket: Enhancement

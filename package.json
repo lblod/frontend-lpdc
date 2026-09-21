@@ -39,7 +39,13 @@
   },
   "overrides": {
     "@ember/test-waiters": "^4.1.0",
-    "ember-cli-htmlbars": "^7.0.1"
+    "ember-cli-htmlbars": "^7.0.1",
+    "ember-modifier": "^4.3.0",
+    "tracked-toolbox": "^3.0.0"
+  },
+  "overridesComments": {
+    "ember-modifier": "promise-modals pinned the version to 4.2.2 by accident: https://github.com/mainmatter/ember-promise-modals/pull/1063",
+    "tracked-toolbox": "rdfa-editor depends on v2, and appuniversum on v3. We can safely force v3 because our app is on a new enough ember version"
   },
   "devDependencies": {
     "@appuniversum/ember-appuniversum": "^4.4.1",

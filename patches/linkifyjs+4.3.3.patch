@@ -1,8 +1,8 @@
 diff --git a/node_modules/linkifyjs/dist/linkify.cjs b/node_modules/linkifyjs/dist/linkify.cjs
-index 08c05e5..7c3f805 100644
+index 4d4f847..fcef69e 100644
 --- a/node_modules/linkifyjs/dist/linkify.cjs
 +++ b/node_modules/linkifyjs/dist/linkify.cjs
-@@ -1465,6 +1465,16 @@ function init$1({
+@@ -1460,6 +1460,16 @@ function init$1({
    tt(DomainDotTld, SLASH, Url$1);
    tt(DomainDotTldColonPort, SLASH, Url$1);
  
@@ -20,10 +20,10 @@ index 08c05e5..7c3f805 100644
    const SchemeColon = tt(Scheme, COLON); // e.g., 'mailto:'
    const SlashSchemeColon = tt(SlashScheme, COLON); // e.g., 'http:'
 diff --git a/node_modules/linkifyjs/dist/linkify.js b/node_modules/linkifyjs/dist/linkify.js
-index 7d5f0c7..87b2ffd 100644
+index 5b0926d..52e2a91 100644
 --- a/node_modules/linkifyjs/dist/linkify.js
 +++ b/node_modules/linkifyjs/dist/linkify.js
-@@ -1466,6 +1466,16 @@ var linkify = (function (exports) {
+@@ -1461,6 +1461,16 @@ var linkify = (function (exports) {
  	  tt(DomainDotTld, SLASH, Url$1);
  	  tt(DomainDotTldColonPort, SLASH, Url$1);
  
@@ -41,10 +41,10 @@ index 7d5f0c7..87b2ffd 100644
  	  const SchemeColon = tt(Scheme, COLON); // e.g., 'mailto:'
  	  const SlashSchemeColon = tt(SlashScheme, COLON); // e.g., 'http:'
 diff --git a/node_modules/linkifyjs/dist/linkify.mjs b/node_modules/linkifyjs/dist/linkify.mjs
-index 28edf48..18514e0 100644
+index d2f17bd..18b9a2a 100644
 --- a/node_modules/linkifyjs/dist/linkify.mjs
 +++ b/node_modules/linkifyjs/dist/linkify.mjs
-@@ -1463,6 +1463,16 @@ function init$1({
+@@ -1458,6 +1458,16 @@ function init$1({
    tt(DomainDotTld, SLASH, Url$1);
    tt(DomainDotTldColonPort, SLASH, Url$1);
  

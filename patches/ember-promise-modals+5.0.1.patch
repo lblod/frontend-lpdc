@@ -1,0 +1,35 @@
+diff --git a/node_modules/ember-promise-modals/dist/components/epm-modal-container.js b/node_modules/ember-promise-modals/dist/components/epm-modal-container.js
+index 88865b3..9872ca7 100644
+--- a/node_modules/ember-promise-modals/dist/components/epm-modal-container.js
++++ b/node_modules/ember-promise-modals/dist/components/epm-modal-container.js
+@@ -1,5 +1,5 @@
+ import "./epm-modal-container.css"
+-import { inject } from '@ember/service';
++import { service as inject } from '@ember/service';
+ import Component from '@glimmer/component';
+ import { precompileTemplate } from '@ember/template-compilation';
+ import { g, i } from 'decorator-transforms/runtime';
+diff --git a/node_modules/ember-promise-modals/dist/components/epm-modal.js b/node_modules/ember-promise-modals/dist/components/epm-modal.js
+index 8510176..c3cd38c 100644
+--- a/node_modules/ember-promise-modals/dist/components/epm-modal.js
++++ b/node_modules/ember-promise-modals/dist/components/epm-modal.js
+@@ -1,6 +1,6 @@
+ 
+ import { action } from '@ember/object';
+-import { inject } from '@ember/service';
++import { service as inject } from '@ember/service';
+ import Component from '@glimmer/component';
+ import { tracked } from '@glimmer/tracking';
+ import { modifier } from 'ember-modifier';
+diff --git a/node_modules/ember-promise-modals/dist/helpers/open-modal.js b/node_modules/ember-promise-modals/dist/helpers/open-modal.js
+index abd974b..e4fdcc7 100644
+--- a/node_modules/ember-promise-modals/dist/helpers/open-modal.js
++++ b/node_modules/ember-promise-modals/dist/helpers/open-modal.js
+@@ -1,6 +1,6 @@
+ 
+ import Helper from '@ember/component/helper';
+-import { inject } from '@ember/service';
++import { service as inject } from '@ember/service';
+ import { g, i } from 'decorator-transforms/runtime';
+ 
+ class OpenModalHelper extends Helper {

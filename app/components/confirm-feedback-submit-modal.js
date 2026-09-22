@@ -12,11 +12,11 @@ export default class ConfirmFeedbackSubmitModalComponent extends Component {
     }
     return false;
   }
-  @dropTask
-  *submit() {
-    yield this.args.data.submitHandler(this.antwoordText);
+
+  submit = dropTask(async () => {
+    await this.args.data.submitHandler(this.antwoordText);
     this.args.close();
-  }
+  });
 
   @action
   close() {

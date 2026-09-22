@@ -1,3 +1,11 @@
+## v0.34.3 (2026-09-22)
+
+#### :bug: Bug Fix
+* [#67](https://github.com/lblod/frontend-lpdc/pull/67) Fix an issue when loading the feedback sidebar ([@Windvis](https://github.com/Windvis))
+
+#### Committers: 1
+- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
+
 ## v0.34.2 (2026-09-21)
 
 #### :rocket: Enhancement

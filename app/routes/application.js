@@ -10,6 +10,7 @@ export default class ApplicationRoute extends Route {
   @service session;
   @service currentSession;
   @service plausible;
+  @service router;
   @service toaster;
 
   async beforeModel() {

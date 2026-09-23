@@ -1,7 +1,13 @@
+
+## v0.35.0 (2026-09-23)
+
+#### :house: Internal
+* [#65](https://github.com/lblod/frontend-lpdc/pull/65) [LPDC-1752] Update to Ember v6.12 LTS ([@Windvis](https://github.com/Windvis))
+
 ## v0.34.3 (2026-09-22)
 
 #### :bug: Bug Fix
-* [#67](https://github.com/lblod/frontend-lpdc/pull/67) Fix an issue when loading the feedback sidebar ([@Windvis](https://github.com/Windvis))
+* [#67](https://github.com/lblod/frontend-lpdc/pull/67) [LPDC-1780] Fix an issue when loading the feedback sidebar ([@Windvis](https://github.com/Windvis))
 
 #### Committers: 1
 - Sam Van Campenhout ([@Windvis](https://github.com/Windvis))

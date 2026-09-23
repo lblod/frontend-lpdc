@@ -1,7 +1,7 @@
 import { EXT, FORM, PROV, RDF, SHACL } from 'frontend-lpdc/rdf/namespaces';
 import { ForkingStore } from '@lblod/ember-submission-form-fields';
 import { BlankNode, Literal, Statement } from 'rdflib';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 export default class ThreeWayComparisonFormGenerator {
   storeOptions;

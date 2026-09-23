@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import ThreeWayCompareModal from 'frontend-lpdc/components/three-way-compare-modal';
 import ThreeWayComparisonFormGenerator from 'frontend-lpdc/helpers/three-way-comparison-form-generator';
 import { EXT } from 'frontend-lpdc/rdf/namespaces';

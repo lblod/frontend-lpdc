@@ -1,5 +1,10 @@
 {{page-title "Bestaande instanties"}}
-<AuToolbar class="au-u-flex--vertical-start" @border="bottom" @size="large" as |Group|>
+<AuToolbar
+  class="au-u-flex--vertical-start"
+  @border="bottom"
+  @size="large"
+  as |Group|
+>
   <Group>
     <div>
       <AuHeading @skin="2">
@@ -100,11 +105,11 @@
     <Content.body as |instance|>
       <td>
         <AuLink @route="public-services.details" @model={{instance.id}}>
-          {{!-- template-lint-disable no-triple-curlies --}}
+          {{! template-lint-disable no-triple-curlies }}
           {{{instance.nameNlOrGeenTitel}}}
         </AuLink>
       </td>
-      <td>{{moment-format instance.dateCreated "DD-MM-YYYY - HH:mm"}}</td>
+      <td>{{moment-format instance.dateCreated}}</td>
       <td>
         {{#if instance.creator}}
           {{instance.creator.fullName}}
@@ -112,7 +117,7 @@
           –
         {{/if}}
       </td>
-      <td>{{moment-format instance.dateModified "DD-MM-YYYY - HH:mm"}}</td>
+      <td>{{moment-format instance.dateModified}}</td>
       <td>
         {{#if instance.lastModifier}}
           {{instance.lastModifier.fullName}}

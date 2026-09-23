@@ -9,7 +9,10 @@
 
     <div class="au-o-grid">
       <div class="au-o-grid__item au-u-1-2 au-u-padding-right-tiny">
-        <form class="au-c-rdf-form three-way-compare-form" aria-label="Concept meest recente revisie">
+        <form
+          class="au-c-rdf-form three-way-compare-form"
+          aria-label="Concept meest recente revisie"
+        >
           <RdfForm
             @groupClass="au-o-grid__item"
             @form={{@data.conceptSnapshotLatestForm.form}}
@@ -21,14 +24,15 @@
           />
         </form>
 
-        <AuLink
-          {{on "click" this.takeOver}}>
+        <AuLink {{on "click" this.takeOver}}>
           Overnemen
         </AuLink>
       </div>
       <div class="au-o-grid__item au-u-1-2 au-u-padding-left-tiny">
-        <form class="au-c-rdf-form three-way-compare-form"
-              aria-label="Concept waarop instantie gebaseerd is">
+        <form
+          class="au-c-rdf-form three-way-compare-form"
+          aria-label="Concept waarop instantie gebaseerd is"
+        >
           <RdfForm
             @groupClass="au-o-grid__item"
             @form={{@data.conceptSnapshotCurrentForm.form}}
@@ -42,7 +46,10 @@
       </div>
 
       <div class="au-o-grid__item au-u-padding-top-none">
-        <form class="au-c-rdf-form three-way-compare-form" aria-label="Instantie">
+        <form
+          class="au-c-rdf-form three-way-compare-form"
+          aria-label="Instantie"
+        >
           <RdfForm
             @groupClass="au-o-grid__item"
             @form={{@data.instanceForm.form}}
@@ -59,15 +66,10 @@
   </:body>
   <:footer>
     <AuButtonGroup>
-      <AuButton
-        {{on "click" this.save}}
-      >
+      <AuButton {{on "click" this.save}}>
         Bewaar
       </AuButton>
-      <AuButton
-        @skin="secondary"
-        {{on "click" this.close}}
-      >
+      <AuButton @skin="secondary" {{on "click" this.close}}>
         Annuleer
       </AuButton>
     </AuButtonGroup>

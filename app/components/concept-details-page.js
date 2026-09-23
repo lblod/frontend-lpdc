@@ -1,5 +1,5 @@
 import { guidFor } from '@ember/object/internals';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import Component from '@glimmer/component';
 import { ForkingStore } from '@lblod/ember-submission-form-fields';
 import { NamedNode } from 'rdflib';

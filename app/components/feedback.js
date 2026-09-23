@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { task } from 'ember-concurrency';
 import ConfirmFeedbackSubmitModal from './confirm-feedback-submit-modal';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import {

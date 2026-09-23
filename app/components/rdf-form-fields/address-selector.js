@@ -5,7 +5,7 @@ import { Literal, NamedNode } from 'rdflib';
 import { tracked } from '@glimmer/tracking';
 import { restartableTask, timeout } from 'ember-concurrency';
 import { guidFor } from '@ember/object/internals';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
 
 export default class AddressSelectorComponent extends InputFieldComponent {

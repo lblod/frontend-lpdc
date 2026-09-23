@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { dropTask } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import ConfirmDeletionModal from 'frontend-lpdc/components/confirm-deletion-modal';
 import { tracked } from '@glimmer/tracking';

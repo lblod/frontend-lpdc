@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { hasConcept } from 'frontend-lpdc/models/public-service';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 export default class PublicServicesDetailsController extends Controller {
   @service store;

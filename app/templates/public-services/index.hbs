@@ -208,8 +208,7 @@
               <AuCheckbox
                 @checked={{this.allVisibleInstancesSubscribed}}
                 @onChange={{this.subscribeAllInstances}}
-              >
-              </AuCheckbox>
+              />
               <AuIcon @size="large" @icon="alarm" />
             </th>
           {{/if}}
@@ -352,7 +351,7 @@
               </PillList>
             </td>
             <td>
-              {{moment-format publicService.dateModified "DD-MM-YYYY - HH:mm"}}
+              {{moment-format publicService.dateModified}}
             </td>
             <td>
               {{#if publicService.status.uri}}

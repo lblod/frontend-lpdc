@@ -8,11 +8,11 @@ The [mu-semtech/static-file-service](https://github.com/mu-semtech/static-file-s
 
 ### General
 
-| Name              | Description                   |
-| ----------------- | ----------------------------- |
-| `EMBER_FUSIES`    | Toggle fusies                 |
-| `EMBER_IPDC_URL`  | Link to the IPDC application  |
-| `EMBER_LOKET_URL` | Link to the Loket application |
+| Name                         | Description                                                                        |
+| ---------------------------- | ---------------------------------------------------------------------------------- |
+| `EMBER_FUSIES`               | Toggle fusies                                                                      |
+| `EMBER_IPDC_URL`             | Link to the IPDC application                                                       |
+| `EMBER_LOKET_URL`            | Link to the Loket application                                                      |
 | `EMBER_ANNOUNCEMENT_MESSAGE` | A text that will be displayed in an announcement banner, eg. to announce down-time |
 
 ### ACM/IDM
@@ -27,7 +27,6 @@ The [mu-semtech/static-file-service](https://github.com/mu-semtech/static-file-s
 | `EMBER_ADMIN_ROLE`                 | The name of the ACM/IDM admin role as configured in ACM. This role gets administrator privileges and can use impersonation.                              |
 
 > When ACM/IDM is not configured, the frontend will default to the "mock login" setup instead.
->
 
 ## Releases
 

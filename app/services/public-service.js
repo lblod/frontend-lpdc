@@ -1,6 +1,6 @@
-import Service, { inject as service } from '@ember/service';
+import Service, { service } from '@ember/service';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 export default class PublicServiceService extends Service {
   @service store;

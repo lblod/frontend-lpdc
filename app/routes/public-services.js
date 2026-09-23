@@ -1,6 +1,6 @@
 import { warn } from '@ember/debug';
 import Route from '@ember/routing/route';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { registerFormFields } from '@lblod/ember-submission-form-fields';
 import {
   registerCustomValidation,

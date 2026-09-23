@@ -1,5 +1,4 @@
-/* eslint-disable ember/no-get, ember/classic-decorator-no-classic-methods */
-import Model, { attr, hasMany, belongsTo } from '@ember-data/model';
+import Model, { attr, hasMany, belongsTo } from '@warp-drive/legacy/model';
 
 export default class GebruikerModel extends Model {
   @attr voornaam;

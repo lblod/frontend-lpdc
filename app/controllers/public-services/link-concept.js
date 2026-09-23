@@ -1,5 +1,5 @@
 import { dropTask } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import AbstractConceptOverviewController from 'frontend-lpdc/controllers/public-services/abstract-concept-overview-controller';
 
 export default class PublicServicesLinkConceptIndexController extends AbstractConceptOverviewController {

@@ -1,4 +1,4 @@
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { hasConcept } from 'frontend-lpdc/models/public-service';
 import AbstractConceptOverviewRoute from 'frontend-lpdc/routes/public-services/abstract-concept-overview-route';
 

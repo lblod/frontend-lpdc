@@ -1,13 +1,13 @@
 {{#if this.isInformal}}
-<AuAlert
-  @icon="info-circle"
-  @skin="info"
-  @size="small"
-  class="au-u-margin-bottom-none"
-  data-test-reminder-u-or-je-choice="informal"
->
-  <p>Jouw bestuur heeft gekozen voor concepten in de "je"-vorm</p>
-</AuAlert>
+  <AuAlert
+    @icon="info-circle"
+    @skin="info"
+    @size="small"
+    class="au-u-margin-bottom-none"
+    data-test-reminder-u-or-je-choice="informal"
+  >
+    <p>Jouw bestuur heeft gekozen voor concepten in de "je"-vorm</p>
+  </AuAlert>
 
 {{else if this.isFormal}}
   <AuAlert
@@ -28,7 +28,8 @@
     class="au-u-margin-bottom-none"
     data-test-reminder-u-or-je-choice="no-choice"
   >
-    <p>Jouw bestuur heeft nog geen keuze gemaakt en krijgt concepten in de "u"-vorm.</p>
+    <p>Jouw bestuur heeft nog geen keuze gemaakt en krijgt concepten in de
+      "u"-vorm.</p>
     <AuButton
       @skin="link"
       {{on "click" this.openSelectUOrJeModal}}

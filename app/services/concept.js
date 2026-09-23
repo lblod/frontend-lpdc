@@ -1,4 +1,4 @@
-import Service, { inject as service } from '@ember/service';
+import Service, { service } from '@ember/service';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
 
 export default class ConceptService extends Service {

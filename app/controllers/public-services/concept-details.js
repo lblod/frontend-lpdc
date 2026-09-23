@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { dropTask } from 'ember-concurrency';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 
 const ARCHIVED_STATUS =
   'http://lblod.data.gift/concepts/concept-status/gearchiveerd';
@@ -33,7 +33,7 @@ export default class PublicServicesConceptDetailsController extends Controller {
         this.model.concept.displayConfiguration,
       );
       await this.conceptService.loadConceptDetails(this.model.concept.id);
-    } catch (error) {
+    } catch {
       // TODO: Something went wrong while saving, but a fully fledged error state seems overkill. We should send a message to GlitchTip.
     }
   }

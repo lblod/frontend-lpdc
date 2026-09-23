@@ -5,7 +5,12 @@
     data-test-alert
     ...attributes
   >
-    <AuLoader @inline={{true}} @centered={{false}} @hideMessage={{true}} class="au-u-margin-right-small">
+    <AuLoader
+      @inline={{true}}
+      @centered={{false}}
+      @hideMessage={{true}}
+      class="au-u-margin-right-small"
+    >
       {{! The loader component is not intended to be used without a loading message, so we use this as a workaround }}
       &nbsp;
     </AuLoader>

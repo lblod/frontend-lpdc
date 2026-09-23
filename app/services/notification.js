@@ -1,4 +1,4 @@
-import Service, { inject as service } from '@ember/service';
+import Service, { service } from '@ember/service';
 import { STATUS_REPORT } from 'frontend-lpdc/models/notification-preference';
 import { tracked } from '@glimmer/tracking';
 import { assert } from '@ember/debug';

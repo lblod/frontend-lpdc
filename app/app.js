@@ -1,16 +1,26 @@
+import '@warp-drive/ember/install';
 import Application from '@ember/application';
+import setupInspector from '@embroider/legacy-inspector-support/ember-source-4.12';
+import { importSync, isDevelopingApp, macroCondition } from '@embroider/macros';
 import Resolver from 'ember-resolver';
 import loadInitializers from 'ember-load-initializers';
-import config from './config/environment';
+import config from 'frontend-lpdc/config/environment';
 import './config/custom-inflector-rules';
 import { setupSentry } from 'frontend-lpdc/utils/sentry';
+import { silenceEmptySyncRelationshipWarnings } from 'frontend-lpdc/utils/ember-data';
 
 setupSentry();
+
+if (macroCondition(isDevelopingApp())) {
+  importSync('./deprecation-workflow');
+  silenceEmptySyncRelationshipWarnings();
+}
 
 export default class App extends Application {
   modulePrefix = config.modulePrefix;
   podModulePrefix = config.podModulePrefix;
   Resolver = Resolver;
+  inspector = setupInspector(this);
 }
 
 loadInitializers(App, config.modulePrefix);

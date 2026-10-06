@@ -13,8 +13,6 @@ $data-list-whitespace-y: $au-unit-small;
 
 @include mq(medium) {
   .data-list--vertical {
-    flex-flow: column nowrap;
-
     .data-list__data {
       flex-basis: 100%;
     }

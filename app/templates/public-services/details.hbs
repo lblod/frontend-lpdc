@@ -1,209 +1,185 @@
 {{page-title @model.publicService.name}}
 
-<AuMainContainer as |m|>
-  <m.sidebar class="au-u-background-gray-100">
-    <div class="au-c-sidebar">
-      <div class="au-c-sidebar__content">
-        <AuToolbar
-          @border="bottom"
-          @size="small"
-          class="au-u-flex au-u-flex--vertical-start"
-          as |Group|
-        >
-          {{#if this.shouldShowContentGeneratedWarning}}
-            <Group>
-              <GeneratedContentWarning
-                @languageVersion={{@model.languageVersionOfConcept}}
-                @conceptName={{@model.publicService.concept.nameNl}}
-                @conceptProductId={{@model.publicService.concept.productId}}
+<SidebarContainer>
+  <:sidebar>
+    <div class="au-o-box au-o-box--small">
+      {{#if this.shouldShowContentGeneratedWarning}}
+        <GeneratedContentWarning
+          @languageVersion={{@model.languageVersionOfConcept}}
+          @conceptName={{@model.publicService.concept.nameNl}}
+          @conceptProductId={{@model.publicService.concept.productId}}
+        />
+      {{/if}}
+
+      <DataList @vertical={{true}} as |Data|>
+        <Data>
+          <:title>IPDC Concept ID</:title>
+          <:content>
+            {{#if @model.publicService.concept.id}}
+              <AuLink
+                @route="public-services.concept-details"
+                @model={{@model.publicService.concept.id}}
+                target="blank"
+              >
+                {{@model.publicService.concept.productId}}
+              </AuLink>
+            {{else if this.canLinkConcept}}
+              <AuLink
+                @icon="link"
+                @route="public-services.link-concept"
+                @model={{@model.publicService.id}}
+              >
+                Koppelen
+              </AuLink>
+            {{else}}
+              <ValueWithPlaceholder @value={{false}} />
+            {{/if}}
+            {{#if this.canUnlinkConcept}}
+              <AuButton
+                @alert={{true}}
+                @icon="link-broken"
+                @skin="link"
+                {{on "click" this.showUnlinkWarning}}
+              >
+                Loskoppelen
+              </AuButton>
+            {{/if}}
+            {{#if this.shouldShowUnlinkWarning}}
+              <AuAlert
+                @skin="error"
+                @size="small"
+                @closable={{this.unlinkConcept.isIdle}}
+                @onClose={{this.hideUnlinkWarning}}
+                class="au-u-margin-top au-u-max-width-small"
+              >
+                <p class="au-u-margin-top-tiny">
+                  Wil je de instantie loskoppelen van het concept? Je krijgt dan
+                  niet langer meldingen over wijzigingen aan het concept. Je kan
+                  een instantie op elk moment opnieuw koppelen aan een concept.
+                </p>
+                <AuButton
+                  @icon="link-broken"
+                  @alert={{true}}
+                  @loading={{this.unlinkConcept.isRunning}}
+                  @loadingMessage="Aan het loskoppelen"
+                  {{on "click" (perform this.unlinkConcept)}}
+                >Loskoppelen
+                </AuButton>
+              </AuAlert>
+            {{/if}}
+          </:content>
+        </Data>
+        <Data>
+          <:title>Producttype</:title>
+          <:content>
+            <span class="au-u-muted">
+              <ValueWithPlaceholder
+                @value={{@model.publicService.type.label}}
               />
-            </Group>
-          {{/if}}
-
-          <Group class="au-u-margin-bottom-small">
-            <div>
-              <DataList as |Data|>
-                <Data>
-                  <:title>IPDC Concept ID</:title>
-                  <:content>
-                    {{#if @model.publicService.concept.id}}
-                      <AuLink
-                        @route="public-services.concept-details"
-                        @model={{@model.publicService.concept.id}}
-                        target="blank"
-                      >
-                        {{@model.publicService.concept.productId}}
-                      </AuLink>
-                    {{else if this.canLinkConcept}}
-                      <AuLink
-                        @icon="link"
-                        @route="public-services.link-concept"
-                        @model={{@model.publicService.id}}
-                      >
-                        Koppelen
-                      </AuLink>
-                    {{else}}
-                      <ValueWithPlaceholder @value={{false}} />
-                    {{/if}}
-                    {{#if this.canUnlinkConcept}}
-                      <AuButton
-                        @alert={{true}}
-                        @icon="link-broken"
-                        @skin="link"
-                        {{on "click" this.showUnlinkWarning}}
-                      >
-                        Loskoppelen
-                      </AuButton>
-                    {{/if}}
-                    {{#if this.shouldShowUnlinkWarning}}
-                      <AuAlert
-                        @skin="error"
-                        @size="small"
-                        @closable={{this.unlinkConcept.isIdle}}
-                        @onClose={{this.hideUnlinkWarning}}
-                        class="au-u-margin-top au-u-max-width-small"
-                      >
-                        <p class="au-u-margin-top-tiny">
-                          Wil je de instantie loskoppelen van het concept? Je
-                          krijgt dan niet langer meldingen over wijzigingen aan
-                          het concept. Je kan een instantie op elk moment
-                          opnieuw koppelen aan een concept.
-                        </p>
-                        <AuButton
-                          @icon="link-broken"
-                          @alert={{true}}
-                          @loading={{this.unlinkConcept.isRunning}}
-                          @loadingMessage="Aan het loskoppelen"
-                          {{on "click" (perform this.unlinkConcept)}}
-                        >Loskoppelen
-                        </AuButton>
-                      </AuAlert>
-                    {{/if}}
-                  </:content>
-                </Data>
-                <Data>
-                  <:title>Producttype</:title>
-                  <:content>
-                    <span class="au-u-muted">
-                      <ValueWithPlaceholder
-                        @value={{@model.publicService.type.label}}
-                      />
-                    </span>
-                  </:content>
-                </Data>
-                <Data class="w-100">
-                  <:title>Aangemaakt op</:title>
-                  <:content>
-                    <span class="au-u-muted">
-                      <ValueWithPlaceholder
-                        @value={{@model.publicService.dateCreated}}
-                      >
-                        <:value as |value|>
-                          {{moment-format value}}
-                        </:value>
-                      </ValueWithPlaceholder>
-                    </span>
-                  </:content>
-                </Data>
-                <Data class="w-100">
-                  <:title>Aangemaakt door</:title>
-                  <:content>
-                    <span class="au-u-muted">
-                      {{#if @model.publicService.creator}}
-                        {{@model.publicService.creator.fullName}}
-                      {{else}}
-                        –
-                      {{/if}}
-                    </span>
-                  </:content>
-                </Data>
-                <Data class="w-100">
-                  <:title>Bewerkt op</:title>
-                  <:content>
-                    <span class="au-u-muted">
-                      <ValueWithPlaceholder
-                        @value={{@model.publicService.dateModified}}
-                      >
-                        <:value as |value|>
-                          {{moment-format value}}
-                        </:value>
-                      </ValueWithPlaceholder>
-                    </span>
-                  </:content>
-                </Data>
-                <Data class="w-100">
-                  <:title>Bewerkt door</:title>
-                  <:content>
-                    <span class="au-u-muted">
-                      {{#if @model.publicService.lastModifier}}
-                        {{@model.publicService.lastModifier.fullName}}
-                      {{else}}
-                        –
-                      {{/if}}
-                    </span>
-                  </:content>
-                </Data>
-                <Data class="w-100">
-                  <:title>Aanvraagbaar van</:title>
-                  <:content>
-                    <span class="au-u-muted">
-                      <ValueWithPlaceholder
-                        @value={{@model.publicService.startDate}}
-                      >
-                        <:value as |value|>
-                          {{moment-format value "DD-MM-YYYY"}}
-                        </:value>
-                      </ValueWithPlaceholder>
-                    </span>
-                  </:content>
-                </Data>
-                <Data class="w-100">
-                  <:title>Aanvraagbaar tot en met</:title>
-                  <:content>
-                    <span class="au-u-muted">
-                      <ValueWithPlaceholder
-                        @value={{@model.publicService.endDate}}
-                      >
-                        <:value as |value|>
-                          {{moment-format value "DD-MM-YYYY"}}
-                        </:value>
-                      </ValueWithPlaceholder>
-                    </span>
-                  </:content>
-                </Data>
-                <Data class="w-100">
-                  <:title>Status</:title>
-                  <:content>
-                    {{#if @model.publicService.status.label}}
-                      <Status @uri={{@model.publicService.status.uri}}>
-                        {{@model.publicService.status.label}}
-                      </Status>
-                    {{else}}
-                      –
-                    {{/if}}
-                  </:content>
-                </Data>
-                {{#if this.shouldDisplayVersion}}
-                  <Data class="w-100">
-                    <:title>Versie</:title>
-                    <:content>
-                      <span class="au-u-muted">
-                        {{this.publicServiceDutchLanguageVariant}}
-                      </span>
-                    </:content>
-                  </Data>
-                {{/if}}
-              </DataList>
-            </div>
-          </Group>
-        </AuToolbar>
-      </div>
+            </span>
+          </:content>
+        </Data>
+        <Data>
+          <:title>Aangemaakt op</:title>
+          <:content>
+            <span class="au-u-muted">
+              <ValueWithPlaceholder @value={{@model.publicService.dateCreated}}>
+                <:value as |value|>
+                  {{moment-format value}}
+                </:value>
+              </ValueWithPlaceholder>
+            </span>
+          </:content>
+        </Data>
+        <Data>
+          <:title>Aangemaakt door</:title>
+          <:content>
+            <span class="au-u-muted">
+              {{#if @model.publicService.creator}}
+                {{@model.publicService.creator.fullName}}
+              {{else}}
+                –
+              {{/if}}
+            </span>
+          </:content>
+        </Data>
+        <Data>
+          <:title>Bewerkt op</:title>
+          <:content>
+            <span class="au-u-muted">
+              <ValueWithPlaceholder
+                @value={{@model.publicService.dateModified}}
+              >
+                <:value as |value|>
+                  {{moment-format value}}
+                </:value>
+              </ValueWithPlaceholder>
+            </span>
+          </:content>
+        </Data>
+        <Data>
+          <:title>Bewerkt door</:title>
+          <:content>
+            <span class="au-u-muted">
+              {{#if @model.publicService.lastModifier}}
+                {{@model.publicService.lastModifier.fullName}}
+              {{else}}
+                –
+              {{/if}}
+            </span>
+          </:content>
+        </Data>
+        <Data>
+          <:title>Aanvraagbaar van</:title>
+          <:content>
+            <span class="au-u-muted">
+              <ValueWithPlaceholder @value={{@model.publicService.startDate}}>
+                <:value as |value|>
+                  {{moment-format value "DD-MM-YYYY"}}
+                </:value>
+              </ValueWithPlaceholder>
+            </span>
+          </:content>
+        </Data>
+        <Data>
+          <:title>Aanvraagbaar tot en met</:title>
+          <:content>
+            <span class="au-u-muted">
+              <ValueWithPlaceholder @value={{@model.publicService.endDate}}>
+                <:value as |value|>
+                  {{moment-format value "DD-MM-YYYY"}}
+                </:value>
+              </ValueWithPlaceholder>
+            </span>
+          </:content>
+        </Data>
+        <Data>
+          <:title>Status</:title>
+          <:content>
+            {{#if @model.publicService.status.label}}
+              <Status @uri={{@model.publicService.status.uri}}>
+                {{@model.publicService.status.label}}
+              </Status>
+            {{else}}
+              –
+            {{/if}}
+          </:content>
+        </Data>
+        {{#if this.shouldDisplayVersion}}
+          <Data>
+            <:title>Versie</:title>
+            <:content>
+              <span class="au-u-muted">
+                {{this.publicServiceDutchLanguageVariant}}
+              </span>
+            </:content>
+          </Data>
+        {{/if}}
+      </DataList>
     </div>
-  </m.sidebar>
+  </:sidebar>
 
-  <m.content>
-    <AuBodyContainer>
-      {{outlet}}
-    </AuBodyContainer>
-  </m.content>
-</AuMainContainer>
+  <:content>
+    {{outlet}}
+  </:content>
+</SidebarContainer>

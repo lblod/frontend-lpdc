@@ -10,3 +10,11 @@ $data-list-whitespace-y: $au-unit-small;
 .data-list__data {
   padding: $data-list-whitespace-y $data-list-whitespace-x;
 }
+
+@include mq(medium) {
+  .data-list--vertical {
+    .data-list__data {
+      flex-basis: 100%;
+    }
+  }
+}

@@ -35,14 +35,26 @@
 
 <div class="au-o-grid au-o-grid--flush">
   <div class="au-o-grid__item au-u-2-3 {{if @show 'au-u-flex-grow'}}">
-    <AuInput
-      @error={{this.hasErrors}}
-      @disabled={{@show}}
-      @width="block"
-      id={{this.inputId}}
-      value={{this.value}}
-      {{on "blur" this.updateValue}}
-    />
+    <div class={{if this.showRewriteButton "input-with-action"}}>
+      <AuInput
+        @error={{this.hasErrors}}
+        @disabled={{@show}}
+        @width="block"
+        id={{this.inputId}}
+        value={{this.value}}
+        {{on "blur" this.updateValue}}
+      />
+      {{#if this.showRewriteButton}}
+        <AuButton
+          @skin="naked"
+          @icon="ai-write"
+          @hideText={{true}}
+          @size="large"
+          {{on "click" this.heerlijkHelderRewrite}}
+        >
+        </AuButton>
+      {{/if}}
+    </div>
     {{#each this.errors as |error|}}
       <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
     {{/each}}

@@ -94,12 +94,23 @@
           </:top>
           <:default>
             <div {{on "focusout" this.updateValue}}>
-              <Editor
-                @schema={{this.schema}}
-                @rdfaEditorInit={{this.handleRdfaEditorInit}}
-                @plugins={{this.plugins}}
-                @nodeViews={{this.nodeViews}}
-              />
+              <div class={{if this.showRewriteButton "editor-with-action"}}>
+                <Editor
+                  @schema={{this.schema}}
+                  @rdfaEditorInit={{this.handleRdfaEditorInit}}
+                  @plugins={{this.plugins}}
+                  @nodeViews={{this.nodeViews}}
+                />
+                {{#if this.showRewriteButton}}
+                  <AuButton
+                    @skin="naked"
+                    @icon="ai-write"
+                    @hideText={{true}}
+                    @size="large"
+                    {{on "click" this.heerlijkHelderRewrite}}
+                  />
+                {{/if}}
+              </div>
             </div>
           </:default>
         </EditorContainer>

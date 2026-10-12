@@ -47,6 +47,7 @@ import { placeholder } from '@lblod/ember-rdfa-editor/plugins/placeholder';
 import SimpleInputFieldComponent from '@lblod/ember-submission-form-fields/components/rdf-input-fields/simple-value-input-field';
 import { modifier } from 'ember-modifier';
 import { NamedNode } from 'rdflib';
+import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
 
 export const linkParser = defaultLinkParser({ defaultCountryCode: 'BE' });
 
@@ -165,6 +166,15 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
   handleRdfaEditorInit(editorController) {
     this.editorController = editorController;
     this.setEditorValue();
+  }
+
+  get showRewriteButton() {
+    return !this.args.show && isFeatureEnabled('heerlijkHelder');
+  }
+
+  @action
+  heerlijkHelderRewrite() {
+    console.log('Heerlijk helder rewrite', this.args.sourceNode.value, this.args.field.path, this.value);
   }
 
   @action

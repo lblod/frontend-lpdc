@@ -1,3 +1,4 @@
+/* eslint-disable ember/routes-segments-snake-case -- remove this once we update to eslint-config-ember v14+ */
 import EmberRouter from '@ember/routing/router';
 import config from 'frontend-lpdc/config/environment';
 

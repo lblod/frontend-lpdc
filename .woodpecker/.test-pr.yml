@@ -15,6 +15,10 @@ steps:
     image: danlynn/ember-cli:6.11.0-node_24.13
     commands:
       - npm run lint:css
+  lint-types:
+    image: danlynn/ember-cli:6.11.0-node_24.13
+    commands:
+      - npm run lint:types
   dependency-lint:
     image: danlynn/ember-cli:6.11.0-node_24.13
     commands:

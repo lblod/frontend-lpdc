@@ -45,16 +45,23 @@
         {{on "blur" this.updateValue}}
       />
       {{#if this.showRewriteButton}}
-        <AuButton
-          @skin="naked"
-          @icon="ai-write"
-          @hideText={{true}}
-          @size="large"
-          class="input-with-action__action-button"
-          {{on "click" this.heerlijkHelderRewrite}}
-        >
-          Herschrijf je tekst met (AI) met Heerlijk Helder
-        </AuButton>
+        <AuTooltip @placement="bottom" as |tooltip|>
+          <AuButton
+            @skin="naked"
+            @icon="ai-write"
+            @hideText={{true}}
+            @size="large"
+            class="input-with-action__action-button"
+            {{on "click" this.heerlijkHelderRewrite}}
+            {{tooltip.target}}
+          >
+            Herschrijf je tekst met (AI) met Heerlijk Helder
+          </AuButton>
+          <tooltip.Content>
+            Herschrijf je tekst met (AI) met
+            <AuLinkExternal>Heerlijk Helder</AuLinkExternal>
+          </tooltip.Content>
+        </AuTooltip>
       {{/if}}
     </div>
     {{#each this.errors as |error|}}

@@ -5,6 +5,7 @@ const { setConfig } = require('@warp-drive/core/build-config');
 
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
+    'ember-cli-babel': { enableTypeScriptTransform: true },
     babel: {
       plugins: [
         require.resolve('ember-concurrency/async-arrow-task-transform'),

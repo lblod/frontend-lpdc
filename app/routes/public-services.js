@@ -20,6 +20,8 @@ import LpdcRdfInputFieldsConceptSchemeMultiSelectorComponent from 'frontend-lpdc
 import LpdcRdfHeadingComponent from 'frontend-lpdc/components/rdf-form-fields/lpdc-heading';
 import { HttpRequest } from 'frontend-lpdc/helpers/http-request';
 import isURL from 'validator/lib/isURL.js';
+import LpdcConfirmRadios from 'frontend-lpdc/components/rdf-form-fields/lpdc-confirm-radios';
+import matchValuesAllowMissing from 'frontend-lpdc/semantic-forms/validators/match-values-allow-missing';
 
 export default class PublicServicesRoute extends Route {
   @service currentSession;
@@ -103,6 +105,10 @@ export default class PublicServicesRoute extends Route {
       {
         displayType: 'http://lblod.data.gift/display-types/lpdcHeading',
         edit: LpdcRdfHeadingComponent,
+      },
+      {
+        displayType: 'http://lblod.data.gift/display-types/lpdcConfirmRadios',
+        edit: LpdcConfirmRadios,
       },
     ]);
   }
@@ -193,6 +199,11 @@ export default class PublicServicesRoute extends Route {
 
         return isValid ? { valid: true } : { valid: false, resultMessage };
       },
+    );
+
+    registerCustomValidation(
+      'https://productencatalogus.data.vlaanderen.be/ns/ipdc-lpdc#MatchValuesAllowMissing',
+      matchValuesAllowMissing,
     );
   }
 

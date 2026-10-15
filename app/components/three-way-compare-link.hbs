@@ -1,8 +1,18 @@
 {{#if this.visible}}
-  <AuButton @skin="link" class="au-u-margin-tiny" {{on "click" this.openModal}}>
+  <AuButton
+    {{! @icon="alert-triangle" }}
+    @skin="link"
+    class="au-u-margin-tiny"
+    {{on "click" this.openModal}}
+  >
+    <AuIcon
+      @size="large"
+      @icon={{if this.isConceptTakenOver "check" "alert-triangle"}}
+    />
     {{#if this.isConceptTakenOver}}
-      <AuIcon @size="large" @icon="check" />
+      Wijzigingen overgenomen
+    {{else}}
+      Conceptwijzigingen bekijken
     {{/if}}
-    Conceptwijzigingen overnemen
   </AuButton>
 {{/if}}

@@ -2,19 +2,39 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { NamedNode } from 'rdflib';
 import { service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
 
 export default class ThreeWayCompareModalComponent extends Component {
   @service contextService;
   instanceFormSaveMethod;
 
+  @tracked hasChanges = false;
+  #observerId = 'three-way-compare-modal';
+
   constructor() {
     super(...arguments);
     this.contextService.addParentContext(this);
+    this.trackFormChanges();
+  }
+
+  get isSubmitDisabled() {
+    return !this.hasChanges;
+  }
+
+  trackFormChanges() {
+    // We delay the observer registration since it is otherwise added before the initial data entry batch callback is called, which then immediately triggers the observer while there weren't any user changes.
+    // Not sure if this is a bug in the ForkingStore or if we're adding the initial data in the wrong way.
+    setTimeout(() => {
+      this.args.data.instanceForm.formStore.registerObserver(() => {
+        this.hasChanges = true;
+      }, this.#observerId);
+    }, 10);
   }
 
   willDestroy() {
     super.willDestroy(...arguments);
     this.contextService.removeParentContext(this);
+    this.args.data.instanceForm.formStore.deregisterObserver(this.#observerId);
   }
 
   @action
@@ -28,6 +48,8 @@ export default class ThreeWayCompareModalComponent extends Component {
 
   @action
   takeOver() {
+    this.hasChanges = true;
+
     const valueLiterals = this.args.data.conceptSnapshotLatestForm.formStore
       .match(
         this.args.data.conceptSnapshotLatestForm.sourceNode,

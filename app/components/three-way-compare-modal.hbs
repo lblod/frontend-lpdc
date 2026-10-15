@@ -6,7 +6,6 @@
 >
   <:title>{{@data.fieldName}}</:title>
   <:body>
-
     <div class="au-o-grid">
       <div class="au-o-grid__item au-u-1-2 au-u-padding-right-tiny">
         <form
@@ -23,11 +22,8 @@
             @useNewListingLayout={{true}}
           />
         </form>
-
-        <AuLink {{on "click" this.takeOver}}>
-          Overnemen
-        </AuLink>
       </div>
+
       <div class="au-o-grid__item au-u-1-2 au-u-padding-left-tiny">
         <form
           class="au-c-rdf-form three-way-compare-form"
@@ -43,6 +39,17 @@
             @useNewListingLayout={{true}}
           />
         </form>
+      </div>
+
+      <div class="au-o-grid__item au-u-1-1">
+        <AuButton
+          @skin="secondary"
+          @width="block"
+          @icon="check"
+          {{on "click" this.takeOver}}
+        >
+          Conceptwijzigingen overnemen
+        </AuButton>
       </div>
 
       <div class="au-o-grid__item au-u-padding-top-none">
@@ -66,7 +73,7 @@
   </:body>
   <:footer>
     <AuButtonGroup>
-      <AuButton {{on "click" this.save}}>
+      <AuButton @disabled={{this.isSubmitDisabled}} {{on "click" this.save}}>
         Bewaar
       </AuButton>
       <AuButton @skin="secondary" {{on "click" this.close}}>

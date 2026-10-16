@@ -35,6 +35,7 @@ module.exports = function (environment) {
     features: {
       // 'feature-name': '{{FEATURE_ENV_VAR_NAME}}',
       fusies: '{{FUSIES}}',
+      heerlijkHelder: '{{HEERLIJK_HELDER}}',
     },
     'ember-plausible': {
       enabled: false,
@@ -62,6 +63,7 @@ module.exports = function (environment) {
 
   if (environment === 'development') {
     ENV.ipdcUrl = 'http://localhost:33000';
+    ENV.features.heerlijkHelder = true;
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;
     // ENV.APP.LOG_TRANSITIONS = true;

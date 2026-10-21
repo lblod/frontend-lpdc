@@ -12,13 +12,7 @@
 >
   <Modal.Body>
     {{#if (eq this.currentStep 1)}}
-      {{!-- <AuButton
-        @skin="primary"
-        @icon="link"
-        {{on "click" this.addDocument}}
-      >Eigen document toevoegen</AuButton> --}}
-
-      {{! TODO: insert filtering and table to search/view decisions }}
+      {{! TODO: finish the filtering and table }}
       <SidebarContainer @scroll={{true}}>
         <:sidebar>
           <div class="au-o-box au-o-box--small au-o-flow">

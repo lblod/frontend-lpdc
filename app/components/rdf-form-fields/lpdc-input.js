@@ -3,9 +3,11 @@ import { guidFor } from '@ember/object/internals';
 import { action } from '@ember/object';
 import { NamedNode } from 'rdflib';
 import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
-
+import { service } from '@ember/service';
+import HeerlijkHelderModal from 'frontend-lpdc/components/heerlijk-helder-modal';
 export default class LpdcInputComponent extends SimpleInputFieldComponent {
   inputId = 'input-' + guidFor(this);
+  @service modals;
 
   get helpText() {
     return this.isLinkedToConcept
@@ -26,13 +28,23 @@ export default class LpdcInputComponent extends SimpleInputFieldComponent {
   }
 
   get showRewriteButton() {
-    return !this.args.show && isFeatureEnabled('heerlijkHelder') && this.args.field.path !== 'http://schema.org/url';
+    return (
+      !this.args.show &&
+      isFeatureEnabled('heerlijkHelder') &&
+      this.args.field.path !== 'http://schema.org/url'
+    );
   }
 
   @action
   heerlijkHelderRewrite(e) {
     e.preventDefault();
-    console.log('Heerlijk helder rewrite', this.args.sourceNode.value, this.args.field.path, this.value);
+    console.log(
+      'Heerlijk helder rewrite',
+      this.args.sourceNode.value,
+      this.args.field.path,
+      this.value,
+    );
+    this.modals.open(HeerlijkHelderModal, {});
   }
 
   get isLinkedToConcept() {

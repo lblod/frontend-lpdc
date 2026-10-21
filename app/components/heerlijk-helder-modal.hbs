@@ -1,0 +1,89 @@
+<AuModal
+  class="modal-height-fit-content"
+  @modalOpen={{true}}
+  @closeModal={{this.close}}
+  @size="large"
+>
+  <:title>Maak je tekst Heerlijk Helder</:title>
+  <:body>
+    <div class="au-o-grid">
+      <p>Genereer een Heerlijk Heldere tekst op basis van de originele tekst in
+        het veld. Lees de tekst na en maak aanpassingen waar nodig</p>
+      <div class="au-o-grid__item au-u-1-2 au-u-padding-right-tiny">
+        <form
+          class="au-c-rdf-form three-way-compare-form"
+          aria-label="Concept meest recente revisie"
+        >
+          {{!-- <RdfForm
+            @groupClass="au-o-grid__item"
+            @form={{@data.conceptSnapshotLatestForm.form}}
+            @graphs={{@data.conceptSnapshotLatestForm.graphs}}
+            @sourceNode={{@data.conceptSnapshotLatestForm.sourceNode}}
+            @formStore={{@data.conceptSnapshotLatestForm.formStore}}
+            @show={{true}}
+            @useNewListingLayout={{true}}
+          /> --}}
+        </form>
+      </div>
+      <div class="au-o-grid__item au-u-1-2 au-u-padding-left-tiny">
+        <form
+          class="au-c-rdf-form three-way-compare-form"
+          aria-label="Concept waarop instantie gebaseerd is"
+        >
+        <AuButton @icon="undo" @skin="link-secondary">Herstellen</AuButton>
+        <AuButton @icon="ai-write" @skin="link-secondary">Herschrijven</AuButton>
+          {{!-- <RdfForm
+            @groupClass="au-o-grid__item"
+            @form={{@data.conceptSnapshotCurrentForm.form}}
+            @graphs={{@data.conceptSnapshotCurrentForm.graphs}}
+            @sourceNode={{@data.conceptSnapshotCurrentForm.sourceNode}}
+            @formStore={{@data.conceptSnapshotCurrentForm.formStore}}
+            @show={{true}}
+            @useNewListingLayout={{true}}
+          /> --}}
+          Krijg je een onverwacht resultaat?
+          <AuLinkExternal
+            href="mailto:LoketLokaalBestuur@vlaanderen.be?subject=Heerlijk Helder"
+          >Meld het</AuLinkExternal>
+        </form>
+      </div>
+      <div
+        class="au-o-grid__item au-u-flex au-u-flex--column au-u-flex--vertical-center"
+      >
+        Tevreden met het resultaat?
+        <AuButtonGroup>
+
+          <AuButton
+            @skin="naked"
+            @size="large"
+            {{on "click" (fn this.rateRewrite true)}}
+          >
+            <VoteThumbsUpIcon
+              @fill={{if (eq this.isImproved true) "#0055CC"}}
+            />
+          </AuButton>
+          <AuButton
+            @skin="naked"
+            @size="large"
+            {{on "click" (fn this.rateRewrite false)}}
+          >
+            <VoteThumbsDownIcon
+              @fill={{if (eq this.isImproved false) "#0055CC"}}
+            />
+          </AuButton>
+        </AuButtonGroup>
+      </div>
+    </div>
+
+  </:body>
+  <:footer>
+    <AuButtonGroup>
+      <AuButton {{on "click" this.save}}>
+        Opslaan
+      </AuButton>
+      <AuButton @skin="secondary" {{on "click" this.close}}>
+        Annuleren
+      </AuButton>
+    </AuButtonGroup>
+  </:footer>
+</AuModal>

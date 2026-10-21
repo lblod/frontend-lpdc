@@ -70,6 +70,24 @@
           </:content>
         </Data>
         <Data>
+          <:title>Relevante besluiten</:title>
+          <:content>
+            <AuButton
+              @icon="link"
+              @skin="link"
+              {{on "click" this.linkDecision}}
+            >Koppelen</AuButton>
+            <AuButton @skin="link">Test besluit</AuButton>
+            {{! TODO: show the actual linked besluiten }}
+            {{!-- {{#each @model.publicService.decisions as |decision|}}
+              <AuButton
+                @skin="link"
+                {{on "click" (fn this.openDecision decision)}}
+              >{{decision.title}}</AuButton>
+            {{/each}} --}}
+          </:content>
+        </Data>
+        <Data>
           <:title>Producttype</:title>
           <:content>
             <span class="au-u-muted">

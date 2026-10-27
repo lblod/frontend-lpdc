@@ -94,12 +94,36 @@
           </:top>
           <:default>
             <div {{on "focusout" this.updateValue}}>
-              <Editor
-                @schema={{this.schema}}
-                @rdfaEditorInit={{this.handleRdfaEditorInit}}
-                @plugins={{this.plugins}}
-                @nodeViews={{this.nodeViews}}
-              />
+              <div class={{if this.showRewriteButton "editor-with-action"}}>
+                <Editor
+                  @schema={{this.schema}}
+                  @rdfaEditorInit={{this.handleRdfaEditorInit}}
+                  @plugins={{this.plugins}}
+                  @nodeViews={{this.nodeViews}}
+                />
+                {{#if this.showRewriteButton}}
+                  <AuTooltip @placement="bottom" as |tooltip|>
+                    <AuButton
+                      @skin="naked"
+                      @icon="ai-write"
+                      @hideText={{true}}
+                      @size="large"
+                      class="editor-with-action__action-button"
+                      {{on "click" this.heerlijkHelderRewrite}}
+                      {{tooltip.target}}
+                    >
+                      Maak je tekst Heerlijk Helder (AI)
+                    </AuButton>
+                    <tooltip.Content>
+                      Maak je tekst
+                      <AuLinkExternal
+                        href="https://abb-vlaanderen.gitbook.io/informatie-lpdc/ai-gebruik-in-lpdc/maak-je-tekst-heerlijk-helder"
+                      >Heerlijk Helder</AuLinkExternal>
+                      (AI)
+                    </tooltip.Content>
+                  </AuTooltip>
+                {{/if}}
+              </div>
             </div>
           </:default>
         </EditorContainer>

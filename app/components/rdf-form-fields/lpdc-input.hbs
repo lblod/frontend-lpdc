@@ -35,14 +35,35 @@
 
 <div class="au-o-grid au-o-grid--flush">
   <div class="au-o-grid__item au-u-2-3 {{if @show 'au-u-flex-grow'}}">
-    <AuInput
-      @error={{this.hasErrors}}
-      @disabled={{@show}}
-      @width="block"
-      id={{this.inputId}}
-      value={{this.value}}
-      {{on "blur" this.updateValue}}
-    />
+    <div class={{if this.showRewriteButton "input-with-action"}}>
+      <AuInput
+        @error={{this.hasErrors}}
+        @disabled={{@show}}
+        @width="block"
+        id={{this.inputId}}
+        value={{this.value}}
+        {{on "blur" this.updateValue}}
+      />
+      {{#if this.showRewriteButton}}
+        <AuTooltip @placement="bottom" as |tooltip|>
+          <AuButton
+            @skin="naked"
+            @icon="ai-write"
+            @hideText={{true}}
+            @size="large"
+            class="input-with-action__action-button"
+            {{on "click" this.heerlijkHelderRewrite}}
+            {{tooltip.target}}
+          >
+            Maak je tekst Heerlijk Helder (AI)
+          </AuButton>
+          <tooltip.Content>
+            Maak je tekst
+            <AuLinkExternal href="https://abb-vlaanderen.gitbook.io/informatie-lpdc/ai-gebruik-in-lpdc/maak-je-tekst-heerlijk-helder">Heerlijk Helder</AuLinkExternal> (AI)
+          </tooltip.Content>
+        </AuTooltip>
+      {{/if}}
+    </div>
     {{#each this.errors as |error|}}
       <AuHelpText @error={{true}}>{{error.resultMessage}}</AuHelpText>
     {{/each}}

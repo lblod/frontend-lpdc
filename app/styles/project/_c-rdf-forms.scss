@@ -17,3 +17,34 @@ form.three-way-compare-form:has(.rich-text-editor-content)
   max-height: 21rem;
   overflow-y: scroll;
 }
+
+.input-with-action {
+  position: relative;
+
+  .au-c-input {
+    padding-right: $au-button-icon-only-width;
+  }
+
+  &__action-button {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+  }
+}
+
+.editor-with-action {
+  // rich text editor: bottom-right corner
+  position: relative;
+
+  // reserve a strip below the last line so text never runs under the button
+  .say-content {
+    padding-bottom: $au-button-height;
+  }
+
+  &__action-button {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}

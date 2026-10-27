@@ -16,7 +16,7 @@
             @loadingMessage="Aan het bewaren"
             {{on "click" (perform this.save)}}
           >
-            Bewaar
+            Bewaren
           </AuButton>
           <AuButton
             @disabled={{this.save.isRunning}}
@@ -33,7 +33,7 @@
           @skin="naked"
           {{on "click" this.cancel}}
         >
-          Annuleer
+          Annuleren
         </AuButton>
       </Group>
     </AuToolbar>

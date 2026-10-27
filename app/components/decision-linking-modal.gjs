@@ -1,11 +1,9 @@
-/* eslint-disable warp-drive/no-legacy-request-patterns */
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
 import { trackedArray } from '@ember/reactive/collections';
 import { removeItem } from 'frontend-lpdc/utils/array';
-import { eq } from 'ember-truth-helpers';
 import { on } from '@ember/modifier';
 import perform from 'ember-concurrency/helpers/perform';
 import { get, fn } from '@ember/helper';
@@ -25,48 +23,184 @@ import AuAlert from '@appuniversum/ember-appuniversum/components/au-alert';
 import AuFileCard from '@appuniversum/ember-appuniversum/components/au-file-card';
 import AuFileUpload from '@appuniversum/ember-appuniversum/components/au-file-upload';
 
-export default class DecisionLinkingModalComponent extends Component {
-  @tracked currentStep = 1;
-  @tracked linkedDecisions;
+class LinkDecisionStep extends Component {
+  @action
+  linkDecisions() {
+    // TODO: implement once the model is ready: link the selected decisions to the instance, remove previous decisions
+    this.args.onClose();
+  }
+
+  <template>
+    <AuModal
+      @modalOpen={{true}}
+      @closeModal={{@onClose}}
+      @padding="none"
+      @size="large"
+      @title="Relevante besluiten koppelen"
+      as |Modal|
+    >
+      <Modal.Body>
+        {{! TODO: finish the filtering and table }}
+        <SidebarContainer @scroll={{true}}>
+          <:sidebar>
+            <div class="au-o-box au-o-box--small au-o-flow">
+              <div>
+                <AuHeading
+                  @level="2"
+                  @skin="4"
+                  class="au-u-margin-bottom-small"
+                >Filters</AuHeading>
+                <AuLabel for="search">Zoek op titel of trefwoord</AuLabel>
+                <input
+                  value={{this.search}}
+                  id="search"
+                  class="au-c-input au-c-input--block"
+                  {{on "input" (perform this.searchTask value="target.value")}}
+                />
+              </div>
+              {{#if this.hasActiveFilters}}
+                <div class="au-u-text-left@medium">
+                  <AuButton
+                    @icon="cross"
+                    @skin="secondary"
+                    {{on "click" this.resetFilters}}
+                  >
+                    Wis filters
+                  </AuButton>
+                </div>
+              {{/if}}
+            </div>
+          </:sidebar>
+          <:content>
+            <AuToolbar @size="medium" as |Group|>
+              <Group>
+                <AuButtonGroup @inline="true">
+                  {{! TODO: switch the primary between the selected option, add count after geselecteerd }}
+                  <AuButton @skin="primary">Alle documenten</AuButton>
+                  <AuButton @skin="secondary">Geselecteerd (x)</AuButton>
+                </AuButtonGroup>
+              </Group>
+              <Group class="au-u-flex au-u-flex--vertical-center">
+                <AuButton
+                  @skin="primary"
+                  @icon="link"
+                  {{on "click" @onAddDocument}}
+                >Eigen document toevoegen</AuButton>
+              </Group>
+            </AuToolbar>
+            <AuDataTable
+              @content={{this.publicServices}}
+              @sort={{this.sort}}
+              @page={{this.page}}
+              @size={{20}}
+              @showPaginationBoundaryLinks={{true}}
+              as |Table|
+            >
+              <Table.content as |Content|>
+                <Content.header>
+                  <th class="au-u-padding-left-small">
+                    <AuCheckbox
+                      @checked={{this.allVisibleInstancesSubscribed}}
+                      @onChange={{this.subscribeAllInstances}}
+                    />
+                  </th>
+                  <th>
+                    Documenttitel
+                  </th>
+                  <th>
+                    PublicatieDatum
+                  </th>
+                  <th>
+                    Bestuursorgaan
+                  </th>
+                  <th>
+                    Besluittype
+                  </th>
+                  <th>
+                    Bijlagen
+                  </th>
+                  <th>
+                    Publicatiekanaal
+                  </th>
+                  <th>
+                    Bekijk
+                  </th>
+                </Content.header>
+
+                {{#if this.showTableLoader}}
+                  <TableLoader />
+                {{else if this.hasErrored}}
+                  <tr>
+                    <td colspan="100%" class="au-c-data-table__message">
+                      <AuAlert
+                        @title="Er ging iets fout bij het opvragen van de producten en diensten."
+                        @icon="info-circle"
+                        @skin="error"
+                        @size="small"
+                        class="au-u-margin-bottom-none"
+                      />
+                    </td>
+                  </tr>
+                {{else if this.hasResults}}
+                  <Content.body as |decision|>
+                    {{#if this.notificationService.isNotificationsEnabled}}
+                      <td>
+                        <AuCheckbox
+                          @checked={{get @linkedDecisions decision.id}}
+                          {{!-- @onChange={{fn this.handleDecisionCheckbox decision}} --}}
+                        />
+                      </td>
+                    {{/if}}
+                    <td>
+                      {{decision.title}}
+                    </td>
+                    <td>
+                      {{formatDate decision.publishDate}}
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                      <AuButton @skin="link" @icon="eye">Bekijk</AuButton>
+                    </td>
+                  </Content.body>
+                {{/if}}
+                <tr>
+                  <td colspan="100%" class="au-u-text-center">
+                    Staat je document er niet bij?
+                    <AuButton @skin="link" {{on "click" @onAddDocument}}>Voeg je
+                      eigen URL of document toe</AuButton>
+                  </td>
+                </tr>
+              </Table.content>
+            </AuDataTable>
+          </:content>
+        </SidebarContainer>
+      </Modal.Body>
+      <Modal.Footer>
+        <AuButtonGroup class="au-u-flex--row-reverse">
+          <AuButton {{on "click" this.linkDecisions}}>
+            Koppelen
+          </AuButton>
+          <AuButton @skin="secondary" {{on "click" @onClose}}>
+            Annuleren
+          </AuButton>
+        </AuButtonGroup>
+      </Modal.Footer>
+    </AuModal>
+  </template>
+}
+
+class UploadDecisionStep extends Component {
   @tracked isUploadingFiles = false;
   @tracked remoteUrls = [];
   @tracked remoteUrlsHaveErrors = false;
-  @tracked publicService;
-  @tracked uploadedFiles = new trackedArray([]);
-
+  @tracked uploadedFiles = trackedArray([]);
   @service store;
   @service toaster;
-
-  constructor() {
-    super(...arguments);
-    this.publicService = this.args.data.publicService;
-    this.linkedDecisions = this.publicService.linkedDecisions;
-  }
-  @action
-  close() {
-    this.args.close();
-  }
-
-  @action
-  linkDecision() {
-    // link the selected decisions to the instance, remove previous
-    this.close();
-  }
-
-  @action
-  addDocument() {
-    this.currentStep = 2;
-  }
-
-  @action
-  goToPreviousStep() {
-    this.currentStep = 1;
-  }
-
-  @action
-  handleDecisionCheckbox(value) {
-    this.linkedDecisions = value;
-  }
 
   @action
   async uploadFile({ fileId }) {
@@ -81,7 +215,11 @@ export default class DecisionLinkingModalComponent extends Component {
   }
 
   get isSaveDisabled() {
-    return this.isUploadingFiles || this.remoteUrlsHaveErrors;
+    return (
+      this.isUploadingFiles ||
+      this.remoteUrlsHaveErrors ||
+      (this.remoteUrls.length < 1 && this.uploadedFiles.length < 1)
+    );
   }
 
   @action
@@ -102,11 +240,10 @@ export default class DecisionLinkingModalComponent extends Component {
     console.log('Files to be processed', this.uploadedFiles);
 
     // clear the files that are used so unused get cleaned up from the server
-    this.uploadedFiles = new trackedArray([]);
+    this.uploadedFiles = trackedArray([]);
 
     this.toaster.success('Besluit(en) zijn succesvol geupload.');
-    // return to the overview when it's added
-    this.goToPreviousStep();
+    this.args.onBack(); // return to the overview when it's added
   }
 
   // Cleanup any files that are not used
@@ -119,237 +256,107 @@ export default class DecisionLinkingModalComponent extends Component {
       });
     }
   }
-
   <template>
     <AuModal
       @modalOpen={{true}}
-      @closeModal={{this.close}}
+      @closeModal={{@onClose}}
       @padding="none"
       @size="large"
-      @title={{if
-        (eq this.currentStep 1)
-        "Relevante besluiten koppelen"
-        "Eigen document(en) toevoegen"
-      }}
+      @title="Eigen document(en) toevoegen"
       as |Modal|
     >
       <Modal.Body>
-        {{#if (eq this.currentStep 1)}}
-          {{! TODO: finish the filtering and table }}
-          <SidebarContainer @scroll={{true}}>
-            <:sidebar>
-              <div class="au-o-box au-o-box--small au-o-flow">
-                <div>
-                  <AuHeading
-                    @level="2"
-                    @skin="4"
-                    class="au-u-margin-bottom-small"
-                  >Filters</AuHeading>
-                  <AuLabel for="search">Zoek op titel of trefwoord</AuLabel>
-                  <input
-                    value={{this.search}}
-                    id="search"
-                    class="au-c-input au-c-input--block"
-                    {{on
-                      "input"
-                      (perform this.searchTask value="target.value")
-                    }}
-                  />
-                </div>
-                {{#if this.hasActiveFilters}}
-                  <div class="au-u-text-left@medium">
-                    <AuButton
-                      @icon="cross"
-                      @skin="secondary"
-                      {{on "click" this.resetFilters}}
-                    >
-                      Wis filters
-                    </AuButton>
-                  </div>
-                {{/if}}
-              </div>
-            </:sidebar>
-            <:content>
-              <AuToolbar @size="medium" as |Group|>
-                <Group>
-                  <AuButtonGroup @inline="true">
-                    {{! TODO: switch the primary between the selected option, add count after geselecteerd }}
-                    <AuButton @skin="primary">Alle documenten</AuButton>
-                    <AuButton @skin="secondary">Geselecteerd (x)</AuButton>
-                  </AuButtonGroup>
-                </Group>
-                <Group class="au-u-flex au-u-flex--vertical-center">
-                  <AuButton
-                    @skin="primary"
-                    @icon="link"
-                    {{on "click" this.addDocument}}
-                  >Eigen document toevoegen</AuButton>
-                </Group>
-              </AuToolbar>
-              <AuDataTable
-                @content={{this.publicServices}}
-                @sort={{this.sort}}
-                @page={{this.page}}
-                @size={{20}}
-                @showPaginationBoundaryLinks={{true}}
-                as |Table|
-              >
-                <Table.content as |Content|>
-                  <Content.header>
-                    <th class="au-u-padding-left-small">
-                      <AuCheckbox
-                        @checked={{this.allVisibleInstancesSubscribed}}
-                        @onChange={{this.subscribeAllInstances}}
-                      />
-                    </th>
-                    <th>
-                      Documenttitel
-                    </th>
-                    <th>
-                      PublicatieDatum
-                    </th>
-                    <th>
-                      Bestuursorgaan
-                    </th>
-                    <th>
-                      Besluittype
-                    </th>
-                    <th>
-                      Bijlagen
-                    </th>
-                    <th>
-                      Publicatiekanaal
-                    </th>
-                    <th>
-                      Bekijk
-                    </th>
-                  </Content.header>
+        <div class="au-o-box--small">
+          <AuButton @skin="link" @icon="arrow-left" {{on "click" @onBack}}>terug
+            naar Relevante besluiten koppelen</AuButton>
 
-                  {{#if this.showTableLoader}}
-                    <TableLoader />
-                  {{else if this.hasErrored}}
-                    <tr>
-                      <td colspan="100%" class="au-c-data-table__message">
-                        <AuAlert
-                          @title="Er ging iets fout bij het opvragen van de producten en diensten."
-                          @icon="info-circle"
-                          @skin="error"
-                          @size="small"
-                          class="au-u-margin-bottom-none"
-                        />
-                      </td>
-                    </tr>
-                  {{else if this.hasResults}}
-                    <Content.body as |decision|>
-                      {{#if this.notificationService.isNotificationsEnabled}}
-                        <td>
-                          <AuCheckbox
-                            @checked={{get this.linkedDecisions decision.id}}
-                            @onChange={{fn
-                              this.handleDecisionCheckbox
-                              decision
-                            }}
-                          />
-                        </td>
-                      {{/if}}
-                      <td>
-                        {{decision.title}}
-                      </td>
-                      <td>
-                        {{formatDate decision.publishDate}}
-                      </td>
-                      <td>
-                      </td>
-                      <td>
-                      </td>
-                      <td>
-                      </td>
-                      <td>
-                        <AuButton @skin="link" @icon="eye">Bekijk</AuButton>
-                      </td>
-                    </Content.body>
-                  {{/if}}
-                  <tr>
-                    <td colspan="100%" class="au-u-text-center">
-                      Staat je document er nie bij?
-                      <AuButton
-                        @skin="link"
-                        {{on "click" this.addDocument}}
-                      >Voeg je eigen URL of document toe</AuButton>
-                    </td>
-                  </tr>
-                </Table.content>
-              </AuDataTable>
-            </:content>
-          </SidebarContainer>
-        {{else if (eq this.currentStep 2)}}
-          <div class="au-o-box--small">
-            <AuButton
-              @skin="link"
-              @icon="arrow-left"
-              {{on "click" this.goToPreviousStep}}
-            >terug naar Relevante besluiten koppelen</AuButton>
+          <div
+            class="au-o-layout au-o-layout--small au-o-flow au-u-padding-top"
+          >
+            <div>
+              <AuLabel for="decision-url">
+                URL
+              </AuLabel>
+              <RemoteUrlEntry
+                id="decision-url"
+                @onChange={{this.handleRemoteUrlChange}}
+              />
+            </div>
 
-            <div
-              class="au-o-layout au-o-layout--small au-o-flow au-u-padding-top"
-            >
-              <div>
-                <AuLabel for="decision-url">
-                  URL
-                </AuLabel>
-                <RemoteUrlEntry
-                  id="decision-url"
-                  @onChange={{this.handleRemoteUrlChange}}
+            <div>
+              <AuLabel for="decision-attachment">
+                Voeg document(en) toe (*.doc, *.pdf)
+              </AuLabel>
+              {{#each this.uploadedFiles as |file|}}
+                <AuFileCard
+                  class="au-u-margin-bottom-small"
+                  @filename={{file.filename}}
+                  @fileSize={{file.humanReadableSize}}
+                  @onDelete={{fn this.deleteFile file}}
                 />
-              </div>
-
-              <div>
-                <AuLabel for="decision-attachment">
-                  Voeg document(en) toe (*.doc, *.pdf)
-                </AuLabel>
-                {{#each this.uploadedFiles as |file|}}
-                  <AuFileCard
-                    class="au-u-margin-bottom-small"
-                    @filename={{file.filename}}
-                    @fileSize={{file.humanReadableSize}}
-                    @onDelete={{fn this.deleteFile file}}
-                  />
-                {{/each}}
-                <AuFileUpload
-                  id="decision-attachment"
-                  @accept=".doc,.pdf"
-                  @maxFileSizeMB={{1024}}
-                  @multiple={{true}}
-                  @onUpload={{this.uploadFile}}
-                  @onQueueUpdate={{this.handleQueueUpdate}}
-                />
-              </div>
+              {{/each}}
+              <AuFileUpload
+                id="decision-attachment"
+                @accept=".doc,.pdf"
+                @maxFileSizeMB={{1024}}
+                @multiple={{true}}
+                @onUpload={{this.uploadFile}}
+                @onQueueUpdate={{this.handleQueueUpdate}}
+              />
             </div>
           </div>
-        {{/if}}
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <AuButtonGroup class="au-u-flex--row-reverse">
-          {{#if (eq this.currentStep 1)}}
-            <AuButton {{on "click" this.linkDecision}}>
-              Koppelen
-            </AuButton>
-            <AuButton @skin="secondary" {{on "click" this.close}}>
-              Annuleren
-            </AuButton>
-          {{else if (eq this.currentStep 2)}}
-            <AuButton
-              {{on "click" this.saveDecision}}
-              @disabled={{this.isSaveDisabled}}
-            >
-              Toevoegen
-            </AuButton>
-            <AuButton @skin="secondary" {{on "click" this.close}}>
-              Annuleren
-            </AuButton>
-          {{/if}}
+          <AuButton
+            {{on "click" this.saveDecision}}
+            @disabled={{this.isSaveDisabled}}
+          >
+            Toevoegen
+          </AuButton>
+          <AuButton @skin="secondary" {{on "click" @onClose}}>
+            Annuleren
+          </AuButton>
         </AuButtonGroup>
       </Modal.Footer>
     </AuModal>
+  </template>
+}
+
+export default class DecisionLinkingModalComponent extends Component {
+  @tracked isAddingDocument = false;
+  @tracked linkedDecisions;
+  @tracked publicService;
+
+  constructor() {
+    super(...arguments);
+    this.publicService = this.args.data.publicService;
+    this.linkedDecisions = this.publicService.linkedDecisions;
+  }
+
+  @action
+  showAddDocument() {
+    this.isAddingDocument = true;
+  }
+
+  @action
+  showLinkDecisions() {
+    this.isAddingDocument = false;
+  }
+
+  <template>
+    {{#if this.isAddingDocument}}
+      <UploadDecisionStep
+        @onBack={{this.showLinkDecisions}}
+        @onClose={{@close}}
+      />
+    {{else}}
+      <LinkDecisionStep
+        @linkedDecisions={{this.linkedDecisions}}
+        @onAddDocument={{this.showAddDocument}}
+        @onClose={{@close}}
+      />
+    {{/if}}
   </template>
 }

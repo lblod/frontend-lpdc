@@ -1,8 +1,14 @@
 {{#if this.visible}}
-  <AuButton @skin="link" class="au-u-margin-tiny" {{on "click" this.openModal}}>
+  <AuButton
+    @icon={{if this.isConceptTakenOver "check" "copy"}}
+    @skin="link"
+    class="au-u-margin-tiny"
+    {{on "click" this.openModal}}
+  >
     {{#if this.isConceptTakenOver}}
-      <AuIcon @size="large" @icon="check" />
+      Wijzigingen overgenomen
+    {{else}}
+      Conceptwijzigingen overnemen
     {{/if}}
-    Conceptwijzigingen overnemen
   </AuButton>
 {{/if}}

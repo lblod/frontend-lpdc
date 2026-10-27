@@ -3,7 +3,7 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import { TrackedArray } from 'tracked-built-ins';
+import { trackedArray } from '@ember/reactive/collections';
 import { removeItem } from 'frontend-lpdc/utils/array';
 import { eq } from 'ember-truth-helpers';
 import { on } from '@ember/modifier';
@@ -26,13 +26,13 @@ import AuFileCard from '@appuniversum/ember-appuniversum/components/au-file-card
 import AuFileUpload from '@appuniversum/ember-appuniversum/components/au-file-upload';
 
 export default class DecisionLinkingModalComponent extends Component {
-  @tracked currentStep = 2;
+  @tracked currentStep = 1;
   @tracked linkedDecisions;
   @tracked isUploadingFiles = false;
   @tracked remoteUrls = [];
   @tracked remoteUrlsHaveErrors = false;
   @tracked publicService;
-  @tracked uploadedFiles = new TrackedArray([]);
+  @tracked uploadedFiles = new trackedArray([]);
 
   @service store;
   @service toaster;
@@ -102,7 +102,7 @@ export default class DecisionLinkingModalComponent extends Component {
     console.log('Files to be processed', this.uploadedFiles);
 
     // clear the files that are used so unused get cleaned up from the server
-    this.uploadedFiles = new TrackedArray([]);
+    this.uploadedFiles = new trackedArray([]);
 
     this.toaster.success('Besluit(en) zijn succesvol geupload.');
     // return to the overview when it's added

@@ -8,7 +8,7 @@ import { tracked } from '@glimmer/tracking';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 import { modifier } from 'ember-modifier';
-import { TrackedArray } from 'tracked-built-ins';
+import { trackedArray } from '@ember/reactive/collections';
 import eq from 'ember-truth-helpers/helpers/eq';
 import isURL from 'validator/lib/isURL.js';
 import { removeItem } from 'frontend-lpdc/utils/array';
@@ -25,7 +25,6 @@ function isValidUrl(value) {
 
 async function checkReachability(url) {
   try {
-    // eslint-disable-next-line warp-drive/no-external-request-patterns
     await fetch(url, { method: 'HEAD', mode: 'no-cors' });
     return true;
   } catch {
@@ -47,7 +46,7 @@ class UrlEntry {
 }
 
 export default class RemoteUrlEntryComponent extends Component {
-  entries = new TrackedArray([]);
+  entries = new trackedArray([]);
 
   @action
   addEntry() {
@@ -122,12 +121,8 @@ export default class RemoteUrlEntryComponent extends Component {
                 Dit is geen geldige link. Gebruik een volledige URL,
                 bijvoorbeeld https://www.voorbeeld.be/document
               </AuHelpText>
-            {{else if entry.isReachable}}
-              <AuHelpText class="au-u-margin-top-tiny">
-                De link is bereikbaar.
-              </AuHelpText>
             {{else if (eq entry.isReachable false)}}
-              <AuHelpText @warning={{true}} class="au-u-margin-top-tiny">
+              <AuHelpText @warning={{true}}>
                 De link kon niet worden bereikt. Test de link zelf en controleer
                 of de URL juist is.
               </AuHelpText>

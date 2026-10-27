@@ -6,50 +6,56 @@
 >
   <:title>{{@data.fieldName}}</:title>
   <:body>
+    <div class="au-o-flow">
+      <div class="au-o-grid">
+        <div class="au-o-grid__item au-u-1-2 au-u-padding-right-tiny">
+          <form
+            class="three-way-compare-form"
+            aria-label="Concept meest recente revisie"
+          >
+            <RdfForm
+              @groupClass="au-o-grid__item"
+              @form={{@data.conceptSnapshotLatestForm.form}}
+              @graphs={{@data.conceptSnapshotLatestForm.graphs}}
+              @sourceNode={{@data.conceptSnapshotLatestForm.sourceNode}}
+              @formStore={{@data.conceptSnapshotLatestForm.formStore}}
+              @show={{true}}
+              @useNewListingLayout={{true}}
+            />
+          </form>
+        </div>
 
-    <div class="au-o-grid">
-      <div class="au-o-grid__item au-u-1-2 au-u-padding-right-tiny">
-        <form
-          class="au-c-rdf-form three-way-compare-form"
-          aria-label="Concept meest recente revisie"
-        >
-          <RdfForm
-            @groupClass="au-o-grid__item"
-            @form={{@data.conceptSnapshotLatestForm.form}}
-            @graphs={{@data.conceptSnapshotLatestForm.graphs}}
-            @sourceNode={{@data.conceptSnapshotLatestForm.sourceNode}}
-            @formStore={{@data.conceptSnapshotLatestForm.formStore}}
-            @show={{true}}
-            @useNewListingLayout={{true}}
-          />
-        </form>
-
-        <AuLink {{on "click" this.takeOver}}>
-          Overnemen
-        </AuLink>
-      </div>
-      <div class="au-o-grid__item au-u-1-2 au-u-padding-left-tiny">
-        <form
-          class="au-c-rdf-form three-way-compare-form"
-          aria-label="Concept waarop instantie gebaseerd is"
-        >
-          <RdfForm
-            @groupClass="au-o-grid__item"
-            @form={{@data.conceptSnapshotCurrentForm.form}}
-            @graphs={{@data.conceptSnapshotCurrentForm.graphs}}
-            @sourceNode={{@data.conceptSnapshotCurrentForm.sourceNode}}
-            @formStore={{@data.conceptSnapshotCurrentForm.formStore}}
-            @show={{true}}
-            @useNewListingLayout={{true}}
-          />
-        </form>
+        <div class="au-o-grid__item au-u-1-2 au-u-padding-left-tiny">
+          <form
+            class="three-way-compare-form"
+            aria-label="Concept waarop instantie gebaseerd is"
+          >
+            <RdfForm
+              @groupClass="au-o-grid__item"
+              @form={{@data.conceptSnapshotCurrentForm.form}}
+              @graphs={{@data.conceptSnapshotCurrentForm.graphs}}
+              @sourceNode={{@data.conceptSnapshotCurrentForm.sourceNode}}
+              @formStore={{@data.conceptSnapshotCurrentForm.formStore}}
+              @show={{true}}
+              @useNewListingLayout={{true}}
+            />
+          </form>
+        </div>
       </div>
 
-      <div class="au-o-grid__item au-u-padding-top-none">
-        <form
-          class="au-c-rdf-form three-way-compare-form"
-          aria-label="Instantie"
+      <div>
+        <AuButton
+          @skin="secondary"
+          @width="block"
+          @icon="check"
+          {{on "click" this.takeOver}}
         >
+          Conceptwijzigingen overnemen
+        </AuButton>
+      </div>
+
+      <div>
+        <form class="three-way-compare-form" aria-label="Instantie">
           <RdfForm
             @groupClass="au-o-grid__item"
             @form={{@data.instanceForm.form}}
@@ -62,11 +68,10 @@
         </form>
       </div>
     </div>
-
   </:body>
   <:footer>
     <AuButtonGroup>
-      <AuButton {{on "click" this.save}}>
+      <AuButton @disabled={{this.isSubmitDisabled}} {{on "click" this.save}}>
         Bewaar
       </AuButton>
       <AuButton @skin="secondary" {{on "click" this.close}}>

@@ -9,7 +9,9 @@ export default class ThreeWayCompareModalComponent extends Component {
   instanceFormSaveMethod;
 
   @tracked hasChanges = false;
+  @tracked formValuesMatchConcept = false;
   #observerId = 'three-way-compare-modal';
+  #originalValues = null;
 
   constructor() {
     super(...arguments);
@@ -21,14 +23,40 @@ export default class ThreeWayCompareModalComponent extends Component {
     return !this.hasChanges;
   }
 
+  get hasTakenOverValue() {
+    return this.formValuesMatchConcept;
+  }
+
   trackFormChanges() {
     // We delay the observer registration since it is otherwise added before the initial data entry batch callback is called, which then immediately triggers the observer while there weren't any user changes.
     // Not sure if this is a bug in the ForkingStore or if we're adding the initial data in the "wrong" way.
     setTimeout(() => {
+      this.#originalValues = getValuesFor(
+        this.args.data.instanceForm,
+        this.args.data.field.path,
+      );
       this.args.data.instanceForm.formStore.registerObserver(() => {
-        this.hasChanges = true;
+        this.updateState();
       }, this.#observerId);
+
+      // Also derive the initial state from the actual store values, so e.g. a modal
+      // reopened after the values were taken over already shows the correct button state.
+      this.updateState();
     }, 10);
+  }
+
+  updateState() {
+    const instanceValues = getValuesFor(
+      this.args.data.instanceForm,
+      this.args.data.field.path,
+    );
+    const conceptValues = getValuesFor(
+      this.args.data.conceptSnapshotLatestForm,
+      this.args.data.field.path,
+    );
+
+    this.hasChanges = !valuesEqual(instanceValues, this.#originalValues);
+    this.formValuesMatchConcept = valuesEqual(instanceValues, conceptValues);
   }
 
   willDestroy() {
@@ -42,7 +70,14 @@ export default class ThreeWayCompareModalComponent extends Component {
     this.args.close();
   }
 
-  registerInstanceFormSaveMethod(fn) {
+  registerInstanceFormSaveMethod(storeOptions, fn) {
+    // Only accept the registration of the link that belongs to this modal's own bottom form.
+    // All other links (e.g. the one on the details page) register for a different store and must be ignored,
+    // independent of which component happened to mount or register last.
+    if (storeOptions?.store !== this.args.data.instanceForm.formStore) {
+      return;
+    }
+
     this.instanceFormSaveMethod = fn;
   }
 
@@ -60,7 +95,8 @@ export default class ThreeWayCompareModalComponent extends Component {
       .map((t) => t.object.value)
       .filter((it) => !!it);
 
-    this.instanceFormSaveMethod(valueLiterals);
+    this.instanceFormSaveMethod?.(valueLiterals);
+    this.updateState();
   }
 
   @action
@@ -78,4 +114,28 @@ export default class ThreeWayCompareModalComponent extends Component {
     this.args.data.saveHandler(valueLiterals);
     this.close();
   }
+}
+
+function getValuesFor(form, path) {
+  return form.formStore
+    .match(
+      form.sourceNode,
+      new NamedNode(path),
+      undefined,
+      form.graphs.sourceGraph,
+    )
+    .map((t) => t.object.value)
+    .filter((it) => !!it)
+    .sort();
+}
+
+function valuesEqual(values, otherValues) {
+  if (!otherValues) {
+    return false;
+  }
+
+  return (
+    values.length === otherValues.length &&
+    values.every((value, index) => value === otherValues[index])
+  );
 }

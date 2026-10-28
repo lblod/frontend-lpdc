@@ -47,10 +47,15 @@
         <AuButton
           @skin="secondary"
           @width="block"
-          @icon="check"
+          @disabled={{this.hasTakenOverValue}}
+          @icon={{if this.hasTakenOverValue "check" "copy"}}
           {{on "click" this.takeOver}}
         >
-          Conceptwijzigingen overnemen
+          {{#if this.hasTakenOverValue}}
+            Wijzigingen overgenomen
+          {{else}}
+            Conceptwijzigingen overnemen
+          {{/if}}
         </AuButton>
       </div>
 

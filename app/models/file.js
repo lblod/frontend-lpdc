@@ -1,4 +1,4 @@
-import Model, { attr } from '@warp-drive/legacy/model';
+import Model, { attr, belongsTo } from '@warp-drive/legacy/model';
 
 export default class File extends Model {
   @attr uri;
@@ -7,6 +7,7 @@ export default class File extends Model {
   @attr size;
   @attr({ defaultValue: 'n/a' }) extension;
   @attr('datetime') created;
+  @belongsTo('data-container', { async: true, inverse: 'files' }) dataContainer;
 
   get humanReadableSize() {
     //ripped from https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript

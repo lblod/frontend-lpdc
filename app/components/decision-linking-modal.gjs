@@ -11,6 +11,8 @@ import TableLoader from './table-loader';
 import SidebarContainer from './sidebar-container';
 import RemoteUrlEntry from './remote-url-entry';
 import { formatDate } from 'ember-intl';
+import { JOB_STATUS } from 'frontend-lpdc/models/job';
+import { task, timeout } from 'ember-concurrency';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
 import AuLabel from '@appuniversum/ember-appuniversum/components/au-label';
@@ -201,6 +203,7 @@ class UploadDecisionStep extends Component {
   @tracked uploadedFiles = trackedArray([]);
   @service store;
   @service toaster;
+  @service currentSession;
 
   @action
   async uploadFile({ fileId }) {
@@ -234,16 +237,53 @@ class UploadDecisionStep extends Component {
   }
 
   @action
-  saveDecision() {
+  async saveDecision() {
     // Send this.uploadedFiles and this.remoteUrls to the backend, start the processing job
     console.log('URLs to be processed:', this.remoteUrls);
     console.log('Files to be processed', this.uploadedFiles);
+    const now = new Date();
 
-    // clear the files that are used so unused get cleaned up from the server
+    const scheduledJob = this.store.createRecord('job', {
+      status: JOB_STATUS.SCHEDULED, // TODO: which status, ticket mentions busy?
+      operation:
+        'http://lblod.data.gift/id/jobs/concept/JobOperation/convertDocumentToHtml',
+      creator: this.currentSession.group.uri, // TODO: store the user or the bestuurseenheid as the creator of the job
+      created: now,
+      modified: now,
+    });
+    await scheduledJob.save();
+
+    // const remoteDataObjects = await Promise.all(
+    //   this.remoteUrls.map((url) =>
+    //     this.store
+    //       .createRecord('remote-data-object', { url, created: now })
+    //       .save(),
+    //   ),
+    // );
+
+    const inputContainer = this.store.createRecord('data-container', {
+      files: this.uploadedFiles,
+      // remoteDataObjects,
+    });
+    await inputContainer.save();
+
+    const task = this.store.createRecord('task', {
+      status: JOB_STATUS.SCHEDULED,
+      operation:
+        'http://lblod.data.gift/id/jobs/concept/TaskOperation/documentToHtml',
+      index: '0',
+      created: now,
+      modified: now,
+      job: scheduledJob,
+      inputContainers: [inputContainer],
+    });
+    await task.save();
+    console.log('created the job and task', scheduledJob, task);
+
+    // clear the files that are used for the job so unused ones get cleaned up from the server
     this.uploadedFiles = trackedArray([]);
 
-    this.toaster.success('Besluit(en) zijn succesvol geupload.');
-    this.args.onBack(); // return to the overview when it's added
+    this.args.onSaved(scheduledJob); // returns to the overview and polls the job
   }
 
   // Cleanup any files that are not used
@@ -328,6 +368,7 @@ export default class DecisionLinkingModalComponent extends Component {
   @tracked isAddingDocument = false;
   @tracked linkedDecisions;
   @tracked publicService;
+  @service toaster;
 
   constructor() {
     super(...arguments);
@@ -345,10 +386,52 @@ export default class DecisionLinkingModalComponent extends Component {
     this.isAddingDocument = false;
   }
 
+  @action
+  handleDocumentAdded(job) {
+    this.pollJob.perform(job);
+    this.showLinkDecisions();
+  }
+
+  pollJob = task(async (job) => {
+    const loadingToast = this.toaster.loading(
+      'Je besluit wordt verwerkt. Dit kan even duren.',
+      'Besluit upload',
+    );
+
+    try {
+      do {
+        await timeout(1000);
+        await job.reload();
+      } while (
+        job.status === JOB_STATUS.BUSY ||
+        job.status === JOB_STATUS.SCHEDULED
+      );
+
+      if (job.status === JOB_STATUS.SUCCESS) {
+        this.toaster.success(
+          'Het besluit is succesvol verwerkt en is beschikbaar in de tabel',
+          'Besluit upload',
+          { timeOut: 5000 },
+        );
+        // TODO: reload the decisions in the table so the new one shows up
+        return;
+      } else if (job.status === JOB_STATUS.FAILED) {
+        this.toaster.error(
+          'Het verwerken van het besluit is mislukt, gelieve opnieuw te proberen',
+          'Besluit upload',
+        );
+        return;
+      }
+    } finally {
+      this.toaster.close(loadingToast);
+    }
+  });
+
   <template>
     {{#if this.isAddingDocument}}
       <UploadDecisionStep
         @onBack={{this.showLinkDecisions}}
+        @onSaved={{this.handleDocumentAdded}}
         @onClose={{@close}}
       />
     {{else}}

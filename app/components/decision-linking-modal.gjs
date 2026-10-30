@@ -261,6 +261,18 @@ class UploadDecisionStep extends Component {
     //   ),
     // );
 
+    // Create a sourceDocument object for each file/url
+    await Promise.all(
+      this.uploadedFiles.map((file) =>
+        this.store
+          .createRecord('source-document', {
+            title: file.filename,
+            file,
+          })
+          .save(),
+      ),
+    );
+
     const inputContainer = this.store.createRecord('data-container', {
       files: this.uploadedFiles,
       // remoteDataObjects,

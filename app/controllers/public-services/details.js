@@ -4,6 +4,7 @@ import { tracked } from '@glimmer/tracking';
 import { dropTask } from 'ember-concurrency';
 import { hasConcept } from 'frontend-lpdc/models/public-service';
 import { service } from '@ember/service';
+import DecisionLinkingModalComponent from 'frontend-lpdc/components/decision-linking-modal';
 
 export default class PublicServicesDetailsController extends Controller {
   @service store;
@@ -94,5 +95,12 @@ export default class PublicServicesDetailsController extends Controller {
 
   hasUnsavedChangesObserver(aValue) {
     this.formHasUnsavedChanges = aValue;
+  }
+
+  @action
+  linkDecision() {
+    this.modals.open(DecisionLinkingModalComponent, {
+      publicService: this.model.publicService,
+    });
   }
 }

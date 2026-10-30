@@ -174,7 +174,12 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
 
   @action
   heerlijkHelderRewrite() {
-    console.log('Heerlijk helder rewrite', this.args.sourceNode.value, this.args.field.path, this.value);
+    console.log(
+      'Heerlijk helder rewrite',
+      this.args.sourceNode.value,
+      this.args.field.path,
+      this.value,
+    );
   }
 
   @action

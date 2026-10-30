@@ -12,6 +12,8 @@ import SidebarContainer from './sidebar-container';
 import RemoteUrlEntry from './remote-url-entry';
 import { formatDate } from 'ember-intl';
 import { JOB_STATUS } from 'frontend-lpdc/models/job';
+import { waitForDownload } from 'frontend-lpdc/utils/wait-for-download';
+import { STATUS } from 'frontend-lpdc/models/remote-data-object';
 import { task, timeout } from 'ember-concurrency';
 import AuModal from '@appuniversum/ember-appuniversum/components/au-modal';
 import AuHeading from '@appuniversum/ember-appuniversum/components/au-heading';
@@ -243,6 +245,35 @@ class UploadDecisionStep extends Component {
     console.log('Files to be processed', this.uploadedFiles);
     const now = new Date();
 
+    const remoteUrls = await Promise.all(
+      this.remoteUrls.map((url) =>
+        this.store
+          .createRecord('remote-data-object', {
+            source: url,
+            status: STATUS.READY,
+            created: now,
+            modified: now,
+            creator: this.currentSession.group.uri,
+          })
+          .save(),
+      ),
+    );
+    const results = await Promise.allSettled(remoteUrls.map(waitForDownload));
+    const failed = remoteUrls.filter(
+      (_, i) => results[i].status === 'rejected',
+    );
+
+    if (failed.length) {
+      this.failedUrls = failed.map((remoteUrl) => remoteUrl.source);
+      this.toaster.error(
+        "niet alle URL's konden worden opgehaald. Controleer de gemarkeerde URL's.",
+        'Download mislukt',
+      );
+      return; // don't start a job with missing files, the user can fix the urls
+    }
+
+    const downloadedFiles = results.map((result) => result.value);
+    const files = [...this.uploadedFiles, ...downloadedFiles];
     const scheduledJob = this.store.createRecord('job', {
       status: JOB_STATUS.SCHEDULED, // TODO: which status, ticket mentions busy?
       operation:
@@ -253,29 +284,22 @@ class UploadDecisionStep extends Component {
     });
     await scheduledJob.save();
 
-    // const remoteDataObjects = await Promise.all(
-    //   this.remoteUrls.map((url) =>
-    //     this.store
-    //       .createRecord('remote-data-object', { url, created: now })
-    //       .save(),
-    //   ),
-    // );
-
-    // Create a sourceDocument object for each file/url
+    // Create a sourceDocument object for each file/url, a downloaded file only has a generated name so use the url as title
+    const sourceDocuments = [
+      ...this.uploadedFiles.map((file) => ({ title: file.filename, file })),
+      ...remoteUrls.map((remoteDataObject, i) => ({
+        title: remoteDataObject.source,
+        file: downloadedFiles[i],
+      })),
+    ];
     await Promise.all(
-      this.uploadedFiles.map((file) =>
-        this.store
-          .createRecord('source-document', {
-            title: file.filename,
-            file,
-          })
-          .save(),
+      sourceDocuments.map((sourceDocument) =>
+        this.store.createRecord('source-document', sourceDocument).save(),
       ),
     );
 
     const inputContainer = this.store.createRecord('data-container', {
-      files: this.uploadedFiles,
-      // remoteDataObjects,
+      files,
     });
     await inputContainer.save();
 

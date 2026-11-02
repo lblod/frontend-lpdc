@@ -19,11 +19,17 @@ export default class ThreeWayCompareLinkComponent extends Component {
 
   constructor() {
     super(...arguments);
+    // Claims which store this link's field component owns, so any context offering
+    // registerInstanceFormSaveMethod can verify the registration matches its own
+    // instance form instead of relying on which component registered last.
     this.contextService
       .findParentContextWithContract('registerInstanceFormSaveMethod')
-      ?.registerInstanceFormSaveMethod((values) => {
-        this.args.updateValues(values);
-      });
+      ?.registerInstanceFormSaveMethod(
+        this.args.originalStoreOptions,
+        (values) => {
+          this.args.updateValues(values);
+        },
+      );
   }
 
   @action

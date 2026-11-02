@@ -127,16 +127,25 @@ export default class ConceptSelector extends InputFieldComponent {
   }
 
   @action
-  updateSelection(newValues) {
-    if (this.isMultiSelect) {
-      this.updateSelectionInStore(
-        newValues.map((newValue) => ({ uri: newValue })),
-      );
-    } else {
-      this.updateSelectionInStore(
-        newValues[0] ? { uri: newValues[0] } : undefined,
-      );
-    }
+  updateSelection(valueLiterals) {
+    // Only called by the ThreeWayCompareLink to take over values from a concept snapshot.
+    // The PowerSelect onChange path goes directly to updateSelectionInStore with concept records.
+    // Store the URI values and let loadPersistedValues resolve the actual concept records,
+    // so the select renders labels instead of a value without a label.
+
+    // Cleanup old value(s) in the store
+    const matches = triplesForPath(this.storeOptions, true).values;
+    matches.forEach((m) =>
+      removeDatasetForSimpleFormValue(m, this.storeOptions),
+    );
+
+    valueLiterals.forEach((uri) => {
+      updateSimpleFormValue(this.storeOptions, new NamedNode(uri));
+    });
+
+    this.hasBeenFocused = true;
+    super.updateValidations();
+    this.loadPersistedValues();
   }
 
   @action

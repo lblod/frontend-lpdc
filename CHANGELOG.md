@@ -1,3 +1,14 @@
+## v0.36.0 (2026-11-02)
+
+#### :rocket: Enhancement
+* [#74](https://github.com/lblod/frontend-lpdc/pull/74) [LPDC-1311] Improve the "conceptwijzigingen overnemen" flow ([@Windvis](https://github.com/Windvis))
+* [#72](https://github.com/lblod/frontend-lpdc/pull/72) [LPDC-1731] Add support for the "Digitaal aanvraagbaar" field ([@Windvis](https://github.com/Windvis))
+
+#### :bug: Bug Fix
+* [#69](https://github.com/lblod/frontend-lpdc/pull/69) [LPDC-1783] Fix an issue with the sidebar on some screen sizes ([@Windvis](https://github.com/Windvis))
+
+#### :house: Internal
+* [#71](https://github.com/lblod/frontend-lpdc/pull/71) Switch to the TypeScript blueprint ([@Windvis](https://github.com/Windvis))
 
 ## v0.35.0 (2026-09-23)
 
@@ -8,9 +19,6 @@
 
 #### :bug: Bug Fix
 * [#67](https://github.com/lblod/frontend-lpdc/pull/67) [LPDC-1780] Fix an issue when loading the feedback sidebar ([@Windvis](https://github.com/Windvis))
-
-#### Committers: 1
-- Sam Van Campenhout ([@Windvis](https://github.com/Windvis))
 
 ## v0.34.2 (2026-09-21)
 

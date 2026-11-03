@@ -278,7 +278,6 @@ class UploadDecisionStep extends Component {
     );
 
     if (failed.length) {
-      this.failedUrls = failed.map((remoteUrl) => remoteUrl.source);
       this.toaster.error(
         "niet alle URL's konden worden opgehaald. Controleer de gemarkeerde URL's.",
         'Download mislukt',

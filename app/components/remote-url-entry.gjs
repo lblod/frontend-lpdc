@@ -9,9 +9,9 @@ import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
 import { modifier } from 'ember-modifier';
 import { trackedArray } from '@ember/reactive/collections';
-import eq from 'ember-truth-helpers/helpers/eq';
 import isURL from 'validator/lib/isURL.js';
 import { removeItem } from 'frontend-lpdc/utils/array';
+import LinkStatusPill from './link-status-pill';
 
 const autofocus = modifier((element) => element.focus());
 
@@ -23,18 +23,8 @@ function isValidUrl(value) {
   });
 }
 
-async function checkReachability(url) {
-  try {
-    await fetch(url, { method: 'HEAD', mode: 'no-cors' });
-    return true;
-  } catch {
-    return false;
-  }
-}
-
 class UrlEntry {
   @tracked source = '';
-  @tracked isReachable = null;
 
   get hasError() {
     return !!this.source && !isValidUrl(this.source);
@@ -63,16 +53,7 @@ export default class RemoteUrlEntryComponent extends Component {
   async updateEntry(entry, event) {
     const source = event.target.value.trim();
     entry.source = source;
-    entry.isReachable = null;
     this.notifyChange();
-
-    if (entry.isValid) {
-      const isReachable = await checkReachability(source);
-      // Ignore the result if the url was changed in the meantime
-      if (entry.source === source) {
-        entry.isReachable = isReachable;
-      }
-    }
   }
 
   notifyChange() {
@@ -114,17 +95,15 @@ export default class RemoteUrlEntryComponent extends Component {
               >
                 Verwijder&nbsp;link
               </AuButton>
+              {{#if entry.isValid}}
+                <LinkStatusPill @url={{entry.source}} />
+              {{/if}}
             </div>
 
             {{#if entry.hasError}}
               <AuHelpText @error={{true}}>
                 Dit is geen geldige link. Gebruik een volledige URL,
                 bijvoorbeeld https://www.voorbeeld.be/document
-              </AuHelpText>
-            {{else if (eq entry.isReachable false)}}
-              <AuHelpText @warning={{true}}>
-                De link kon niet worden bereikt. Test de link zelf en controleer
-                of de URL juist is.
               </AuHelpText>
             {{/if}}
           </li>

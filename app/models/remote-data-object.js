@@ -16,8 +16,7 @@ export default class RemoteUrlModel extends Model {
 
   get downloadSuccess() {
     return (
-      this.status ===
-      'http://lblod.data.gift/file-download-statuses/success'
+      this.status === 'http://lblod.data.gift/file-download-statuses/success'
     );
   }
 
@@ -31,14 +30,13 @@ export default class RemoteUrlModel extends Model {
 
   get downloadFailed() {
     return (
-      this.status ===
-      'http://lblod.data.gift/file-download-statuses/failure'
+      this.status === 'http://lblod.data.gift/file-download-statuses/failure'
     );
   }
 }
 
 export const STATUS = {
-  READY: "http://lblod.data.gift/file-download-statuses/ready-to-be-cached",
-  SUCCESS: "http://lblod.data.gift/file-download-statuses/success",
-  FAILED: "http://lblod.data.gift/file-download-statuses/failure"
-}
+  READY: 'http://lblod.data.gift/file-download-statuses/ready-to-be-cached',
+  SUCCESS: 'http://lblod.data.gift/file-download-statuses/success',
+  FAILED: 'http://lblod.data.gift/file-download-statuses/failure',
+};

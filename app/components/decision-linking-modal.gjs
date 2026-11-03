@@ -238,8 +238,22 @@ class UploadDecisionStep extends Component {
     removeItem(this.uploadedFiles, file);
   }
 
-  @action
-  async saveDecision() {
+  get isBusy() {
+    return this.isUploadingFiles || this.saveDecision.isRunning;
+  }
+
+  get isClosable() {
+    return !this.isBusy;
+  }
+
+  get loadingMessage() {
+    return this.remoteUrls.length > 0
+      ? "URL's aan het ophalen"
+      : 'Aan het toevoegen';
+  }
+
+  // Not cancelled by closing the modal: the modal can't be closed while this is running
+  saveDecision = task({ drop: true }, async () => {
     // Send this.uploadedFiles and this.remoteUrls to the backend, start the processing job
     console.log('URLs to be processed:', this.remoteUrls);
     console.log('Files to be processed', this.uploadedFiles);
@@ -320,7 +334,7 @@ class UploadDecisionStep extends Component {
     this.uploadedFiles = trackedArray([]);
 
     this.args.onSaved(scheduledJob); // returns to the overview and polls the job
-  }
+  });
 
   // Cleanup any files that are not used
   willDestroy() {
@@ -336,6 +350,7 @@ class UploadDecisionStep extends Component {
     <AuModal
       @modalOpen={{true}}
       @closeModal={{@onClose}}
+      @closable={{this.isClosable}}
       @padding="none"
       @size="large"
       @title="Eigen document(en) toevoegen"
@@ -343,8 +358,12 @@ class UploadDecisionStep extends Component {
     >
       <Modal.Body>
         <div class="au-o-box--small">
-          <AuButton @skin="link" @icon="arrow-left" {{on "click" @onBack}}>terug
-            naar Relevante besluiten koppelen</AuButton>
+          <AuButton
+            @skin="link"
+            @icon="arrow-left"
+            @disabled={{this.isBusy}}
+            {{on "click" @onBack}}
+          >terug naar Relevante besluiten koppelen</AuButton>
 
           <div
             class="au-o-layout au-o-layout--small au-o-flow au-u-padding-top"
@@ -386,12 +405,18 @@ class UploadDecisionStep extends Component {
       <Modal.Footer>
         <AuButtonGroup class="au-u-flex--row-reverse">
           <AuButton
-            {{on "click" this.saveDecision}}
+            {{on "click" (perform this.saveDecision)}}
             @disabled={{this.isSaveDisabled}}
+            @loading={{this.saveDecision.isRunning}}
+            @loadingMessage={{this.loadingMessage}}
           >
             Toevoegen
           </AuButton>
-          <AuButton @skin="secondary" {{on "click" @onClose}}>
+          <AuButton
+            @skin="secondary"
+            @disabled={{this.isBusy}}
+            {{on "click" @onClose}}
+          >
             Annuleren
           </AuButton>
         </AuButtonGroup>

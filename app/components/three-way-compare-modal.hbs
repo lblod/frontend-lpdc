@@ -23,6 +23,19 @@
               @useNewListingLayout={{true}}
             />
           </form>
+
+          <AuButton
+            @width="block"
+            @disabled={{this.hasTakenOverValue}}
+            @icon={{if this.hasTakenOverValue "check" "copy"}}
+            {{on "click" this.takeOver}}
+          >
+            {{#if this.hasTakenOverValue}}
+              Wijzigingen overgenomen
+            {{else}}
+              Conceptwijzigingen overnemen
+            {{/if}}
+          </AuButton>
         </div>
 
         <div class="au-o-grid__item au-u-1-2 au-u-padding-left-tiny">
@@ -41,22 +54,6 @@
             />
           </form>
         </div>
-      </div>
-
-      <div>
-        <AuButton
-          @skin="secondary"
-          @width="block"
-          @disabled={{this.hasTakenOverValue}}
-          @icon={{if this.hasTakenOverValue "check" "copy"}}
-          {{on "click" this.takeOver}}
-        >
-          {{#if this.hasTakenOverValue}}
-            Wijzigingen overgenomen
-          {{else}}
-            Conceptwijzigingen overnemen
-          {{/if}}
-        </AuButton>
       </div>
 
       <div>

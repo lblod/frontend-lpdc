@@ -9,6 +9,7 @@ $data-list-whitespace-y: $au-unit-small;
 
 .data-list__data {
   padding: $data-list-whitespace-y $data-list-whitespace-x;
+  min-width: 0;
 }
 
 @include mq(medium) {

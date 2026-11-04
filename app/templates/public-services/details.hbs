@@ -2,7 +2,7 @@
 
 <SidebarContainer>
   <:sidebar>
-    <div class="au-o-box au-o-box--small">
+    <div class="au-o-box au-o-box--small au-u-max-width-tiny">
       {{#if this.shouldShowContentGeneratedWarning}}
         <GeneratedContentWarning
           @languageVersion={{@model.languageVersionOfConcept}}
@@ -70,20 +70,35 @@
           </:content>
         </Data>
         <Data>
-          <:title>Relevante besluiten</:title>
+          <:title>
+            <span class="au-u-flex au-u-flex--between">
+              Relevante brondocumenten
+              {{#if this.linkedDecisions.length}}
+                <AuButton
+                  @icon="pencil"
+                  @skin="link"
+                  class="au-u-flex-shrink-0"
+                  {{on "click" this.linkDecision}}
+                >Bewerken</AuButton>
+              {{/if}}
+            </span>
+          </:title>
           <:content>
-            <AuButton
-              @icon="link"
-              @skin="link"
-              {{on "click" this.linkDecision}}
-            >Koppelen</AuButton>
-            {{! TODO: show the actual linked besluiten }}
-            {{!-- {{#each @model.publicService.decisions as |decision|}}
-              <AuButton
-                @skin="link"
-                {{on "click" (fn this.openDecision decision)}}
-              >{{decision.title}}</AuButton>
-            {{/each}} --}}
+            <div class="au-u-flex au-u-flex--column">
+              {{#if this.linkedDecisions.length}}
+                <AuButton
+                  @skin="link"
+                  {{on "click" this.openDecisionView}}
+                >{{this.linkedDecisions.length}}
+                  brondocumenten</AuButton>
+              {{else}}
+                <AuButton
+                  @icon="link"
+                  @skin="link"
+                  {{on "click" this.linkDecision}}
+                >Koppelen</AuButton>
+              {{/if}}
+            </div>
           </:content>
         </Data>
         <Data>

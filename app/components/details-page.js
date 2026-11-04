@@ -70,7 +70,6 @@ export default class DetailsPageComponent extends Component {
   }
 
   get isDecisionViewOpen() {
-    console.log('detailsContext', this.detailsContext);
     return !!this.detailsContext?.isDecisionViewOpen;
   }
 

@@ -1,3 +1,8 @@
+## v0.36.1 (2026-11-04)
+
+#### :bug: Bug Fix
+* [#75](https://github.com/lblod/frontend-lpdc/pull/75) [LPDC-1311] Some extra tweaks to the three-way-compare flow ([@Windvis](https://github.com/Windvis))
+
 ## v0.36.0 (2026-11-02)
 
 #### :rocket: Enhancement

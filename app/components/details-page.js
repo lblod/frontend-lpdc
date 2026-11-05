@@ -63,9 +63,34 @@ export default class DetailsPageComponent extends Component {
     }
   }
 
+  get detailsContext() {
+    return this.contextService.findParentContextWithContract(
+      'closeDecisionView',
+    );
+  }
+
+  get isDecisionViewOpen() {
+    return !!this.detailsContext?.isDecisionViewOpen;
+  }
+
+  get isFeedbackOpen() {
+    // an open decisions view minimizes the feedback
+    return this.feedbackSidebarExpanded && !this.isDecisionViewOpen;
+  }
+
   @action
   toggleFeedbackSidebar() {
-    this.feedbackSidebarExpanded = !this.feedbackSidebarExpanded;
+    this.feedbackSidebarExpanded = !this.isFeedbackOpen;
+    if (this.feedbackSidebarExpanded) {
+      this.detailsContext?.closeDecisionView();
+    }
+  }
+
+  @action
+  closeDecisionView() {
+    // reset so the feedback doesn't pop open again
+    this.feedbackSidebarExpanded = false;
+    this.detailsContext?.closeDecisionView();
   }
 
   @action

@@ -82,6 +82,12 @@ export default class PublicServiceModel extends Model {
   })
   notificationPreferences;
 
+  @hasMany('source-document', {
+    async: true,
+    inverse: 'instances',
+  })
+  sourceDocuments;
+
   get isSent() {
     return (
       this.status?.uri ===

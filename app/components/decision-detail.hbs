@@ -1,5 +1,8 @@
-{{! template-lint-disable no-inline-styles }}
-<div class="au-u-1-1 au-u-max-width-xsmall" style="background: var(--au-white)">
+<div
+  class="au-u-1-1 au-u-max-width-xsmall au-u-flex au-u-flex--column au-u-height-full"
+  {{!-- TODO: switch to appuniversum background if possible --}}
+  style="background: var(--au-white)" {{! template-lint-disable no-inline-styles }}
+>
   <div
     class="au-u-padding-small au-u-flex au-u-flex--between au-u-flex--vertical-center au-u-padding-bottom-small u-border-divider u-border-divider--bottom"
   >
@@ -11,6 +14,7 @@
       @searchField="title"
       @allowClear={{false}}
       class="au-u-1-1"
+      title={{this.selected.title}}
       as |decision|
     >
       {{decision.title}}
@@ -35,7 +39,7 @@
     </AuButton>
   </div>
 
-  <div class="au-u-padding-small">
+  <div class="au-u-padding-small au-u-padding-bottom-none">
     <div class="au-u-flex au-u-flex--vertical-center au-u-margin-bottom-tiny">
       <AuLabel class="au-u-margin-right-tiny au-u-flex-shrink-0">Zoek op</AuLabel>
       {{! TODO: switch to a codelist of the sections of an instance, but TBD }}
@@ -61,13 +65,15 @@
         placeholder="Zoek in de tekst"
       />
     </div>
+    {{! TODO: add link to open the besluit }}
     <AuPill @skin="warning" @icon="alert-triangle" @size="small">Dit is
       gegenereerde tekst op basis van de geselecteerde documenten. Bekijk de
       officiële brontekst.</AuPill>
+  </div>
 
-    <AuContent @skin="small" class="au-u-margin-top-tiny">
+  <AuBodyContainer @scroll={{true}}>
+    <AuContent @skin="small" class="au-u-padding-small au-u-padding-top-tiny">
       {{this.sanitizedHtml}}
     </AuContent>
-
-  </div>
+  </AuBodyContainer>
 </div>

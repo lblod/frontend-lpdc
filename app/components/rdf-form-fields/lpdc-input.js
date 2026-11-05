@@ -5,9 +5,11 @@ import { NamedNode } from 'rdflib';
 import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
 import { service } from '@ember/service';
 import HeerlijkHelderModal from 'frontend-lpdc/components/heerlijk-helder-modal';
+
 export default class LpdcInputComponent extends SimpleInputFieldComponent {
   inputId = 'input-' + guidFor(this);
   @service modals;
+  @service contextService;
 
   get helpText() {
     return this.isLinkedToConcept
@@ -35,6 +37,12 @@ export default class LpdcInputComponent extends SimpleInputFieldComponent {
     );
   }
 
+  get publicService() {
+    return this.contextService
+      .findParentContextWithContract('getPublicService')
+      ?.getPublicService();
+  }
+
   @action
   heerlijkHelderRewrite(e) {
     e.preventDefault();
@@ -44,7 +52,13 @@ export default class LpdcInputComponent extends SimpleInputFieldComponent {
       this.args.field.path,
       this.value,
     );
-    this.modals.open(HeerlijkHelderModal, {});
+    this.modals.open(HeerlijkHelderModal, {
+      publicService: this.publicService,
+      subject: this.args.sourceNode.value,
+      predicate: this.args.field.path,
+      fieldLabel: this.args.field.label,
+      originalValue: this.value,
+    });
   }
 
   get isLinkedToConcept() {

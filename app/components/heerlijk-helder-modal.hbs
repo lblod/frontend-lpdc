@@ -7,48 +7,78 @@
   <:title>Maak je tekst Heerlijk Helder</:title>
   <:body>
     <div class="au-o-grid">
-      <p>Genereer een Heerlijk Heldere tekst op basis van de originele tekst in
-        het veld. Lees de tekst na en maak aanpassingen waar nodig</p>
-      <div class="au-o-grid__item au-u-1-2 au-u-padding-right-tiny">
-        <form
-          class="au-c-rdf-form three-way-compare-form"
-          aria-label="Concept meest recente revisie"
-        >
-          {{!-- <RdfForm
-            @groupClass="au-o-grid__item"
-            @form={{@data.conceptSnapshotLatestForm.form}}
-            @graphs={{@data.conceptSnapshotLatestForm.graphs}}
-            @sourceNode={{@data.conceptSnapshotLatestForm.sourceNode}}
-            @formStore={{@data.conceptSnapshotLatestForm.formStore}}
-            @show={{true}}
-            @useNewListingLayout={{true}}
-          /> --}}
-        </form>
-      </div>
-      <div class="au-o-grid__item au-u-1-2 au-u-padding-left-tiny">
-        <form
-          class="au-c-rdf-form three-way-compare-form"
-          aria-label="Concept waarop instantie gebaseerd is"
-        >
-          <AuButton @icon="undo" @skin="link-secondary">Herstellen</AuButton>
-          <AuButton
-            @icon="ai-write"
-            @skin="link-secondary"
-          >Herschrijven</AuButton>
-          {{!-- <RdfForm
-            @groupClass="au-o-grid__item"
-            @form={{@data.conceptSnapshotCurrentForm.form}}
-            @graphs={{@data.conceptSnapshotCurrentForm.graphs}}
-            @sourceNode={{@data.conceptSnapshotCurrentForm.sourceNode}}
-            @formStore={{@data.conceptSnapshotCurrentForm.formStore}}
-            @show={{true}}
-            @useNewListingLayout={{true}}
-          /> --}}
-          Krijg je een onverwacht resultaat?
+      <p class="au-o-grid__item">Genereer een Heerlijk Heldere tekst op basis
+        van de originele tekst in het veld. Lees de tekst na en maak
+        aanpassingen waar nodig</p>
+
+      <div class="au-o-grid__item">
+        <div class="heerlijk-helder-compare">
+          {{! row 1: labels }}
+          <div class="au-u-flex au-u-flex--vertical-end">
+            <AuLabel for="hh-original">{{@data.fieldLabel}}</AuLabel>
+          </div>
+          <span></span>
+          <div class="au-u-flex au-u-flex--between au-u-flex--vertical-end">
+            <AuLabel for="hh-generated">
+              {{@data.fieldLabel}}
+              <AuIcon
+                @icon="ai-write"
+                @size="large"
+                class="au-u-margin-left-tiny"
+              />
+            </AuLabel>
+            <div class="au-u-flex au-u-flex--column au-u-flex--vertical-end">
+              <AuButton
+                @icon="undo"
+                @skin="link-secondary"
+              >Herstellen</AuButton>
+              <AuButton
+                @icon="ai-write"
+                @skin="link-secondary"
+                @disabled={{this.loadOrGenerate.isRunning}}
+                {{on "click" this.regenerate}}
+              >Opnieuw proberen</AuButton>
+            </div>
+          </div>
+
+          {{! row 2: original -> generated (grid stretches both to the same height) }}
+          <AuTextarea
+            id="hh-original"
+            @width="block"
+            @disabled={{true}}
+            rows="8"
+            value={{this.originalValue}}
+          />
+          <AuIcon
+            @icon="arrow-right"
+            @size="large"
+            class="au-u-flex-self-center"
+          />
+          {{#if this.loadOrGenerate.isRunning}}
+            <div
+              class="au-c-textarea au-c-textarea--block au-u-flex au-u-flex--center au-u-flex--vertical-center au-u-italic au-u-muted"
+            >
+              <AuLoader @centered={{true}}>
+                Heerlijk Helder aan het werk…
+              </AuLoader>
+            </div>
+          {{else}}
+            <AuTextarea
+              id="hh-generated"
+              @width="block"
+              rows="8"
+              value={{this.generation}}
+              {{on "input" this.updateGeneration}}
+            />
+          {{/if}}
+        </div>
+
+        <p class="au-u-text-right au-u-margin-top-tiny">
+          Is er iets mis met de gegenereerde tekst?<br />
           <AuLinkExternal
             href="mailto:LoketLokaalBestuur@vlaanderen.be?subject=Heerlijk Helder"
           >Meld het</AuLinkExternal>
-        </form>
+        </p>
       </div>
       <div
         class="au-o-grid__item au-u-flex au-u-flex--column au-u-flex--vertical-center"

@@ -79,7 +79,6 @@
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^9.2.1",
     "date-fns": "^2.28.0",
-    "dompurify": "^3.4.17",
     "ember-auto-import": "^2.13.1",
     "ember-basic-dropdown": "^8.11.0",
     "ember-cli": "~6.12.0",

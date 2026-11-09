@@ -74,7 +74,7 @@
 
   <AuBodyContainer @scroll={{true}}>
     <AuContent @skin="small" class="au-u-padding-small au-u-padding-top-tiny">
-      {{this.sanitizedHtml}}
+      {{html-safe this.selected.extractedHtml}}
     </AuContent>
   </AuBodyContainer>
 </div>

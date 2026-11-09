@@ -90,7 +90,11 @@
                   @skin="link"
                   {{on "click" this.openDecisionView}}
                 >{{this.linkedDecisions.length}}
-                  brondocument(en)</AuButton>
+                  {{if
+                    (eq this.linkedDecisions.length 1)
+                    "brondocument"
+                    "brondocumenten"
+                  }}</AuButton>
               {{else}}
                 <AuButton
                   @icon="link"

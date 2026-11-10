@@ -15,6 +15,7 @@ export default class PublicServicesDetailsController extends Controller {
 
   @tracked shouldShowUnlinkWarning = false;
   @tracked formHasUnsavedChanges = false;
+  @tracked isDecisionViewOpen = false;
 
   constructor() {
     super(...arguments);
@@ -24,6 +25,10 @@ export default class PublicServicesDetailsController extends Controller {
   willDestroy() {
     super.willDestroy(...arguments);
     this.contextService.removeParentContext(this);
+  }
+
+  get linkedDecisions() {
+    return this.model.publicService.hasMany('sourceDocuments').value();
   }
 
   get canLinkConcept() {
@@ -102,5 +107,15 @@ export default class PublicServicesDetailsController extends Controller {
     this.modals.open(DecisionLinkingModalComponent, {
       publicService: this.model.publicService,
     });
+  }
+
+  @action
+  openDecisionView() {
+    this.isDecisionViewOpen = true;
+  }
+
+  @action
+  closeDecisionView() {
+    this.isDecisionViewOpen = false;
   }
 }

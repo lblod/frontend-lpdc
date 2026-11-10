@@ -306,10 +306,10 @@
 
 <SidebarContainer
   @scroll={{true}}
-  @size="large"
-  @collapsed={{not this.feedbackSidebarExpanded}}
+  @size={{if this.isDecisionViewOpen "large" "medium"}}
+  @collapsed={{not (or this.isFeedbackOpen this.isDecisionViewOpen)}}
   @reverse={{true}}
-  @hidden={{not this.hasFeedback}}
+  @hidden={{not (or this.hasFeedback this.isDecisionViewOpen)}}
 >
   <:content>
     <AuBodyContainer @scroll={{true}}>
@@ -357,59 +357,81 @@
     </AuBodyContainer>
   </:content>
   <:sidebar>
-    {{#if this.feedbackSidebarExpanded}}
-      <div class="au-u-padding-top-small">
-        <div
-          class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small u-border-divider u-border-divider--bottom"
-        >
-          <AuButton
-            @skin="link-secondary"
-            @size="large"
-            class="au-u-flex-shrink-0"
-            {{on "click" this.toggleFeedbackSidebar}}
+    <div class="au-u-flex au-u-height-full">
+      {{#if this.isFeedbackOpen}}
+        <div class="au-u-padding-top-small">
+          <div
+            class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small u-border-divider u-border-divider--bottom"
           >
-            <AuIcon @size="large" @icon="nav-right" />
-          </AuButton>
-          <div class="au-u-margin-right-small">
-            <div class="au-u-flex au-u-flex--between">
-              <AuHeading @skin="3" @level="2">Feedback</AuHeading>
-              <AuToggleSwitch
-                @checked={{this.includeFeedbackHistory}}
-                @onChange={{this.toggleIncludeFeedbackHistory}}
-              >
-                Inclusief historiek
-              </AuToggleSwitch>
+            <AuButton
+              @skin="link-secondary"
+              @size="large"
+              class="au-u-flex-shrink-0"
+              {{on "click" this.toggleFeedbackSidebar}}
+            >
+              <AuIcon @size="large" @icon="nav-right" />
+            </AuButton>
+            <div class="au-u-margin-right-small">
+              <div class="au-u-flex au-u-flex--between">
+                <AuHeading @skin="3" @level="2">Feedback</AuHeading>
+                <AuToggleSwitch
+                  @checked={{this.includeFeedbackHistory}}
+                  @onChange={{this.toggleIncludeFeedbackHistory}}
+                >
+                  Inclusief historiek
+                </AuToggleSwitch>
+              </div>
+              <p class="au-u-para-small">Verwerk de gekregen feedback door je
+                product te bewerken of door de feedback te weigeren. Verzend
+                daarna je antwoord.
+              </p>
             </div>
-            <p class="au-u-para-small">Verwerk de gekregen feedback door je
-              product te bewerken of door de feedback te weigeren. Verzend
-              daarna je antwoord.
-            </p>
           </div>
+          {{#if this.loadFeedback.isRunning}}
+            <p class="au-u-text-center au-u-margin">Feedback aan het laden</p>
+          {{else if this.loadFeedback.lastSuccessful.value}}
+            {{#each
+              this.loadFeedback.lastSuccessful.value
+              as |feedbackItem index|
+            }}
+              <Feedback @feedback={{feedbackItem}} @index={{index}} />
+            {{/each}}
+          {{else}}
+            <p class="au-u-text-center au-u-margin">Geen feedback beschikbaar</p>
+          {{/if}}
         </div>
-        {{#if this.loadFeedback.isRunning}}
-          <p class="au-u-text-center au-u-margin">Feedback aan het laden</p>
-        {{else if this.loadFeedback.lastSuccessful.value}}
-          {{#each
-            this.loadFeedback.lastSuccessful.value
-            as |feedbackItem index|
-          }}
-            <Feedback @feedback={{feedbackItem}} @index={{index}} />
-          {{/each}}
-        {{else}}
-          <p class="au-u-text-center au-u-margin">Geen feedback beschikbaar</p>
-        {{/if}}
-      </div>
-    {{else}}
-      <div class="au-u-padding-top">
-        <AuButton
-          @skin="link-secondary"
-          @size="large"
-          class="au-u-flex-shrink-0"
-          {{on "click" this.toggleFeedbackSidebar}}
+      {{else if this.hasFeedback}}
+        <div
+          class="au-u-padding-top
+            {{if
+              this.isDecisionViewOpen
+              'u-border-divider u-border-divider--right'
+            }}"
         >
-          <AuIcon @size="large" @icon="nav-left" />
-        </AuButton>
-      </div>
-    {{/if}}
+          <AuTooltip @placement="bottom" as |tooltip|>
+            <AuButton
+              @skin="link-secondary"
+              @size="large"
+              class="au-u-flex-shrink-0"
+              {{tooltip.target}}
+              {{on "click" this.toggleFeedbackSidebar}}
+            >
+              <AuIcon @size="large" @icon="nav-left" />
+            </AuButton>
+            <tooltip.Content>
+              Feedback beschikbaar
+            </tooltip.Content>
+          </AuTooltip>
+        </div>
+      {{/if}}
+
+      {{#if this.isDecisionViewOpen}}
+        <DecisionDetail
+          @publicService={{@publicService}}
+          @decisions={{this.detailsContext.linkedDecisions}}
+          @onClose={{this.closeDecisionView}}
+        />
+      {{/if}}
+    </div>
   </:sidebar>
 </SidebarContainer>

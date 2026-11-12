@@ -137,7 +137,6 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.58.1",
     "validator": "^13.15.15",
-    "dompurify": "^3.4.17",
     "webpack": "^5.106.0"
   },
   "engines": {

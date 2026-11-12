@@ -34,7 +34,6 @@ export default class HeerlijkHelderModalComponent extends Component {
         this.subject,
         this.predicate,
       );
-      console.log('act', this.activities);
       this.firstOriginal =
         this.activities[0]?.originalText ?? this.originalValue;
 

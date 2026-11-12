@@ -31,12 +31,14 @@
               <AuButton
                 @icon="undo"
                 @skin="link-secondary"
+                @alert="true"
+                {{on "click" this.revertGeneration}}
               >Herstellen</AuButton>
               <AuButton
                 @icon="ai-write"
-                @skin="link-secondary"
-                @disabled={{this.loadOrGenerate.isRunning}}
-                {{on "click" this.regenerate}}
+                @skin="link"
+                @disabled={{this.isBusy}}
+                {{on "click" (perform this.generate)}}
               >Opnieuw proberen</AuButton>
             </div>
           </div>
@@ -47,14 +49,14 @@
             @width="block"
             @disabled={{true}}
             rows="8"
-            value={{this.originalValue}}
+            value={{this.firstOriginal}}
           />
           <AuIcon
             @icon="arrow-right"
             @size="large"
             class="au-u-flex-self-center"
           />
-          {{#if this.loadOrGenerate.isRunning}}
+          {{#if this.isBusy}}
             <div
               class="au-c-textarea au-c-textarea--block au-u-flex au-u-flex--center au-u-flex--vertical-center au-u-italic au-u-muted"
             >
@@ -62,13 +64,20 @@
                 Heerlijk Helder aan het werk…
               </AuLoader>
             </div>
+          {{else if this.error}}
+            <AuAlert @icon="cross" @skin="error" @size="small">
+              <AuContent @skin="small">
+                Er ging iets mis bij het genereren van de tekst. Probeer het
+                opnieuw.
+              </AuContent>
+            </AuAlert>
           {{else}}
             <AuTextarea
               id="hh-generated"
               @width="block"
               rows="8"
-              value={{this.generation}}
-              {{on "input" this.updateGeneration}}
+              value={{this.draft}}
+              {{on "input" this.updateDraft}}
             />
           {{/if}}
         </div>
@@ -92,7 +101,7 @@
             {{on "click" (fn this.rateRewrite true)}}
           >
             <VoteThumbsUpIcon
-              @fill={{if (eq this.isImproved true) "#0055CC"}}
+              @fill={{if (eq this.activity.isImproved true) "#0055CC"}}
             />
           </AuButton>
           <AuButton
@@ -101,7 +110,7 @@
             {{on "click" (fn this.rateRewrite false)}}
           >
             <VoteThumbsDownIcon
-              @fill={{if (eq this.isImproved false) "#0055CC"}}
+              @fill={{if (eq this.activity.isImproved false) "#0055CC"}}
             />
           </AuButton>
         </AuButtonGroup>
@@ -111,7 +120,11 @@
   </:body>
   <:footer>
     <AuButtonGroup>
-      <AuButton {{on "click" this.save}}>
+      <AuButton
+        @disabled={{not this.canSave}}
+        @loading={{this.save.isRunning}}
+        {{on "click" (perform this.save)}}
+      >
         Opslaan
       </AuButton>
       <AuButton @skin="secondary" {{on "click" this.close}}>

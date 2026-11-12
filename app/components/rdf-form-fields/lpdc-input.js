@@ -44,21 +44,19 @@ export default class LpdcInputComponent extends SimpleInputFieldComponent {
   }
 
   @action
-  heerlijkHelderRewrite(e) {
+  async heerlijkHelderRewrite(e) {
     e.preventDefault();
-    console.log(
-      'Heerlijk helder rewrite',
-      this.args.sourceNode.value,
-      this.args.field.path,
-      this.value,
-    );
-    this.modals.open(HeerlijkHelderModal, {
+    const result = await this.modals.open(HeerlijkHelderModal, {
       publicService: this.publicService,
       subject: this.args.sourceNode.value,
       predicate: this.args.field.path,
       fieldLabel: this.args.field.label,
       originalValue: this.value,
     });
+
+    if (result?.text !== undefined) {
+      this.updateValueInStore([result.text.trim()]);
+    }
   }
 
   get isLinkedToConcept() {

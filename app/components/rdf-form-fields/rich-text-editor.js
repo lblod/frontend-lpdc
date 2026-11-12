@@ -50,7 +50,6 @@ import { NamedNode } from 'rdflib';
 import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
 import { service } from '@ember/service';
 import HeerlijkHelderModal from 'frontend-lpdc/components/heerlijk-helder-modal';
-import DOMPurify from 'dompurify';
 
 export const linkParser = defaultLinkParser({ defaultCountryCode: 'BE' });
 
@@ -184,22 +183,20 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
   }
 
   @action
-  heerlijkHelderRewrite(e) {
+  async heerlijkHelderRewrite(e) {
     e.preventDefault();
-    console.log(
-      'Heerlijk helder rewrite',
-      this.args.sourceNode.value,
-      this.args.field.path,
-      this.value,
-    );
-    const sanitizedValue = DOMPurify.sanitize(this.value, { ALLOWED_TAGS: [] });
-    this.modals.open(HeerlijkHelderModal, {
+    const result = await this.modals.open(HeerlijkHelderModal, {
       publicService: this.publicService,
       subject: this.args.sourceNode.value,
       predicate: this.args.field.path,
       fieldLabel: this.args.field.label,
-      originalValue: sanitizedValue,
+      originalValue: this.value,
     });
+
+    if (result?.text !== undefined) {
+      this.updateValueInStore(result.text);
+      this.setEditorValue();
+    }
   }
 
   @action

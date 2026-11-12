@@ -185,6 +185,7 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
   @action
   async heerlijkHelderRewrite(e) {
     e.preventDefault();
+    console.log('currnet?', this.value);
     const result = await this.modals.open(HeerlijkHelderModal, {
       publicService: this.publicService,
       subject: this.args.sourceNode.value,

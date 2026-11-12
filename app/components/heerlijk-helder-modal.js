@@ -10,6 +10,7 @@ export default class HeerlijkHelderModalComponent extends Component {
 
   @tracked firstOriginal; // text before any generation(s), shown on the left
   @tracked activity; // the current generation-activity
+  @tracked activities = [];
   @tracked draft; // text on the right, editable by the user
   @tracked error = null;
 
@@ -28,12 +29,14 @@ export default class HeerlijkHelderModalComponent extends Component {
   loadOrGenerate = task(async () => {
     this.error = null;
     try {
-      const activities = await this.heerlijkHelder.getGenerationActivities(
+      this.activities = await this.heerlijkHelder.getGenerationActivities(
         this.publicService,
         this.subject,
         this.predicate,
       );
-      this.firstOriginal = activities[0]?.originalText ?? this.originalValue;
+      console.log('act', this.activities);
+      this.firstOriginal =
+        this.activities[0]?.originalText ?? this.originalValue;
 
       // 1. a generation is still running for this field
       const running = this.heerlijkHelder.pendingGeneration(this.key);
@@ -44,8 +47,8 @@ export default class HeerlijkHelderModalComponent extends Component {
 
       // 2. the latest used attempt, otherwise the latest attempt
       const usedOrLatestGeneration =
-        activities.findLast((a) => a.status === STATUS.GEBRUIKT) ??
-        activities.at(-1);
+        this.activities.findLast((a) => a.status === STATUS.GEBRUIKT) ??
+        this.activities.at(-1);
       if (usedOrLatestGeneration) {
         this.show(usedOrLatestGeneration);
         return;
@@ -68,7 +71,7 @@ export default class HeerlijkHelderModalComponent extends Component {
           type: 'generation-activities',
           attributes: {
             // retries rewrite the same original, not the text in the field
-            'original-text': this.activity?.originalText ?? this.originalValue,
+            'original-text': this.originalValue,
             'related-subject': this.subject,
             'related-field': this.predicate,
           },
@@ -79,6 +82,7 @@ export default class HeerlijkHelderModalComponent extends Component {
           },
         },
       });
+      this.activities = [...this.activities, activity];
       this.show(activity);
     } catch (error) {
       console.error('Error generating rewrite:', error);
@@ -99,6 +103,10 @@ export default class HeerlijkHelderModalComponent extends Component {
     return (this.draft ?? '').trim() !== (this.originalValue ?? '').trim();
   }
 
+  get isEdited() {
+    return this.draft.trim() !== this.activity.generatedText.trim();
+  }
+
   get canSave() {
     return (
       !this.isBusy &&
@@ -108,6 +116,21 @@ export default class HeerlijkHelderModalComponent extends Component {
       this.draft?.trim() &&
       this.hasChanges
     );
+  }
+
+  get canRevert() {
+    return (
+      !this.isBusy &&
+      !this.save.isRunning &&
+      (this.isEdited || this.previousActivity)
+    );
+  }
+
+  get previousActivity() {
+    if (!this.activity) return null;
+    return this.activities
+      .filter((a) => a.attemptNumber < this.activity.attemptNumber)
+      .at(-1);
   }
 
   @action
@@ -128,7 +151,13 @@ export default class HeerlijkHelderModalComponent extends Component {
   }
 
   @action
-  revertGeneration() {}
+  revertGeneration() {
+    if (this.isEdited) {
+      this.draft = this.activity.generatedText;
+    } else if (this.previousActivity) {
+      this.show(this.previousActivity);
+    }
+  }
 
   @action
   rateRewrite(value) {

@@ -108,6 +108,7 @@
                       @icon="ai-write"
                       @hideText={{true}}
                       @size="large"
+                      @disabled={{not this.value}}
                       class="editor-with-action__action-button"
                       {{on "click" this.heerlijkHelderRewrite}}
                       {{tooltip.target}}

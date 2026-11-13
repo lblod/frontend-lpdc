@@ -13,7 +13,6 @@
 
       <div class="au-o-grid__item">
         <div class="heerlijk-helder-compare">
-          {{! row 1: labels }}
           <div class="au-u-flex au-u-flex--vertical-end">
             <AuLabel for="hh-original">{{@data.fieldLabel}}</AuLabel>
           </div>
@@ -44,14 +43,24 @@
             </div>
           </div>
 
-          {{! row 2: original -> generated (grid stretches both to the same height) }}
-          <AuTextarea
-            id="hh-original"
-            @width="block"
-            @disabled={{true}}
-            rows="8"
-            value={{this.firstOriginal}}
-          />
+          {{#if @data.editor}}
+            <AuContent
+              @skin="tiny"
+              id="hh-original"
+              class="rich-text-editor-content"
+            >
+              {{! template-lint-disable no-triple-curlies}}
+              {{{this.firstOriginal}}}
+            </AuContent>
+          {{else}}
+            <AuTextarea
+              id="hh-original"
+              @width="block"
+              @disabled={{true}}
+              rows="8"
+              value={{this.firstOriginal}}
+            />
+          {{/if}}
           <AuIcon
             @icon="arrow-right"
             @size="large"
@@ -72,6 +81,70 @@
                 opnieuw.
               </AuContent>
             </AuAlert>
+          {{else if @data.editor}}
+            <div
+              id="hh-generated"
+              class="rich-text-editor"
+              {{on "input" this.updateDraftFromEditor}}
+              {{on "focusout" this.updateDraftFromEditor}}
+            >
+              <EditorContainer>
+                <:top>
+                  <ResponsiveToolbar>
+                    <:main as |Tb|>
+                      <Tb.Group>
+                        <Plugins::Heading::HeadingMenu
+                          @controller={{this.editorController}}
+                        />
+                      </Tb.Group>
+                      <Tb.Group>
+                        <Plugins::TextStyle::Bold
+                          @controller={{this.editorController}}
+                        />
+                        <Plugins::TextStyle::Italic
+                          @controller={{this.editorController}}
+                        />
+                        <RdfFormFields::RichTextEditor::ExtraFormattingOptions
+                          @controller={{this.editorController}}
+                        />
+                      </Tb.Group>
+                      <Tb.Group>
+                        <Plugins::List::Unordered
+                          @controller={{this.editorController}}
+                        />
+                        <Plugins::List::Ordered
+                          @controller={{this.editorController}}
+                        />
+                      </Tb.Group>
+                      <Tb.Group>
+                        <Plugins::Link::LinkMenu
+                          @controller={{this.editorController}}
+                        />
+                      </Tb.Group>
+                      <Tb.Group>
+                        <Plugins::Table::TableMenu
+                          @controller={{this.editorController}}
+                        />
+                        <Plugins::Table::Color
+                          @controller={{this.editorController}}
+                        />
+                        <Plugins::Table::VerticalAlign
+                          @controller={{this.editorController}}
+                        />
+                      </Tb.Group>
+                    </:main>
+                  </ResponsiveToolbar>
+                </:top>
+                <:default>
+                  <Editor
+                    @schema={{@data.editor.schema}}
+                    @plugins={{@data.editor.plugins}}
+                    @nodeViews={{@data.editor.nodeViews}}
+                    @rdfaEditorInit={{this.initEditor}}
+                  />
+                </:default>
+              </EditorContainer>
+            </div>
           {{else}}
             <AuTextarea
               id="hh-generated"
@@ -86,7 +159,7 @@
         <p class="au-u-text-right au-u-margin-top-tiny">
           Is er iets mis met de gegenereerde tekst?<br />
           <AuLinkExternal
-            href="mailto:LoketLokaalBestuur@vlaanderen.be?subject=Heerlijk Helder"
+            href="mailto:LoketLokaalBestuur@vlaanderen.be?subject=Heerlijk%20Helder"
           >Meld het</AuLinkExternal>
         </p>
       </div>

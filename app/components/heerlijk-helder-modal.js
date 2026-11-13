@@ -13,6 +13,7 @@ export default class HeerlijkHelderModalComponent extends Component {
   @tracked activities = [];
   @tracked draft; // text on the right, editable by the user
   @tracked error = null;
+  @tracked editorController; // only for rich text fields
 
   publicService = this.args.data.publicService;
   subject = this.args.data.subject;
@@ -69,7 +70,6 @@ export default class HeerlijkHelderModalComponent extends Component {
         data: {
           type: 'generation-activities',
           attributes: {
-            // retries rewrite the same original, not the text in the field
             'original-text': this.originalValue,
             'related-subject': this.subject,
             'related-field': this.predicate,
@@ -121,6 +121,7 @@ export default class HeerlijkHelderModalComponent extends Component {
     return (
       !this.isBusy &&
       !this.save.isRunning &&
+      !this.error &&
       (this.isEdited || this.previousActivity)
     );
   }
@@ -145,6 +146,22 @@ export default class HeerlijkHelderModalComponent extends Component {
   });
 
   @action
+  initEditor(controller) {
+    // the editor is rendered again after every generation, with the new draft
+    this.editorController = controller;
+    this.loadIntoEditor();
+  }
+
+  loadIntoEditor() {
+    this.editorController.initialize(this.draft ?? '', { shouldFocus: false });
+  }
+
+  @action
+  updateDraftFromEditor() {
+    this.draft = this.editorController.htmlContent;
+  }
+
+  @action
   updateDraft(event) {
     this.draft = event.target.value;
   }
@@ -156,6 +173,7 @@ export default class HeerlijkHelderModalComponent extends Component {
     } else if (this.previousActivity) {
       this.show(this.previousActivity);
     }
+    if (this.editorController) this.loadIntoEditor();
   }
 
   @action

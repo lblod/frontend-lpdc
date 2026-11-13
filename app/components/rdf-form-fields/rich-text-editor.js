@@ -191,6 +191,11 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
       predicate: this.args.field.path,
       fieldLabel: this.args.field.label,
       originalValue: this.value,
+      editor: {
+        schema: this.schema,
+        plugins: this.plugins,
+        nodeViews: this.nodeViews,
+      },
     });
 
     if (result?.text !== undefined) {

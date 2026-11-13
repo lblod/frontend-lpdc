@@ -158,7 +158,8 @@ export default class HeerlijkHelderModalComponent extends Component {
 
   @action
   updateDraftFromEditor() {
-    this.draft = this.editorController.htmlContent;
+    if (this.editorController?.isDirty)
+      this.draft = this.editorController.htmlContent;
   }
 
   @action

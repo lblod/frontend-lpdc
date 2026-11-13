@@ -30,7 +30,7 @@
               <AuButton
                 @icon="undo"
                 @skin="link-secondary"
-                @alert="true"
+                @alert={{true}}
                 @disabled={{not this.canRevert}}
                 {{on "click" this.revertGeneration}}
               >Herstellen</AuButton>

@@ -204,6 +204,13 @@ div.au-u-margin-bottom-small:has(.address-form) {
   border-bottom-width: var(--divider-thickness);
 }
 
+// Heerlijk Helder modal: original | arrow | generated
+.heerlijk-helder-compare {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 0.6rem 1.2rem;
+}
+
 $au-pill-color-feedback: #207478 !default;
 $au-pill-background-color-feedback: #e5f2f3 !default;
 $au-pill-border-color-feedback: #2da4aa !default;

@@ -118,4 +118,8 @@ export default class PublicServicesDetailsController extends Controller {
   closeDecisionView() {
     this.isDecisionViewOpen = false;
   }
+
+  getPublicService() {
+    return this.model.publicService;
+  }
 }

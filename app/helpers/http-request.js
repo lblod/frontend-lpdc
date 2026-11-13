@@ -22,8 +22,8 @@ export class HttpRequest {
       method: 'PUT',
       body: JSON.stringify(body),
       headers: {
-        ...headers,
         'Content-Type': 'application/json; charset=UTF-8',
+        ...headers,
       },
     });
     if (!response.ok) {
@@ -41,8 +41,8 @@ export class HttpRequest {
       method: 'POST',
       body: JSON.stringify(body),
       headers: {
-        ...headers,
         'Content-Type': 'application/json; charset=UTF-8',
+        ...headers,
       },
     });
     if (!response.ok) {

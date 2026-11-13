@@ -14,7 +14,7 @@
       @searchEnabled={{true}}
       @searchField="title"
       @allowClear={{false}}
-      class="au-u-1-1"
+      class="au-u-1-1 u-truncate"
       title={{this.selected.title}}
       as |decision|
     >
@@ -50,7 +50,8 @@
         @onChange={{this.selectDecision}}
         @searchEnabled={{true}}
         @searchField="title"
-        class="au-u-flex-grow"
+        class="au-u-1-1 u-truncate"
+        title={{this.selected.title}}
         as |instanceSection|
       >
         {{instanceSection.title}}

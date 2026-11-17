@@ -1,7 +1,8 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { tracked } from '@glimmer/tracking';
-import { dropTask } from 'ember-concurrency';
+import { dropTask, restartableTask } from 'ember-concurrency';
+import { FEEDBACK_STATUS } from 'frontend-lpdc/models/feedback';
 import { hasConcept } from 'frontend-lpdc/models/public-service';
 import { service } from '@ember/service';
 import DecisionLinkingModalComponent from 'frontend-lpdc/components/decision-linking-modal';
@@ -16,6 +17,9 @@ export default class PublicServicesDetailsController extends Controller {
   @tracked shouldShowUnlinkWarning = false;
   @tracked formHasUnsavedChanges = false;
   @tracked isDecisionViewOpen = false;
+  @tracked feedbackSidebarExpanded = false;
+  @tracked hasFeedback = false;
+  @tracked includeFeedbackHistory = true;
 
   constructor() {
     super(...arguments);
@@ -29,6 +33,11 @@ export default class PublicServicesDetailsController extends Controller {
 
   get linkedDecisions() {
     return this.model.publicService.hasMany('sourceDocuments').value();
+  }
+
+  get isFeedbackOpen() {
+    // an open decisions view minimizes the feedback
+    return this.feedbackSidebarExpanded && !this.isDecisionViewOpen;
   }
 
   get canLinkConcept() {
@@ -116,6 +125,61 @@ export default class PublicServicesDetailsController extends Controller {
 
   @action
   closeDecisionView() {
+    this.feedbackSidebarExpanded = false;
     this.isDecisionViewOpen = false;
+  }
+
+  @action
+  toggleFeedbackSidebar() {
+    this.feedbackSidebarExpanded = !this.isFeedbackOpen;
+    if (this.feedbackSidebarExpanded) {
+      this.isDecisionViewOpen = false;
+    }
+  }
+
+  @action
+  toggleIncludeFeedbackHistory() {
+    this.includeFeedbackHistory = !this.includeFeedbackHistory;
+    this.loadFeedback.perform();
+  }
+
+  resetSidebar() {
+    const { feedbackAvailable } = this.model.publicService;
+
+    this.isDecisionViewOpen = false;
+    this.feedbackSidebarExpanded = feedbackAvailable;
+    this.hasFeedback = feedbackAvailable;
+    this.includeFeedbackHistory = true;
+    this.loadFeedback.perform();
+  }
+
+  loadFeedback = restartableTask(async () => {
+    const result = await this.store.query('feedback', {
+      'filter[instance][:uri:]': this.model.publicService.uri,
+      include:
+        'question,question.from,question.to,answer,answer.from,answer.to,receiver-bestuurseenheid',
+      sort: '-created-at',
+      page: { size: 1000 }, //TODO: refactor to use pagination if needed
+    });
+    // Filter out feedback that are 'ingetrokken' from IPDC
+    const allFeedback = result.filter(
+      (f) =>
+        f.ipdcStatus !==
+        'https://ipdc.vlaanderen.be/ns/FeedbackStatus#INGETROKKEN',
+    );
+    this.hasFeedback = allFeedback.length > 0;
+
+    if (this.includeFeedbackHistory) return allFeedback;
+
+    return allFeedback.filter((feedback) => {
+      return (
+        feedback.status !== FEEDBACK_STATUS.VERWERKT &&
+        feedback.status !== FEEDBACK_STATUS.VERZONDEN
+      );
+    });
+  });
+
+  getPublicService() {
+    return this.model.publicService;
   }
 }

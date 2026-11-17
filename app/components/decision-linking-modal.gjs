@@ -305,10 +305,20 @@ class UploadDecisionStep extends Component {
         file: downloadedFiles[i],
       })),
     ];
-    await Promise.all(
+    const sourceDocumentRecords = await Promise.all(
       sourceDocuments.map((sourceDocument) =>
-        this.store.createRecord('source-document', sourceDocument).save(),
+        this.store
+          .createRecord('source-document', {
+            ...sourceDocument,
+            instances: [this.args.publicService],
+          })
+          .save(),
       ),
+    );
+    console.log(
+      'created the source documents',
+      sourceDocumentRecords,
+      this.args.publicService,
     );
 
     const inputContainer = this.store.createRecord('data-container', {
@@ -473,7 +483,7 @@ export default class DecisionLinkingModalComponent extends Component {
           'Besluit upload',
           { timeOut: 5000 },
         );
-        // TODO: reload the decisions in the table so the new one shows up
+        await this.publicService.sourceDocuments.reload();
         return;
       } else if (job.status === JOB_STATUS.FAILED) {
         this.toaster.error(
@@ -493,6 +503,7 @@ export default class DecisionLinkingModalComponent extends Component {
         @onBack={{this.showLinkDecisions}}
         @onSaved={{this.handleDocumentAdded}}
         @onClose={{@close}}
+        @publicService={{this.publicService}}
       />
     {{else}}
       <LinkDecisionStep

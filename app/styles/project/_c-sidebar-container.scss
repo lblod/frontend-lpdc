@@ -22,10 +22,18 @@
   }
 }
 
-.au-c-sidebar-container--large {
+.au-c-sidebar-container--medium {
   .au-c-sidebar-container__sidebar {
     @include mq(medium) {
       flex-basis: 40rem;
+    }
+  }
+}
+
+.au-c-sidebar-container--large {
+  .au-c-sidebar-container__sidebar {
+    @include mq(medium) {
+      flex-basis: 50rem;
     }
   }
 }

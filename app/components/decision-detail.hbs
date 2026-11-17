@@ -1,0 +1,80 @@
+<div
+  class="au-u-1-1 au-u-max-width-xsmall au-u-flex au-u-flex--column au-u-height-full"
+  {{! TODO: switch to appuniversum background if possible }}
+  style="background: var(--au-white)"
+  {{! template-lint-disable no-inline-styles }}
+>
+  <div
+    class="au-u-padding-small au-u-flex au-u-flex--between au-u-flex--vertical-center au-u-padding-bottom-small u-border-divider u-border-divider--bottom"
+  >
+    <PowerSelect
+      @options={{@decisions}}
+      @selected={{this.selected}}
+      @onChange={{this.selectDecision}}
+      @searchEnabled={{true}}
+      @searchField="title"
+      @allowClear={{false}}
+      class="au-u-1-1"
+      title={{this.selected.title}}
+      as |decision|
+    >
+      {{decision.title}}
+    </PowerSelect>
+
+    <AuButton
+      @icon="pencil"
+      @skin="link"
+      class="au-u-flex-shrink-0"
+      {{on "click" this.linkDecision}}
+    >Bewerken</AuButton>
+
+    <AuButton
+      @skin="link-secondary"
+      @size="large"
+      @icon="cross"
+      @hideText={{true}}
+      class="au-u-flex-shrink-0"
+      {{on "click" @onClose}}
+    >
+      Sluiten
+    </AuButton>
+  </div>
+
+  <div class="au-u-padding-small au-u-padding-bottom-none">
+    <div class="au-u-flex au-u-flex--vertical-center au-u-margin-bottom-tiny">
+      <AuLabel class="au-u-margin-right-tiny au-u-flex-shrink-0">Zoek op</AuLabel>
+      {{! TODO: switch to a codelist of the sections of an instance, but TBD }}
+      <PowerSelect
+        @options={{@decisions}}
+        @selected={{this.selected}}
+        @onChange={{this.selectDecision}}
+        @searchEnabled={{true}}
+        @searchField="title"
+        class="au-u-flex-grow"
+        as |instanceSection|
+      >
+        {{instanceSection.title}}
+      </PowerSelect>
+    </div>
+
+    <div class="au-u-flex au-u-flex--vertical-center au-u-margin-bottom-small">
+      {{! TODO: mock search for now }}
+      <AuInput
+        @width="block"
+        @icon="search"
+        @iconAlignment="right"
+        placeholder="Zoek in de tekst"
+      />
+    </div>
+    {{! TODO: add link to open the besluit }}
+    <AuPill @skin="warning" @icon="alert-triangle" @size="small">Dit is
+      gegenereerde tekst op basis van de geselecteerde documenten. Bekijk de
+      officiële brontekst.</AuPill>
+  </div>
+
+  <AuBodyContainer @scroll={{true}}>
+    <AuContent @skin="small" class="au-u-padding-small au-u-padding-top-tiny">
+      {{html-safe this.selected.extractedHtml}}
+    </AuContent>
+  </AuBodyContainer>
+</div>

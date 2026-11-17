@@ -5,6 +5,7 @@ import { eq } from 'ember-truth-helpers';
       {{if @reverse 'au-c-sidebar-container--reverse'}}
       {{if @collapsed 'au-c-sidebar-container--collapsed'}}
       {{if @hidden 'au-c-sidebar-container--hidden'}}
+      {{if (eq @size 'medium') 'au-c-sidebar-container--medium'}}
       {{if (eq @size 'large') 'au-c-sidebar-container--large'}}"
     ...attributes
   >

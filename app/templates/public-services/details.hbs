@@ -70,20 +70,39 @@
           </:content>
         </Data>
         <Data>
-          <:title>Relevante besluiten</:title>
+          <:title>
+            <span class="au-u-flex au-u-flex--between">
+              Relevante brondocumenten
+              {{#if this.linkedDecisions.length}}
+                <AuButton
+                  @icon="pencil"
+                  @skin="link"
+                  class="au-u-flex-shrink-0"
+                  {{on "click" this.linkDecision}}
+                >Bewerken</AuButton>
+              {{/if}}
+            </span>
+          </:title>
           <:content>
-            <AuButton
-              @icon="link"
-              @skin="link"
-              {{on "click" this.linkDecision}}
-            >Koppelen</AuButton>
-            {{! TODO: show the actual linked besluiten }}
-            {{!-- {{#each @model.publicService.decisions as |decision|}}
-              <AuButton
-                @skin="link"
-                {{on "click" (fn this.openDecision decision)}}
-              >{{decision.title}}</AuButton>
-            {{/each}} --}}
+            <div class="au-u-flex au-u-flex--column">
+              {{#if this.linkedDecisions.length}}
+                <AuButton
+                  @skin="link"
+                  {{on "click" this.openDecisionView}}
+                >{{this.linkedDecisions.length}}
+                  {{if
+                    (eq this.linkedDecisions.length 1)
+                    "brondocument"
+                    "brondocumenten"
+                  }}</AuButton>
+              {{else}}
+                <AuButton
+                  @icon="link"
+                  @skin="link"
+                  {{on "click" this.linkDecision}}
+                >Koppelen</AuButton>
+              {{/if}}
+            </div>
           </:content>
         </Data>
         <Data>
@@ -197,6 +216,91 @@
   </:sidebar>
 
   <:content>
-    {{outlet}}
+    <SidebarContainer
+      @size={{if this.isDecisionViewOpen "large" "medium"}}
+      @collapsed={{not (or this.isFeedbackOpen this.isDecisionViewOpen)}}
+      @reverse={{true}}
+      @hidden={{not (or this.hasFeedback this.isDecisionViewOpen)}}
+    >
+      <:content>
+        {{outlet}}
+      </:content>
+      <:sidebar>
+        <div class="au-u-flex au-u-height-full">
+          {{#if this.isFeedbackOpen}}
+            <div class="au-u-padding-top-small">
+              <div
+                class="au-u-flex au-u-flex--vertical-baseline au-u-padding-bottom-small u-border-divider u-border-divider--bottom"
+              >
+                <AuButton
+                  @skin="link-secondary"
+                  @size="large"
+                  class="au-u-flex-shrink-0"
+                  {{on "click" this.toggleFeedbackSidebar}}
+                >
+                  <AuIcon @size="large" @icon="nav-right" />
+                </AuButton>
+                <div class="au-u-margin-right-small">
+                  <div class="au-u-flex au-u-flex--between">
+                    <AuHeading @skin="3" @level="2">Feedback</AuHeading>
+                    <AuToggleSwitch
+                      @checked={{this.includeFeedbackHistory}}
+                      @onChange={{this.toggleIncludeFeedbackHistory}}
+                    >
+                      Inclusief historiek
+                    </AuToggleSwitch>
+                  </div>
+                  <p class="au-u-para-small">Verwerk de gekregen feedback door
+                    je product te bewerken of door de feedback te weigeren.
+                    Verzend daarna je antwoord.
+                  </p>
+                </div>
+              </div>
+              {{#if this.loadFeedback.isRunning}}
+                <p class="au-u-text-center au-u-margin">Feedback aan het laden</p>
+              {{else if this.loadFeedback.last.value}}
+                {{#each this.loadFeedback.last.value as |feedbackItem index|}}
+                  <Feedback @feedback={{feedbackItem}} @index={{index}} />
+                {{/each}}
+              {{else}}
+                <p class="au-u-text-center au-u-margin">Geen feedback
+                  beschikbaar</p>
+              {{/if}}
+            </div>
+          {{else if this.hasFeedback}}
+            <div
+              class="au-u-padding-top
+                {{if
+                  this.isDecisionViewOpen
+                  'u-border-divider u-border-divider--right'
+                }}"
+            >
+              <AuTooltip @placement="bottom" as |tooltip|>
+                <AuButton
+                  @skin="link-secondary"
+                  @size="large"
+                  class="au-u-flex-shrink-0"
+                  {{tooltip.target}}
+                  {{on "click" this.toggleFeedbackSidebar}}
+                >
+                  <AuIcon @size="large" @icon="nav-left" />
+                </AuButton>
+                <tooltip.Content>
+                  Feedback beschikbaar
+                </tooltip.Content>
+              </AuTooltip>
+            </div>
+          {{/if}}
+
+          {{#if this.isDecisionViewOpen}}
+            <DecisionDetail
+              @publicService={{@model.publicService}}
+              @decisions={{this.linkedDecisions}}
+              @onClose={{this.closeDecisionView}}
+            />
+          {{/if}}
+        </div>
+      </:sidebar>
+    </SidebarContainer>
   </:content>
 </SidebarContainer>

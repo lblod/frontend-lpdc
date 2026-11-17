@@ -29,7 +29,6 @@ export default class LinkStatusPill extends Component {
       }
 
       const result = await response.json();
-      console.log('result', result);
       this.isReachable = result.status;
     } catch (error) {
       console.error('Could not check link:', error);

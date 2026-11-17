@@ -50,6 +50,6 @@ export default class PublicServicesDetailsRoute extends Route {
     super.setupController(...arguments);
 
     controller.reviewStatus = publicService.reviewStatus;
-    controller.closeDecisionView();
+    controller.resetSidebar();
   }
 }

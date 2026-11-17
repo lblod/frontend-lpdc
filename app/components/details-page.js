@@ -22,7 +22,6 @@ import { isConceptUpdated } from 'frontend-lpdc/models/public-service';
 import FullyTakeConceptSnapshotOverModalComponent from 'frontend-lpdc/components/fully-take-concept-snapshot-over';
 import ConfirmConvertToInformalModalComponent from 'frontend-lpdc/components/confirm-convert-to-informal-modal';
 import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
-import { FEEDBACK_STATUS } from 'frontend-lpdc/models/feedback';
 
 const FORM_GRAPHS = {
   formGraph: new NamedNode('http://data.lblod.info/form'),
@@ -33,7 +32,6 @@ const FORM_GRAPHS = {
 export default class DetailsPageComponent extends Component {
   @service modals;
   @service router;
-  @service store;
   @service toaster;
   @service('public-service') publicServiceService;
   @service('notification') notificationService;
@@ -43,9 +41,6 @@ export default class DetailsPageComponent extends Component {
   @tracked hasUnsavedChanges = false;
   @tracked forceShowErrors = false;
   @tracked form;
-  @tracked includeFeedbackHistory = true;
-  @tracked feedbackSidebarExpanded = this.feedbackAvailable;
-  @tracked hasFeedback = this.feedbackAvailable;
   @tracked hasNotificationEnabled = false;
   id = guidFor(this);
   @tracked formStore;
@@ -54,49 +49,12 @@ export default class DetailsPageComponent extends Component {
   constructor() {
     super(...arguments);
     this.loadForm.perform();
-    this.loadFeedback.perform();
     this.loadNotificationEnabled();
     this.sourceNode = new NamedNode(this.args.publicService.uri);
 
     if (!this.args.readOnly) {
       this.router.on('routeWillChange', this, this.showUnsavedChangesModal);
     }
-  }
-
-  get detailsContext() {
-    return this.contextService.findParentContextWithContract(
-      'closeDecisionView',
-    );
-  }
-
-  get isDecisionViewOpen() {
-    return !!this.detailsContext?.isDecisionViewOpen;
-  }
-
-  get isFeedbackOpen() {
-    // an open decisions view minimizes the feedback
-    return this.feedbackSidebarExpanded && !this.isDecisionViewOpen;
-  }
-
-  @action
-  toggleFeedbackSidebar() {
-    this.feedbackSidebarExpanded = !this.isFeedbackOpen;
-    if (this.feedbackSidebarExpanded) {
-      this.detailsContext?.closeDecisionView();
-    }
-  }
-
-  @action
-  closeDecisionView() {
-    // reset so the feedback doesn't pop open again
-    this.feedbackSidebarExpanded = false;
-    this.detailsContext?.closeDecisionView();
-  }
-
-  @action
-  toggleIncludeFeedbackHistory() {
-    this.includeFeedbackHistory = !this.includeFeedbackHistory;
-    this.loadFeedback.perform();
   }
 
   #showToasterErrorMessage(message) {
@@ -199,10 +157,6 @@ export default class DetailsPageComponent extends Component {
     );
   }
 
-  get feedbackAvailable() {
-    return this.args.publicService.feedbackAvailable;
-  }
-
   loadForm = task(async () => {
     const {
       form: formTtl,
@@ -232,32 +186,6 @@ export default class DetailsPageComponent extends Component {
     this.form = form;
     this.formStore = formStore;
     this.updateHasUnsavedChanges(false);
-  });
-
-  loadFeedback = task(async () => {
-    const result = await this.store.query('feedback', {
-      'filter[instance][:uri:]': this.args.publicService.uri,
-      include:
-        'question,question.from,question.to,answer,answer.from,answer.to,receiver-bestuurseenheid',
-      sort: '-created-at',
-      page: { size: 1000 }, //TODO: refactor to use pagination if needed
-    });
-    // Filter out feedback that are 'ingetrokken' from IPDC
-    const allFeedback = result.filter(
-      (f) =>
-        f.ipdcStatus !==
-        'https://ipdc.vlaanderen.be/ns/FeedbackStatus#INGETROKKEN',
-    );
-    this.hasFeedback = allFeedback.length > 0;
-
-    if (this.includeFeedbackHistory) return allFeedback;
-
-    return allFeedback.filter((feedback) => {
-      return (
-        feedback.status !== FEEDBACK_STATUS.VERWERKT &&
-        feedback.status !== FEEDBACK_STATUS.VERZONDEN
-      );
-    });
   });
 
   async loadNotificationEnabled() {

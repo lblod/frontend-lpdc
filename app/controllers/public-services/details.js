@@ -178,8 +178,4 @@ export default class PublicServicesDetailsController extends Controller {
       );
     });
   });
-
-  getPublicService() {
-    return this.model.publicService;
-  }
 }

@@ -34,11 +34,11 @@ export default class HeerlijkHelderService extends Service {
     return promise;
   }
 
-  async getGenerationActivities(publicService, subject, predicate) {
+  async getGenerationActivities(publicServiceId, subject, predicate) {
     const activities = await this.store.query('generation-activity', {
       filter: {
         'field-generation': {
-          instance: { ':id:': publicService.id },
+          instance: { ':id:': publicServiceId },
           ':exact:related-subject': subject,
           ':exact:related-field': predicate,
         },

@@ -9,7 +9,6 @@ import HeerlijkHelderModal from 'frontend-lpdc/components/heerlijk-helder-modal'
 export default class LpdcInputComponent extends SimpleInputFieldComponent {
   inputId = 'input-' + guidFor(this);
   @service modals;
-  @service contextService;
 
   get helpText() {
     return this.isLinkedToConcept
@@ -37,17 +36,10 @@ export default class LpdcInputComponent extends SimpleInputFieldComponent {
     );
   }
 
-  get publicService() {
-    return this.contextService
-      .findParentContextWithContract('getPublicService')
-      ?.getPublicService();
-  }
-
   @action
   async heerlijkHelderRewrite(e) {
     e.preventDefault();
     const result = await this.modals.open(HeerlijkHelderModal, {
-      publicService: this.publicService,
       subject: this.args.sourceNode.value,
       predicate: this.args.field.path,
       fieldLabel: this.args.field.label,

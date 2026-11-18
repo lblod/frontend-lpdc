@@ -7,6 +7,7 @@ import { STATUS } from 'frontend-lpdc/models/generation-activity';
 
 export default class HeerlijkHelderModalComponent extends Component {
   @service heerlijkHelder;
+  @service router;
 
   @tracked firstOriginal; // text before any generation(s), shown on the left
   @tracked activity; // the current generation-activity
@@ -15,7 +16,7 @@ export default class HeerlijkHelderModalComponent extends Component {
   @tracked error = null;
   @tracked editorController; // only for rich text fields
 
-  publicService = this.args.data.publicService;
+  publicServiceId = this.router.currentRoute.parent.params.serviceId;
   subject = this.args.data.subject;
   predicate = this.args.data.predicate;
   originalValue = this.args.data.originalValue;
@@ -31,7 +32,7 @@ export default class HeerlijkHelderModalComponent extends Component {
     this.error = null;
     try {
       this.activities = await this.heerlijkHelder.getGenerationActivities(
-        this.publicService,
+        this.publicServiceId,
         this.subject,
         this.predicate,
       );
@@ -76,7 +77,7 @@ export default class HeerlijkHelderModalComponent extends Component {
           },
           relationships: {
             'public-service': {
-              data: { type: 'public-services', id: this.publicService.id },
+              data: { type: 'public-services', id: this.publicServiceId },
             },
           },
         },

@@ -86,7 +86,6 @@ const LINK_INPUT_RULE_REGEX = new RegExp(
 export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFieldComponent {
   @tracked editorController;
   inputId = 'richtext-' + guidFor(this);
-  @service contextService;
   @service modals;
 
   forceOpenLinksInNewTab = forceOpenLinksInNewTab;
@@ -176,17 +175,10 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
     return !this.args.show && isFeatureEnabled('heerlijkHelder');
   }
 
-  get publicService() {
-    return this.contextService
-      .findParentContextWithContract('getPublicService')
-      ?.getPublicService();
-  }
-
   @action
   async heerlijkHelderRewrite(e) {
     e.preventDefault();
     const result = await this.modals.open(HeerlijkHelderModal, {
-      publicService: this.publicService,
       subject: this.args.sourceNode.value,
       predicate: this.args.field.path,
       fieldLabel: this.args.field.label,

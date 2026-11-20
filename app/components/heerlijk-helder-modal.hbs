@@ -174,9 +174,7 @@
             @size="large"
             {{on "click" (fn this.rateRewrite true)}}
           >
-            <VoteThumbsUpIcon
-              @fill={{if (eq this.activity.isImproved true) "#0055CC"}}
-            />
+            <VoteThumbsUpIcon @selected={{eq this.activity.isImproved true}} />
           </AuButton>
           <AuButton
             @skin="naked"
@@ -184,7 +182,7 @@
             {{on "click" (fn this.rateRewrite false)}}
           >
             <VoteThumbsDownIcon
-              @fill={{if (eq this.activity.isImproved false) "#0055CC"}}
+              @selected={{eq this.activity.isImproved false}}
             />
           </AuButton>
         </AuButtonGroup>
@@ -197,7 +195,8 @@
       <AuButton
         @disabled={{not this.canSave}}
         @loading={{this.save.isRunning}}
-        {{on "click" (perform this.save)}}
+        @loadingMessage="Aan het opslaan"
+        {{on "click" this.save.perform}}
       >
         Opslaan
       </AuButton>

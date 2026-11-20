@@ -1,37 +1,39 @@
 import Service, { service } from '@ember/service';
 import { HttpRequest } from '../helpers/http-request';
+import { timeout } from 'ember-concurrency';
+import { TASK_STATUS } from 'frontend-lpdc/models/task';
 
 export default class HeerlijkHelderService extends Service {
   @service store;
   @service toaster;
   httpRequest = new HttpRequest(this.toaster);
 
-  // generations still waiting for hh-rewrite, keyed per field
-  generations = new Map();
+  async generate(payload) {
+    const response = await this.httpRequest.post('/hh-rewrites', payload, {
+      'Content-Type': 'application/vnd.api+json',
+      Accept: 'application/vnd.api+json',
+    });
+    await this.pollTask(response.id);
 
-  keyForGeneration(subject, predicate) {
-    return `${subject}|${predicate}`;
+    return await this.store.findRecord('generation-activity', response.id, {
+      reload: true,
+    });
   }
 
-  pendingGeneration(key) {
-    return this.generations.get(key);
-  }
-
-  generate(key, payload) {
-    if (this.generations.has(key)) return this.generations.get(key);
-    const promise = this.httpRequest
-      .post('/hh-rewrites', payload, {
-        'Content-Type': 'application/vnd.api+json',
-        Accept: 'application/vnd.api+json',
-      })
-      .then((response) =>
-        this.store.findRecord('generation-activity', response.data.id, {
-          reload: true,
-        }),
-      )
-      .finally(() => this.generations.delete(key));
-    this.generations.set(key, promise);
-    return promise;
+  async pollTask(id) {
+    const task = await this.store.findRecord('task', id, { reload: true });
+    const deadline = Date.now() + 3 * 60 * 1000; // poll tasks no longer than 3 min
+    while (
+      task.status === TASK_STATUS.SCHEDULED ||
+      task.status === TASK_STATUS.BUSY
+    ) {
+      if (Date.now() > deadline) throw new Error('Heerlijk helder timed out');
+      await timeout(1000);
+      await task.reload();
+    }
+    if (task.status !== TASK_STATUS.SUCCESS) {
+      throw new Error(`Heerlijk Helder task ended with status ${task.status}`);
+    }
   }
 
   async getGenerationActivities(publicServiceId, subject, predicate) {

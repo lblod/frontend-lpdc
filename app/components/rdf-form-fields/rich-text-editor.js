@@ -48,6 +48,8 @@ import SimpleInputFieldComponent from '@lblod/ember-submission-form-fields/compo
 import { modifier } from 'ember-modifier';
 import { NamedNode } from 'rdflib';
 import isFeatureEnabled from 'frontend-lpdc/helpers/is-feature-enabled';
+import { service } from '@ember/service';
+import HeerlijkHelderModal from 'frontend-lpdc/components/heerlijk-helder-modal';
 
 export const linkParser = defaultLinkParser({ defaultCountryCode: 'BE' });
 
@@ -84,6 +86,7 @@ const LINK_INPUT_RULE_REGEX = new RegExp(
 export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFieldComponent {
   @tracked editorController;
   inputId = 'richtext-' + guidFor(this);
+  @service modals;
 
   forceOpenLinksInNewTab = forceOpenLinksInNewTab;
 
@@ -173,13 +176,24 @@ export default class RdfFormFieldsRichTextEditorComponent extends SimpleInputFie
   }
 
   @action
-  heerlijkHelderRewrite() {
-    console.log(
-      'Heerlijk helder rewrite',
-      this.args.sourceNode.value,
-      this.args.field.path,
-      this.value,
-    );
+  async heerlijkHelderRewrite(e) {
+    e.preventDefault();
+    const result = await this.modals.open(HeerlijkHelderModal, {
+      subject: this.args.sourceNode.value,
+      predicate: this.args.field.path,
+      fieldLabel: this.args.field.label,
+      originalValue: this.value,
+      editor: {
+        schema: this.schema,
+        plugins: this.plugins,
+        nodeViews: this.nodeViews,
+      },
+    });
+
+    if (result?.text !== undefined) {
+      this.updateValueInStore(result.text);
+      this.setEditorValue();
+    }
   }
 
   @action

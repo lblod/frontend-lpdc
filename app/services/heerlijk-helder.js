@@ -36,6 +36,20 @@ export default class HeerlijkHelderService extends Service {
     }
   }
 
+  async isRunning(id) {
+    const task = await this.store.findRecord('task', id, { reload: true });
+    return (
+      task.status === TASK_STATUS.SCHEDULED || task.status === TASK_STATUS.BUSY
+    );
+  }
+
+  async pollRunning(activity) {
+    if (!activity || activity.generatedText) return null;
+    if (!(await this.isRunning(activity.id))) return null;
+    await this.pollTask(activity.id);
+    return await activity.reload();
+  }
+
   async getGenerationActivities(publicServiceId, subject, predicate) {
     const activities = await this.store.query('generation-activity', {
       filter: {

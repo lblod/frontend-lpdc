@@ -30,25 +30,17 @@ export default class HeerlijkHelderModalComponent extends Component {
   loadOrGenerate = task(async () => {
     this.error = null;
     try {
-      this.activities = await this.heerlijkHelder.getGenerationActivities(
-        this.publicServiceId,
-        this.subject,
-        this.predicate,
-      );
+      await this.loadActivities();
       this.firstOriginal =
         this.activities[0]?.originalText ?? this.originalValue;
 
-      const latest = this.activities.at(-1);
       // 1. a generation is still running for this field
-      if (latest && !latest.generatedText) {
-        try {
-          await this.heerlijkHelder.pollTask(latest.id);
-          await latest.reload();
-          this.show(latest);
-          return;
-        } catch (e) {
-          console.error('Error while fetching latest generation:', e);
-        }
+      const running = await this.heerlijkHelder.pollRunning(
+        this.activities.at(-1),
+      );
+      if (running) {
+        this.show(running);
+        return;
       }
 
       // 2. the latest used attempt, otherwise the latest successful attempt
@@ -73,6 +65,15 @@ export default class HeerlijkHelderModalComponent extends Component {
   generate = task(async () => {
     this.error = null;
     try {
+      // check if a generation is already running
+      await this.loadActivities();
+      const latest = this.activities.at(-1);
+      const running = await this.heerlijkHelder.pollRunning(latest);
+      if (running) {
+        this.show(running);
+        return;
+      }
+
       const activity = await this.heerlijkHelder.generate({
         data: {
           type: 'generation-activities',
@@ -95,6 +96,14 @@ export default class HeerlijkHelderModalComponent extends Component {
       this.error = error;
     }
   });
+
+  async loadActivities() {
+    this.activities = await this.heerlijkHelder.getGenerationActivities(
+      this.publicServiceId,
+      this.subject,
+      this.predicate,
+    );
+  }
 
   show(activity) {
     this.activity = activity;

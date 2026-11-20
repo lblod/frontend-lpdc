@@ -74,21 +74,12 @@ export default class HeerlijkHelderModalComponent extends Component {
         return;
       }
 
-      const activity = await this.heerlijkHelder.generate({
-        data: {
-          type: 'generation-activities',
-          attributes: {
-            'original-text': this.originalValue,
-            'related-subject': this.subject,
-            'related-field': this.predicate,
-          },
-          relationships: {
-            'public-service': {
-              data: { type: 'public-services', id: this.publicServiceId },
-            },
-          },
-        },
-      });
+      const activity = await this.heerlijkHelder.generate(
+        this.publicServiceId,
+        this.subject,
+        this.predicate,
+        this.originalValue,
+      );
       this.activities = [...this.activities, activity];
       this.show(activity);
     } catch (error) {

@@ -8,14 +8,16 @@ export default class HeerlijkHelderService extends Service {
   @service toaster;
   httpRequest = new HttpRequest(this.toaster);
 
-  async generate(payload) {
-    const response = await this.httpRequest.post('/hh-rewrites', payload, {
-      'Content-Type': 'application/vnd.api+json',
-      Accept: 'application/vnd.api+json',
+  async generate(publicServiceId, relatedSubject, relatedField, originalText) {
+    const { id } = await this.httpRequest.post('/hh-rewrites', {
+      publicServiceId,
+      relatedSubject,
+      relatedField,
+      originalText,
     });
-    await this.pollTask(response.id);
+    await this.pollTask(id);
 
-    return await this.store.findRecord('generation-activity', response.id, {
+    return await this.store.findRecord('generation-activity', id, {
       reload: true,
     });
   }

@@ -5,8 +5,8 @@ export default class PublicServiceModel extends Model {
   @attr uri;
   @attr productId;
   @attr('language-string-set') name;
-  @attr('datetime') startDate;
-  @attr('datetime') endDate;
+  @attr('datetime') availabilityStarts;
+  @attr('datetime') availabilityEnds;
   @attr('datetime') dateCreated;
   @attr('datetime') dateModified;
   @attr versionedSource;

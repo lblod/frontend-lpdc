@@ -130,10 +130,12 @@
           </:content>
         </Data>
         <Data>
-          <:title>Aanvraagbaar van</:title>
+          <:title>Geldig vanaf</:title>
           <:content>
             <span class="au-u-muted">
-              <ValueWithPlaceholder @value={{@model.publicService.startDate}}>
+              <ValueWithPlaceholder
+                @value={{@model.publicService.availabilityStarts}}
+              >
                 <:value as |value|>
                   {{moment-format value "DD-MM-YYYY"}}
                 </:value>
@@ -142,10 +144,12 @@
           </:content>
         </Data>
         <Data>
-          <:title>Aanvraagbaar tot en met</:title>
+          <:title>Geldig tot en met</:title>
           <:content>
             <span class="au-u-muted">
-              <ValueWithPlaceholder @value={{@model.publicService.endDate}}>
+              <ValueWithPlaceholder
+                @value={{@model.publicService.availabilityEnds}}
+              >
                 <:value as |value|>
                   {{moment-format value "DD-MM-YYYY"}}
                 </:value>
